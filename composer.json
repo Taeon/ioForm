@@ -1,0 +1,21 @@
+{
+    "name": "/Taeon/ioForm",
+    "description": "ioForm form handling for PHP and JavaScript",
+    "keywords": ["php", "javascript", "js", "form"],
+    "homepage": "https://github.com/Taeon/ioForm",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pat Fox",
+            "homepage": "https://github.com/Taeon"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ioForm\\": "src/"
+        }
+    }
+}

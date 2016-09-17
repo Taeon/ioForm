@@ -98,7 +98,7 @@ var ioForm = function( form ){
     }
     // Check if all fields are ready 
     for( var field_name in this.fields ){
-        this.fields[ field_name ].oioFormReady();
+        this.fields[ field_name ].onFormReady();
     }
 }
 ioForm.prototype = {
@@ -106,6 +106,7 @@ ioForm.prototype = {
     input_field_types:{
         checkbox: 'Checkbox',
         date: 'Date',
+        number: 'Number',
     },
     
     onFieldReady:function( event ){
@@ -161,7 +162,7 @@ var ioFormField = function( element ){
     }
 };
 ioFormField.prototype = {
-    oioFormReady:function(){
+    onFormReady:function(){
         // The form is ready, is the field ready?
         // If not, the field needs to trigger this event itself at some point
         if ( this.ready ) {
@@ -236,6 +237,25 @@ ioFormFieldDate.prototype.GetValue = function(){
         return null;
     }
 }
+
+/***
+ * Number field
+ * https://github.com/chemerisuk/better-dateinput-polyfill?
+ */
+var ioFormFieldNumber = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldNumber, ioFormField );
+/**
+ * Return a number field's value, as a numeric value (instead of string)
+ *
+ * @return      Date
+ */
+ioFormFieldNumber.prototype.GetValue = function(){
+    return +this.element.value; // Convert string to number
+}
+
+
 
 /**
  * Select field
