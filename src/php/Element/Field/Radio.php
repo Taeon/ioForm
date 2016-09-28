@@ -20,7 +20,7 @@ class Radio extends \ioForm\Element\Field{
 			$definition->label = $option[ 'text' ];
 			$definition->SetTemplates( $element_definition->GetTemplates() );
 			$definition->SetParent( $element_definition );
-			$this->AddElement( $this->CreateElement( $definition ) );
+			$this->AddElement( \ioForm\ioForm::CreateElement( $definition ) );
 		}
 		$this->SetAttribute( 'id', null );
 

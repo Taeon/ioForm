@@ -9,7 +9,7 @@ class Container extends \ioForm\Core\Element{
 	
 	public $template_alias = '';
 
-protected $temp = array();
+	protected $temp = array();
 	
 	public function __construct( $field_definition = null ){
 		parent::__construct( $field_definition );
@@ -132,7 +132,7 @@ protected $temp = array();
 			}
 		}
 
-		$node_obj = $this->CreateElement( $definition );
+		$node_obj = \ioForm\ioForm::CreateElement( $definition );
 		if( $node->nodeName == 'label' ){
 			$this->lookup->label = $node_obj;
 		}

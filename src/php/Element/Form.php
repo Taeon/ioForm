@@ -14,22 +14,16 @@ class Form extends \ioForm\Core\Element{
 	protected $auto_tabindex = true;
 	protected $tabindex_start = 1;
 	
-	public function __construct( \ioForm\Core\FormDefinition $element_definition ){
-
-		$this->alias_lookup = new \stdClass();
-		$this->action = $element_definition->action;
-
+	public function __construct( \ioForm\Core\Definition $element_definition ){
 		parent::__construct( $element_definition );
 		$this->FindFields( $this, $this->tabindex_start );
-		
-		// Wrap the whole form in a fieldset. This allows form to pass w3C validation for XHTML 1.0 (Strict)
-		//$definition = new \ioform\Core\Definition();
-		//$definition->type = 'Layout:Fieldset';
-		//
-		//$fieldset = $this->CreateElement( $definition );
-		//$fieldset->elements = $this->elements;
-		//$this->elements = array( $fieldset );
 	}
+	
+	/**
+	 * Set the value of a set of fields in a form
+	 *
+	 * @param		mixed		$values		An iterable list of key/value pairs
+	 */
 	public function Populate( $values ){
 		foreach( $values as $field_name => $value ){
 			if( $field = $this->GetField( $field_name ) ){
@@ -37,52 +31,41 @@ class Form extends \ioForm\Core\Element{
 			}
 		}
 	}
-	public function SetValidator( $validator_definition ){
-		foreach( $validator_definition->GetValidators() as $field_name => $validators ){
-			$field = $this->GetField( $field_name );
-			if( !$field ){
-				continue;
-			}
-			foreach( $validators as $validator ){
-				switch( $validator[ 'type' ] ){
-					case 'Number':{
-						if( isset( $validator[ 'values' ][ 'min' ] ) ){
-							$field->SetAttribute( 'min', $validator[ 'values' ][ 'min' ] );
-						}
-						if( isset( $validator[ 'values' ][ 'max' ] ) ){
-							$field->SetAttribute( 'max', $validator[ 'values' ][ 'max' ] );
-						}
-						if( isset( $validator[ 'values' ][ 'step' ] ) ){
-							$field->SetAttribute( 'step', $validator[ 'values' ][ 'step' ] );
-						}
-						break;
-					}
-					case 'Length':{
-						if( isset( $validator[ 'values' ][ 'min' ] ) ){
-							$field->SetAttribute( 'data-nvalidate-minlength', $validator[ 'values' ][ 'min' ] );
-						}
-						if( isset( $validator[ 'values' ][ 'max' ] ) ){
-							$field->SetAttribute( 'maxlength', $validator[ 'values' ][ 'max' ] );
-						}
-						break;
-					}
-					case 'Required':{
-						if( !(isset( $validator[ 'enabled' ] ) && $validator[ 'enabled' ] == false ) ){
-							$field->SetAttribute( 'required', true );
-						}
-						break;
-					}
-				}
-			}
+	
+	/**
+	 * Return a field by its name
+	 *
+	 * @param		string		$name
+	 *
+	 * @return		\ioform\Element\Field
+	 */
+	public function GetField( $name ){
+		if( array_key_exists( $name, $this->fields ) ){
+			return $this->fields[ $name ];			
+		} else {
+			throw new \Exception( "Field '$name' not found" );
 		}
 	}
-	public function GetField( $name ){
-		return $this->fields[ $name ];
-	}
-	public function FindFields( $parent_element, &$index = 1 ){
+
+	/**
+	 * Iterate recursively through the structure to find all field elements
+	 *
+	 * @param		\ioform\Core\Element		$parent_element
+	 * @param		int							$index
+	 */
+	protected function FindFields( \ioform\Core\Element $parent_element, &$index = 1 ){
 		foreach( $parent_element->elements as $element ){
 			if( $element instanceof \ioForm\Element\Field && $element->HasAttribute( 'name' ) ){
+				// With file elements, you need to set the enctype
+				if( $element instanceof \ioForm\Element\Field\File ){
+					$this->SetAttribute( 'enctype', 'multipart/form-data' );
+					$this->SetAttribute( 'method', 'post' );
+				}
+
+				// Fields lookup
 				$this->fields[ $element->GetAttribute( 'name' ) ] = $element;
+
+				// Add autoindex attribute
 				if( $this->auto_tabindex ){
 					// Radio buttons are a special case
 					if( $element instanceof \ioForm\Element\Field\Radio ){
