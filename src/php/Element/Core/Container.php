@@ -79,39 +79,37 @@ class Container extends \ioForm\Core\Element{
 	 * Populate this container from an HTML string
 	 */
 	public function ParseTemplateString( $template_string ){
+
 		// Load the HTML string into a DOM document
 		$dom = new \DOMDocument;
+
+		// Suppress invalid tag errors
+		libxml_use_internal_errors( true );
 		$dom->loadHTML( $template_string );
+		foreach( libxml_get_errors() as $error ){
+			// Invalid tag (ignore this -- HTML5 and so on)
+			if( $error->code !== 801 ){
+				throw new \Exception( 'LibXML:' . $error->message . '[Level: ' . $error->level . ', Code:' . $error->code . ', Column: ' . $error->column . ', Line: ' . $error->line . ']' . ' in container template ' . $template_string );
+			}
+		}
+		libxml_use_internal_errors( false );
+
+
 		$xpath = new \DOMXPath($dom);
 		// The HTML is passed into the body of the DOM document
 		$body = $nodes = $xpath->query('/html/body/*');
-		// We can't have multiple 'root' nodes in the HTML
-		if( $body->length > 1 ){
-			throw new \Exception( 'Field container template may not contain more than one root element' );
-		}
 
 		// We store our various 'elements 'important' elements in the lookup (anything marked with a class beginning with ioform-)
 		$this->lookup = (object)$this->lookup;
 
 		// Parse the root node
-		$node = $this->ParseTemplateNode( $body->item( 0 ) );
-		$this->tag = $node->tag;
-		foreach( $node->attributes as $attribute => $value ){
-			// data-ioform-* attributes are for internal use only
-			if( strpos( $attribute, 'data-ioform-' ) !== 0 ){
-				$this->SetAttribute( $attribute, $value );
-			}
+		foreach( $body as $node ){
+			$this->elements[] = $this->ParseTemplateNode( $node );
 		}
 
 		// No element container set
 		if( !isset( $this->lookup->{'elements-container'} ) ){
-			throw new \Exception( 'No element container found in template (you need a comment like this <!--elements--> somewhere in your template"): ' . $template_string );
-		}
-
-		foreach( $node->elements as $element ){
-			if( $element !== null ){
-				$this->elements[] = $element;
-			}
+			throw new \Exception( 'No element container found in template (you need an element like this &lt;elements/&gt; somewhere in your template"): ' . $template_string );
 		}
 	}
 	/**
@@ -126,7 +124,7 @@ class Container extends \ioForm\Core\Element{
 		} else{
 			$definition->tag = null;
 			$definition->content = $node->nodeValue;
-			// Emptry text node (or whitespace) 
+			// Empty text node (or whitespace) 
 			if( trim( $definition->content ) == '' ){
 				return null;
 			}
@@ -137,19 +135,14 @@ class Container extends \ioForm\Core\Element{
 			$this->lookup->label = $node_obj;
 		}
 		// Look for comments
-		if( $node->nodeName == '#comment' ){
-			switch( strtolower( trim( $node->nodeValue ) ) ){
-				case 'elements':{
-					$this->lookup->{'elements-container'} = new \ioForm\Element\Core\BaseElement( false );
-					// Add any elements that were added before this was defined
-					foreach( $this->temp as $element ){
-						$this->AddElement( $element );
-					}
-					$this->temp = null;
-					return $this->lookup->{'elements-container'};
-					break;
-				}
+		if( $node->nodeName == 'elements' ){
+			$this->lookup->{'elements-container'} = new \ioForm\Element\Core\BaseElement( false );
+			// Add any elements that were added before this was defined
+			foreach( $this->temp as $element ){
+				$this->AddElement( $element );
 			}
+			$this->temp = null;
+			return $this->lookup->{'elements-container'};
 		}
 
 		if($node->attributes){

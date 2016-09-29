@@ -14,6 +14,10 @@ class Definition{
 	protected $alias_lookup;
 	public $default;
 	
+	public function __construct(){
+		$this->alias_lookup = new \stdClass();
+	}
+	
 	public function SetTemplates( $templates ){
 		$this->templates = $templates;
 	}
@@ -35,6 +39,13 @@ class Definition{
 		$definition->SetTemplates( array_merge( $this->templates, $definition->GetTemplates() ) );
 		$definition->parent = $this;
 		$this->elements[] = $definition;
+		if( $definition->alias ){
+			$this->alias_lookup->{ $definition->alias } = $definition;
+		}
+		// Cascade aliases up the chain
+		foreach( $definition->alias_lookup as $alias => $child ){
+			$this->alias_lookup->{ $alias } = $child;
+		}
 	}
 	public function GetParent(){
 		return $this->parent;
@@ -46,6 +57,65 @@ class Definition{
 		return $this->elements;
 	}
 
+	
+	/**
+	 * Convert an element definition array in an element definition object
+	 *
+	 * @param		array		$element		A definition in the form of an array
+	 *
+	 * @return		ioform\Core\Definition
+	 */
+	public function FromArray( $element ){
+		return $this->ArrayToDefinition( $element, new Definition() );
+	}
+
+	/**
+	 * Convert an element definition array in an element definition object
+	 *
+	 * @param		array		$element		A definition in the form of an array
+	 *
+	 * @return		ioform\Core\Definition
+	 */
+	protected function ArrayToDefinition( $element, $element_obj ){
+		
+		// Assign properties
+		foreach( $element as $property => $value ){
+			switch( $property ){
+				// Convert classes to objects
+				case 'classes':{
+					foreach( $value as $index => $class ){
+						$value[ $index ] = (object)$class;
+					}
+					$element_obj->$property = $value;
+					break;
+				}
+				//case 'alias':{
+				//	$this->alias_lookup->{ $value } = $element_obj;
+				//	break;
+				//}
+				case 'elements':{
+					// Convert child elements to definitions
+					foreach( $element[ 'elements' ] as $child_definition ){
+						$child = $this->ArrayToDefinition( $child_definition, new Definition() );
+						$element_obj->AddElement( $child );
+					}
+					break;
+				}
+				default:{
+					$element_obj->$property = $value;
+					break;
+				}
+			}
+		}
+		// Is it a field?
+		if( strpos( $element_obj->type, ':' ) === false && isset( $element_obj->name ) && $element_obj->name ){
+			$this->fields[ $element_obj->name ] = $element_obj;
+		}
+		
+		return $element_obj;
+
+	}	
+	
 	/**
 	 * Get an element by its alias
 	 *
