@@ -1,0 +1,15 @@
+site_name: ioForm
+site_url: https://taeon.github.io/ioForm/
+site_description: Simplified form handling for PHP and JavaScript
+site_author: Pat Fox
+
+repo_url: https://github.com/Taeon/ioForm
+
+pages:
+- Home: index.md
+- User Guide:
+    - Requirements and installation: requirements-installation.md
+
+dev_addr: 0.0.0.0:8800
+
+
