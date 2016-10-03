@@ -27,7 +27,7 @@
         }, 
         {
             "location": "/requirements-installation/", 
-            "text": "Requirements\n\n\nioForm has no non-standard dependencies on either the PHP or JavaScript side. It does, however, require PHP \n= 5.4. HTML5 form elements (e.g. date, number etc.) aren't supported by some older browsers such as IE9, so if that's a concern then you might need to look into finding a suitable polyfill.\n\n\nInstalling ioForm...\n\n\n...using composer\n\n\nSimple enough, just use:\n\n\ncomposer require taeon/ioform\n\n\n\n...from source\n\n\nAlternatively, you can \ndownload the source code as a compressed file\n. \n\n\nLoading ioForm\n\n\nPHP\n\n\nIf you're using composer, you don't need to do anything. If you're installing from source, it's still very easy: ioForm conforms to the \nPSR-4 standard\n, so once you've included the autoloader file (autoload.php) somewhere in your PHP, it takes care of loading its dependencies itself.\n\n\nJavaScript\n\n\nFor now there's no compressed version, so you'll need to include the uncompressed source:\n\n\nscript src=\"[path-to-ioform]/src/js/ioForm.js\"\n/script", 
+            "text": "Requirements\n\n\nioForm has no non-standard dependencies on either the PHP or JavaScript side. It does, however, require PHP \n= 5.4. HTML5 form elements (e.g. date, number etc.) aren't supported by some older browsers such as IE9, so if that's a concern then you might need to look into finding a suitable polyfill.\n\n\nInstalling ioForm...\n\n\n...using composer\n\n\nSimple enough, just use:\n\n\ncomposer require taeon/ioform\n\n\n\n...from source\n\n\nAlternatively, you can \ndownload the source code as a compressed file\n. \n\n\nLoading ioForm\n\n\nPHP\n\n\nIf you're using composer, you don't need to do anything. If you're installing from source, it's still very easy: ioForm conforms to the \nPSR-4 standard\n, so once you've included the autoloader file (autoload.php) somewhere in your PHP, it takes care of loading its dependencies itself.\n\n\nJavaScript\n\n\nFor now there's no compressed version, so you'll need to include the uncompressed source:\n\n\nscript src=\"[path-to-ioform]/src/js/ioForm.js\"\n/script\n\n\n\n\nSee the Pen \npEdgrJ\n by Taeon (\n@Taeon\n) on \nCodePen\n.", 
             "title": "Requirements and installation"
         }, 
         {
@@ -62,7 +62,7 @@
         }, 
         {
             "location": "/requirements-installation/#javascript", 
-            "text": "For now there's no compressed version, so you'll need to include the uncompressed source:  script src=\"[path-to-ioform]/src/js/ioForm.js\" /script", 
+            "text": "For now there's no compressed version, so you'll need to include the uncompressed source:  script src=\"[path-to-ioform]/src/js/ioForm.js\" /script   See the Pen  pEdgrJ  by Taeon ( @Taeon ) on  CodePen .", 
             "title": "JavaScript"
         }
     ]
