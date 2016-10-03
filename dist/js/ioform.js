@@ -168,4 +168,229 @@
         };
         return ioForm;
     }
-));
+));;
+/*********
+ * Base class for fields
+ */
+var ioFormField = function( element ){
+    this.ready = false;
+    this.element = element;
+    
+    // Radio buttons
+    if ( false ){//Object.prototype.toString.call( element ) == '[object Array]' ) {
+        Events.Register( this );
+    } else {
+        Events.Register( this, element );
+    this.ready = true;
+    }
+};
+ioFormField.prototype = {
+    onFormReady:function(){
+        // The form is ready, is the field ready?
+        // If not, the field needs to trigger this event itself at some point
+        if ( this.ready ) {
+            this.trigger( 'ioform:ready', {field:this} );
+        }
+    },
+    GetValue:function(){
+        return this.element.value;
+    },
+    SetValue:function( value ){
+        this.element.value = value;
+        this.trigger( 'change' );
+    },
+    Disable:function(){
+        this.element.setAttribute( 'disabled', "" );
+    },
+    Enable:function(){
+        this.element.removeAttribute( 'disabled' );
+    },
+};
+/**
+ * Single checkbox
+ */
+var ioFormFieldCheckbox = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldCheckbox, ioFormField );
+ioFormFieldCheckbox.prototype.SetValue = function( value ){
+    this.element.checked = value;
+    this.trigger( 'change' );
+}
+ioFormFieldCheckbox.prototype.GetValue = function(){
+    return this.element.checked;
+}
+
+ioFormUtility = {
+    ZeroPad: function( num, numZeros ) {
+        var n = Math.abs(num);
+        var zeros = Math.max(0, numZeros - Math.floor(n).toString().length );
+        var zeroString = Math.pow(10,zeros).toString().substr(1);
+        if( num < 0 ) {
+            zeroString = '-' + zeroString;
+        }
+    
+        return zeroString+n;
+    }
+};
+/***
+ * Date field
+ * https://github.com/chemerisuk/better-dateinput-polyfill?
+ */
+var ioFormFieldDate = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldDate, ioFormField );
+/**
+ * Set a date field's value
+ *
+ * @param       date        Date as a date-formatted string or Date object
+ *                          Strings will be parsed into a date object (using Date.Parse()) and then the value will be set as yyyy-mm-dd (because of Chrome)
+ *                              Accepted values are anything understood by Date.Parse()
+ *                          The displayed value will depend on the browser
+ */
+ioFormFieldDate.prototype.SetValue = function( date ){
+    // Convert string to Date
+    if ( typeof date == 'string' ) {
+        date = new Date( Date.parse(date) );
+    }
+    if ( date.toString() != 'Invalid Date' ) {
+        // For Chrome's sake, we need to convert to yyyy-MM-dd
+        this.element.value = date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 );
+        //code
+    } else {
+        this.element.value = '';
+    }
+    this.trigger( 'change' );
+}
+/**
+ * Return a date field's value, as a date object
+ *
+ * @return      Date
+ */
+ioFormFieldDate.prototype.GetValue = function(){
+    // Convert value to date object
+    var value = new Date( Date.parse(this.element.value) );
+    // Make sure it's valid
+    if ( value.toString() != 'Invalid Date' ) {
+        return value;
+    } else {
+        return null;
+    }
+};
+/***
+ * Number field
+ * https://github.com/chemerisuk/better-dateinput-polyfill?
+ */
+var ioFormFieldNumber = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldNumber, ioFormField );
+/**
+ * Return a number field's value, as a numeric value (instead of string)
+ *
+ * @return      Date
+ */
+ioFormFieldNumber.prototype.GetValue = function(){
+    return +this.element.value; // Convert string to number
+}
+;
+/**
+ * Radio buttons
+ */
+var ioFormFieldRadio = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldRadio, ioFormField );
+ioFormFieldRadio.prototype.SetValue = function( value ){
+    value = value.toString();
+    for( var i = 0; i < this.element.length; i++ ){
+        if ( this.element[ i ].value == value ) {
+            this.element[ i ].checked = true;
+            break;
+        }
+    }
+    this.trigger( 'change' );
+}
+ioFormFieldRadio.prototype.GetValue = function(){
+    for( var i = 0; i < this.element.length; i++ ){
+        if ( this.element[ i ].checked ) {
+            return this.element[ i ].value;
+        }
+    }
+    return null;
+}
+ioFormFieldRadio.prototype.Disable = function(){
+    for( var i = 0; i < this.element.length; i++){
+        this.element[i].setAttribute( 'disabled', "disabled" );
+    }
+}
+ioFormFieldRadio.prototype.Enable = function(){
+    for( var i = 0; i < this.element.length; i++){
+        this.element[ i ].removeAttribute( 'disabled' );
+    }
+}
+;
+/**
+ * Select field
+ */
+var ioFormFieldSelect = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldSelect, ioFormField );
+ioFormFieldSelect.prototype.GetValue = function(){
+    var selected = this.element.querySelectorAll( 'option:checked' );
+    // Select multiple fields return an array of values
+    if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' ) {
+        var value = [];
+        for( var i = 0; i < selected.length; i++ ){
+            if ( selected[ i ].hasAttribute( 'value' ) ) {
+                value.push( selected[ i ].getAttribute( 'value' ) );
+            }
+        }
+    } else {
+        var value = '';
+        if ( selected.length > 0 ) {
+            var option = selected.pop();
+            if ( option.hasAttribute( 'value' ) ) {
+                var value = option.getAttribute( 'value' );
+            }
+        }
+    }
+
+    return value;
+}
+ioFormFieldSelect.prototype.SetValue = function( value ){
+    if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {
+        this.ClearOptions();
+        // Convert string to array
+        if ( Object.prototype.toString.call( value ) !== '[object Array]' ) {
+            value = [value];
+        }
+        for( var i = 0; i < value.length; i++ ){
+            var options = this.element.querySelectorAll( 'option[value="' + value[ i ].toString()  + '"]' );
+            for( var o = 0; o < options.length; o++ ){
+                options[ o ].selected = true;
+            }
+        }
+    } else {
+        var options = this.element.querySelectorAll( 'option[value="' + value.toString()  + '"]' );
+        for( var o = 0; o < options.length; o++ ){
+            options[ o ].selected = true;
+        }
+    }
+    this.trigger( 'change' );
+}
+ioFormFieldSelect.prototype.ClearOptions = function(){
+    var options = this.element.querySelectorAll( 'option' );
+    for( var o = 0; o < options.length; o++ ){
+        options[ o ].selected = false;
+    }
+};
+/***
+ * Text field
+ */
+var ioFormFieldDefault = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldDefault, ioFormField );

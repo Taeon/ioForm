@@ -33,21 +33,6 @@ var Events = {
                 }
             }
 		};
-		obj.one = function( event_type, func ){
-            var target = _target;
-                if ( Object.prototype.toString.call( _target ) == '[object Array]' ) {
-                    for ( var i = 0; i < _target.length; i++ ){
-                        _target[ i ].addEventListener( event_type, func );
-                    }
-                    return;
-                } else {
-                    _target.addEventListener( event_type, func );
-                }
-	            _target.addEventListener(event_type, function(e) {
-                obj.off(event_type, arguments.callee);
-                return func(e);
-            });
-        };
 
 		obj.one = function( event_type, func ){
             var target = _target;
@@ -87,19 +72,21 @@ var Events = {
 			var bubbles = false;
 			var cancelable = false;
 			for ( var index in params ) {
-				switch ( index ) {
-					case 'bubbles':{
-						bubbles = params[ index ];
-						break
-					}
-					case 'cancelable':{
-						cancelable = params[ index ];
-						break
-					}
-					default:{
-						detail[ index ] = params[ index ];
-						break;
-					}
+				if( params.hasOwnProperty( index ) ){
+					switch ( index ) {
+						case 'bubbles':{
+							bubbles = params[ index ];
+							break;
+						}
+						case 'cancelable':{
+							cancelable = params[ index ];
+							break;
+						}
+						default:{
+							detail[ index ] = params[ index ];
+							break;
+						}
+					}					
 				}
 			}
 
@@ -115,7 +102,7 @@ var Events = {
                 target = target[0];
             }
             return target.dispatchEvent(evt);
-		}
+		};
 	}
 };
 // Explorer polyfill for events
@@ -123,8 +110,13 @@ var Events = {
 
   if ( typeof window.CustomEvent === "function" ) return false;
 
-  function CustomEvent ( event, params ) {
-	params = $.extend( { bubbles: false, cancelable: false, detail: undefined  }, params );
+  function CustomEvent ( event, custom_params ) {
+	var params = { bubbles: false, cancelable: false, detail: undefined  };
+	for( var index in custom_params ){
+		if( custom_params.hasOwnProperty( index ) ){
+			params[ index ] = custom_params[ index ];
+		}
+	}
 	var evt = document.createEvent( 'CustomEvent' );
 	evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
 	return evt;

@@ -1,0 +1,15 @@
+{
+  "name": "Taeon-ioForm",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Taeon/ioForm.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}
