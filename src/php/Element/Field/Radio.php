@@ -18,6 +18,9 @@ class Radio extends \ioForm\Element\Field{
 			$definition->id = $this->GetAttribute( 'name' ) . '-' . $option[ 'value' ];
 			$definition->value = $option[ 'value' ];
 			$definition->label = $option[ 'text' ];
+			if( isset( $option[ 'tabindex' ] ) && $option[ 'tabindex' ] !== null ){
+				$definition->tabindex = $option[ 'tabindex' ];
+			}
 			$definition->SetTemplates( $element_definition->GetTemplates() );
 			$definition->SetParent( $element_definition );
 			$this->AddElement( \ioForm\ioForm::CreateElement( $definition ) );

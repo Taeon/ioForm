@@ -19,7 +19,7 @@ abstract class Element{
 	public function GetTag(){
 		return $this->tag . ':' . ((isset($this->type))?$this->type: '');
 	}
-	public function __construct( $element_definition ){
+	public function __construct( $element_definition = null ){
 
 		$class = $this;
 	    for ($classes[] = $class; $class = get_parent_class ($class); $classes[] = $class);
@@ -183,6 +183,7 @@ abstract class Element{
 			if( $this->tag ){
 				$output .= '>';
 			}
+			
 			// Render child elements
 			if( count( $this->elements ) > 0 ){
 				$content = '';

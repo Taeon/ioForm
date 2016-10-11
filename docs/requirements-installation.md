@@ -25,3 +25,4 @@ If you're using composer, you don't need to do anything. If you're installing fr
 For now there's no compressed version, so you'll need to include the uncompressed source:
 
     <script src="[path-to-ioform]/src/js/ioForm.js"></script>
+

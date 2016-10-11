@@ -10,6 +10,7 @@ class RadioButton extends \ioForm\Element\Field{
 	protected $attributes = array(
 		'type' => 'radio',
 		'value' => '',
-		'checked' => null
+		'checked' => null,
+		'tabindex' => null
 	);	
 }

@@ -12,18 +12,33 @@ class ioForm{
 	 * @return		\ioForm\Element
 	 */
 	public static function CreateElement( \ioForm\Core\Definition $element_definition ){
+		$element = false;
 		if( strpos( $element_definition->type, ':' ) !== false ){
 			list( $element_class, $element_type ) = explode( ':', $element_definition->type );
+			switch( $element_class ){
+				case 'Layout':{
+					if( in_array( $element_type, array( 'Fieldset' ) ) ){
+						$element_class = '\\ioForm\\Element\\' . $element_class . '\\' . $element_type;
+					} else {
+						$element_definition->tag = strtolower( $element_type );
+						$element = new \ioForm\Element\Core\BaseElement( $element_definition );
+					}
+					break;
+				}
+				default:{
+					$element_class = '\\ioForm\\Element\\' . $element_class . '\\' . $element_type;
+					break;
+				}
+			}
 		} elseif( $element_definition->type == 'Form' ) {
-			$element_class = '';
-			$element_type = $element_definition->type;
+			$element_class = '\\ioForm\\Element\\Form';
 		} else {
-			$element_class = 'Field';
-			$element_type = $element_definition->type;
+			$element_class = '\\ioForm\\Element\\Field\\' . $element_definition->type;
 		}
 		
-		$element_class = '\\ioForm\\Element\\' . (($element_class)?$element_class . '\\':'') . $element_type;
-		$element = new $element_class( $element_definition );
+		if( !$element ){
+			$element = new $element_class( $element_definition );
+		}
 
 		$container_classes = array();
 		if( !empty( $element_definition->classes ) ){

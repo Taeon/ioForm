@@ -8,7 +8,8 @@ abstract class Field extends \ioForm\Core\Element{
 		'name' => null,
 		'placeholder' => null,
 		'id' => null,
-		'disabled' => null
+		'disabled' => null,
+		'tabindex' => null
 	);
 	public $container_template = 'default';
 }

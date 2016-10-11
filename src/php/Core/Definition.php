@@ -36,7 +36,6 @@ class Definition{
 		return $this->templates[ $template_name ];
 	}
 	public function AddElement( \ioForm\Core\Definition $definition ){
-		$definition->SetTemplates( array_merge( $this->templates, $definition->GetTemplates() ) );
 		$definition->parent = $this;
 		$this->elements[] = $definition;
 		if( $definition->alias ){
@@ -77,7 +76,6 @@ class Definition{
 	 * @return		ioform\Core\Definition
 	 */
 	protected function ArrayToDefinition( $element, $element_obj ){
-		
 		// Assign properties
 		foreach( $element as $property => $value ){
 			switch( $property ){
@@ -87,6 +85,12 @@ class Definition{
 						$value[ $index ] = (object)$class;
 					}
 					$element_obj->$property = $value;
+					break;
+				}
+				case 'templates':{
+					foreach( $value as $index => $template ){
+						$element_obj->templates[ $index ] = $template;
+					}
 					break;
 				}
 				//case 'alias':{

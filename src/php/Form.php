@@ -23,7 +23,41 @@ class Form extends \ioForm\Core\Definition{
 		array( 'type' => 'submit', 'value' => 'Submit' )
 	);	
 	
+	protected $auto_tabindex = false;
+	protected $tabindex_start = 1;
+	
 	public function Render(){
+		if( $this->buttons ){
+			$buttons = array();
+			foreach( $this->buttons as $button ){
+				$definition = new \ioForm\Core\Definition();
+				$definition->type = 'Button';
+				$definition->button_type = $button[ 'type' ];
+				if( isset( $button[ 'value' ] ) ){
+					$definition->value = $button[ 'value' ];
+				}
+				$this->elements[] = $definition;
+			}
+			$this->buttons = array();
+		}
+		// Set tabindex
+		// We do this just before render, because the form's structure might've changed
+		if( $this->auto_tabindex ){
+			$index = $this->tabindex_start;
+			foreach( $this->fields as $field ){
+				if( $field->type != 'Radio' ){
+					$field->tabindex = $index;
+					$index++;
+				} else {
+					foreach( $field->options as $option_index => $option ){
+						$field->options[ $option_index ][ 'tabindex' ] = $index;
+						$index++;
+					}
+				}
+			}
+		}
+
+		// Create a form element
 		$form = \ioForm\ioForm::CreateElement( $this );
 		return $form->Render();
 	}
@@ -79,24 +113,7 @@ class Form extends \ioForm\Core\Definition{
 	 * @return		ioform\Core\Definition
 	 */
 	public function FromArray( $element ){
-		
 		$this->ArrayToDefinition( $element, $this );
-
-		if( !( isset( $element[ 'type' ] ) && $element[ 'type' ] != 'Form' ) ){
-			if( $this->buttons ){
-				$buttons = array();
-				foreach( $this->buttons as $button ){
-					$definition = new \ioForm\Core\Definition();
-					$definition->type = 'Button';
-					$definition->button_type = $button[ 'type' ];
-					if( isset( $button[ 'value' ] ) ){
-						$definition->value = $button[ 'value' ];
-					}
-					$this->elements[] = $definition;
-				}
-			}
-		}
-		
 		return $this;
 
 	}

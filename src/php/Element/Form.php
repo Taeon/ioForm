@@ -8,15 +8,14 @@ class Form extends \ioForm\Core\Element{
 	protected $attributes = array(
 		'id' => null,
 		'method' => 'get',
-		'action' => null
+		'action' => null,
+		'enctype' => null
 	);
 	protected $fields = array();
-	protected $auto_tabindex = true;
-	protected $tabindex_start = 1;
 	
 	public function __construct( \ioForm\Core\Definition $element_definition ){
 		parent::__construct( $element_definition );
-		$this->FindFields( $this, $this->tabindex_start );
+		$this->FindFields( $this );
 	}
 	
 	/**
@@ -53,7 +52,7 @@ class Form extends \ioForm\Core\Element{
 	 * @param		\ioform\Core\Element		$parent_element
 	 * @param		int							$index
 	 */
-	protected function FindFields( \ioform\Core\Element $parent_element, &$index = 1 ){
+	protected function FindFields( \ioform\Core\Element $parent_element  ){
 		foreach( $parent_element->elements as $element ){
 			if( $element instanceof \ioForm\Element\Field && $element->HasAttribute( 'name' ) ){
 				// With file elements, you need to set the enctype
@@ -65,21 +64,8 @@ class Form extends \ioForm\Core\Element{
 				// Fields lookup
 				$this->fields[ $element->GetAttribute( 'name' ) ] = $element;
 
-				// Add autoindex attribute
-				if( $this->auto_tabindex ){
-					// Radio buttons are a special case
-					if( $element instanceof \ioForm\Element\Field\Radio ){
-						foreach( $element->GetOptions() as $option ){
-							$option->SetAttribute( 'tabindex', $index );
-							$index++;
-						}
-					} else {
-						$element->SetAttribute( 'tabindex', $index );
-						$index++;
-					}
-				}
 			} else {
-				$this->FindFields( $element, $index );
+				$this->FindFields( $element );
 			}
 		}
 	}
