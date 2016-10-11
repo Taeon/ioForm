@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Pat Fox">
+        <link rel="canonical" href="https://taeon.github.io/ioForm/php/basic-form/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>A basic form - ioForm</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">ioForm</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../requirements-installation/">Requirements and installation!</a>
+</li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">PHP</a>
+    <ul class="dropdown-menu">
+        
+            
+<li class="active">
+    <a href="./">A basic form</a>
+</li>
+
+        
+            
+<li >
+    <a href="../customising-layout/">Customising form layout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../form-options/">Form options</a>
+</li>
+
+        
+            
+<li >
+    <a href="../fields-reference/">Field types reference</a>
+</li>
+
+        
+            
+<li >
+    <a href="../field-options/">=Field options reference</a>
+</li>
+
+        
+            
+<li >
+    <a href="../get-set-values/">=Get/set values</a>
+</li>
+
+        
+            
+<li >
+    <a href="../css-classes/">=CSS Classes</a>
+</li>
+
+        
+            
+<li >
+    <a href="../manipulating_form/">=Maniuplating form</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../../requirements-installation/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../customising-layout/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/Taeon/ioForm">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#creating-a-simple-form">Creating a simple form</a></li>
+        
+            <li><a href="#the-easy-way-using-arrays">The easy way: using arrays</a></li>
+        
+            <li><a href="#the-hard-way-using-objects">The hard way: using objects</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="creating-a-simple-form">Creating a simple form</h1>
+<p>So let's get started with a very basic form. Let's say you want to create a sign-up form for a newsletter: one field for the email address, plus a submit button. Something like this, perhaps:</p>
+<hr />
+<form method="get" action="/newsletter-form.php">
+    <label for="email">Your email:</label>
+    <input type="email" id="email" name="email" tabindex="1"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<hr />
+<h2 id="the-easy-way-using-arrays">The easy way: using arrays</h2>
+<p>There is in fact more than one way to create a form in ioForm, but we'll start with the easiest because that's the one you're most likely to use. Here's how we'd reproduce the form above:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Your email:',
+                'type' =&gt; 'Email',
+                'name' =&gt; 'email',
+                'id' =&gt; 'email',
+            )
+        )
+    )
+);
+echo( $form-&gt;Render() );
+</code></pre>
+
+<p>The HTML that's produced looks like this:</p>
+<pre><code class="html">&lt;form method=&quot;get&quot; action=&quot;/newsletter-form.php&quot;&gt;
+    &lt;label for=&quot;email&quot;&gt;Your email:&lt;/label&gt;
+    &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot; tabindex=&quot;1&quot;/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p><em>Please note that, for the sake of clarity, I've manually formatted the HTML code in the examples in this documentation with line breaks and indentation. However, ioForm does not break up or indent the HTML code that it produces -- in fact it the HTML it produces will be written as a single, long string.</em></p>
+<h3 id="breaking-it-down">Breaking it down</h3>
+<p>Let's look more closely at what we've just done. First of all, we instantiate a new object which will contain the definition of our form:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+</code></pre>
+
+<p><em>Note that the above type of object instantiation requires PHP 5.4</em></p>
+<p>...and then we call the <code>FromArray()</code> method:</p>
+<pre><code class="php">-&gt;FromArray(
+</code></pre>
+
+<p>This method allows us to pass in a form definition as an array. We'll see later than this isn't the only way to define our form, but it is the simplest and quickest.</p>
+<h4 id="the-form">The form</h4>
+<p>The array we're passing in contains pretty much the absolute minimum we need to produce a working form. First off, we have the <code>action</code>, which is the path that the form will submit to. Then we have an array called <code>elements</code>, which itself contains one or more arrays that define the fields that will make up the form (it is possible to define other element types than form fields, as we'll find later).</p>
+<pre><code class="php">    array(
+        'action' =&gt; '/newsletter-form.php',
+        'elements' =&gt; array(
+            ...
+        )
+    )
+</code></pre>
+
+<h4 id="the-field">The field</h4>
+<p>Now we come to the field definition:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Your email:',
+    'type' =&gt; 'Email',
+    'name' =&gt; 'email',
+    'id' =&gt; 'email',
+)
+</code></pre>
+
+<p>Each element's definition is an array of key/value pairs. At minimum for a form field, you'll need specify the <code>type</code> (i.e. what type of field is it?) and <code>name</code>. Field types always start with a capital letter, for example <em>Text</em>, <em>Radio</em>, <em>Select</em>. You can find a reference list of all field types <a href="../fields-reference">here</a>. </p>
+<p>Note that, as we will find out later, there are other element types available besides fields (for example, layout elements like Fieldset). Internally, a type is specified as its group followed by its type -- for example, <em>Field:Text</em>, <em>Layout:Fieldset</em>. Since fields are the most commonly used sort of element, to save typing it's assumed that if the group isn't specified (e.g. <em>Text</em>, <em>Radio</em>) then it's of the <em>Field:</em> group.</p>
+<p>In this case, we've also specified a <code>label</code> -- which is the text that appears alongside the field -- and also an <code>id</code>, because this allows the label element to be linked to the field (using <code>for="..."</code>). This is good practice for accessibility, and it also means that clicking on the label's text focuses on the linked field.  </p>
+<p>Of course most forms will have more than one field: to do this, you would just have more field definitions in the <code>elements</code> array. See below for an example of this.</p>
+<h4 id="getting-the-html">Getting the HTML</h4>
+<p>Finally, we use the form's <code>Render()</code> method to output the HTML:</p>
+<pre><code class="php">echo( $form-&gt;Render() );
+</code></pre>
+
+<h4 id="setting-the-method">Setting the method</h4>
+<p>You'll notice that while we didn't specify it, the form's method has been set to <code>get</code> by default. You can change this (and should, for a form like this that sends a value that will be saved) by passing a 'method' parameter in the form's definition array:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'method' =&gt; 'post', // That's better
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Your email:',
+                'type' =&gt; 'Email',
+                'name' =&gt; 'email',
+                'id' =&gt; 'email',
+            )
+        )
+    )
+);
+echo( $form-&gt;Render() );
+</code></pre>
+
+<p>gives</p>
+<pre><code class="html">&lt;form method=&quot;post&quot; action=&quot;/newsletter-form.php&quot;&gt;
+    &lt;label for=&quot;email&quot;&gt;Your email:&lt;/label&gt;
+    &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot; tabindex=&quot;1&quot;/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+&lt;/form&gt;
+</code></pre>
+
+<h3 id="adding-more-fields">Adding more fields</h3>
+<p>Adding more fields to our form just means adding more field definitions to our <code>elements</code> array. So let's add a couple more fields to our form:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'method' =&gt; 'post', // That's better
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Your email:',
+                'type' =&gt; 'Email',
+                'name' =&gt; 'email',
+                'id' =&gt; 'email',
+            ),
+            array(
+                'label' =&gt; 'Your name:',
+                'type' =&gt; 'Text',
+                'name' =&gt; 'name',
+                'id' =&gt; 'name',
+            ),
+            array(
+                'label' =&gt; 'Email type:',
+                'type' =&gt; 'Radio',
+                'name' =&gt; 'email_type',
+                'id' =&gt; 'email_type',
+                'options' =&gt; array(
+                    array( 'value' =&gt; 'html', 'text' =&gt; 'HTML' ),
+                    array( 'value' =&gt; 'text', 'text' =&gt; 'Text' )
+                )
+            )
+        )
+    )
+);
+echo( $form-&gt;Render() );
+</code></pre>
+
+<p>...gives this code:</p>
+<pre><code class="html">&lt;form method=&quot;post&quot; action=&quot;/newsletter-form.php&quot;&gt;
+    &lt;label for=&quot;email&quot;&gt;Your email:&lt;/label&gt;
+    &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot;/&gt;
+    &lt;label for=&quot;name&quot;&gt;Your name:&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot;/&gt;
+    &lt;label&gt;Email type:&lt;/label&gt;
+        &lt;input type=&quot;radio&quot; value=&quot;html&quot; id=&quot;email_type-html&quot; name=&quot;email_type&quot;/&gt;
+        &lt;label for=&quot;email_type-html&quot;&gt;HTML&lt;/label&gt;
+        &lt;input type=&quot;radio&quot; value=&quot;text&quot; id=&quot;email_type-text&quot; name=&quot;email_type&quot;/&gt;
+        &lt;label for=&quot;email_type-text&quot;&gt;Text&lt;/label&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+&lt;/form&gt;
+
+</code></pre>
+
+<p>...which looks like this:</p>
+<hr />
+<form method="post" action="/newsletter-form.php"><label for="email">Your email:</label><input type="email" id="email" name="email"/><label for="name">Your name:</label><input type="text" id="name" name="name"/><label>Email type:</label><input type="radio" value="html" id="email_type-html" name="email_type"/><label for="email_type-html">HTML</label><input type="radio" value="text" id="email_type-text" name="email_type"/><label for="email_type-text">Text</label><input type="submit" value="Submit"/></form>
+
+<hr />
+<p>Yes, the formatting is terrible. We'll deal with how to customise your form's layout, later.</p>
+<h2 id="the-hard-way-using-objects">The hard way: using objects</h2>
+<p>There's another way to build a form, and while it's not as convenient as using an array, it does give an insight into what's going on behind the scenes.</p>
+<p>Let's start with the form itself:</p>
+<pre><code class="php">$form = new \ioForm\Form();
+$form-&gt;action = '/newsletter-form.php';
+$form-&gt;method = 'post';
+</code></pre>
+
+<p>Now we create the email field:</p>
+<pre><code class="php">// Create the email field
+$field = new \ioForm\Core\Definition();
+$field-&gt;type = 'Email';
+$field-&gt;name = 'email';
+$field-&gt;label = 'Your email:';
+$field-&gt;id = 'email';
+</code></pre>
+
+<p>...and add the field to the form:</p>
+<pre><code class="php">$form-&gt;AddElement( $field );
+</code></pre>
+
+<p>And finally we render the result:</p>
+<pre><code class="php">$form-&gt;Render();
+</code></pre>
+
+<p>The resulting output is exactly the same as our original array-based example above. In truth, when you define a form using an array, internally it converts that array into <code>Definition</code> objects -- so in fact the two approaches are ultimately achieving the same thing.  </p></div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

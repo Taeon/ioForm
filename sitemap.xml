@@ -4,7 +4,7 @@
     
     <url>
      <loc>https://taeon.github.io/ioForm//</loc>
-     <lastmod>2016-10-03</lastmod>
+     <lastmod>2016-10-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -13,7 +13,13 @@
         
     <url>
      <loc>https://taeon.github.io/ioForm//requirements-installation/</loc>
-     <lastmod>2016-10-03</lastmod>
+     <lastmod>2016-10-11</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://taeon.github.io/ioForm/</loc>
+     <lastmod></lastmod>
      <changefreq>daily</changefreq>
     </url>
         
