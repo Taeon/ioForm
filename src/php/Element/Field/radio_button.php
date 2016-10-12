@@ -2,7 +2,7 @@
 
 namespace ioForm\Element\Field;
 
-class RadioButton extends \ioForm\Element\Field{
+class radio_button extends \ioForm\Element\Field{
 	
 	protected $tag = 'input';
 	public $container_template = 'radio-button';

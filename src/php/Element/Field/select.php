@@ -2,7 +2,7 @@
 
 namespace ioForm\Element\Field;
 
-class Select extends \ioForm\Element\Field{
+class select extends \ioForm\Element\Field{
 	
 	protected $tag = 'select';
 	protected $options = array();

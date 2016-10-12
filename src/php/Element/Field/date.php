@@ -2,9 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class DateTimeLocal extends Text{
+class date extends text{
 	
 	protected $attributes = array(
-		'type' => 'datetime-local'
-	);	
+		'type' => 'date'
+	);
+	
 }

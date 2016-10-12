@@ -2,7 +2,7 @@
 
 namespace ioForm\Element\Field;
 
-class Radio extends \ioForm\Element\Field{
+class radio extends \ioForm\Element\Field{
 	
 	protected $tag = false;
 	protected $options = array();
@@ -13,7 +13,7 @@ class Radio extends \ioForm\Element\Field{
 		$this->options = array();
 		foreach( $element_definition->options as $option ){
 			$definition = new \ioform\Core\Definition();
-			$definition->type = 'RadioButton';
+			$definition->type = 'radio_button';
 			$definition->name = $this->GetAttribute( 'name' );
 			$definition->id = $this->GetAttribute( 'name' ) . '-' . $option[ 'value' ];
 			$definition->value = $option[ 'value' ];

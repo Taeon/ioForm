@@ -24,7 +24,7 @@ $form = (new \ioForm\Form())
         'elements' => array(
 			array(
 				'label' => 'Your email:',
-				'type' => 'Email',
+				'type' => 'email',
 				'name' => 'email',
 				'id' => 'email',
 			)
@@ -81,15 +81,15 @@ Now we come to the field definition:
 ```php
 array(
 	'label' => 'Your email:',
-	'type' => 'Email',
+	'type' => 'email',
 	'name' => 'email',
 	'id' => 'email',
 )
 ```
 
-Each element's definition is an array of key/value pairs. At minimum for a form field, you'll need specify the `type` (i.e. what type of field is it?) and `name`. Field types always start with a capital letter, for example *Text*, *Radio*, *Select*. You can find a reference list of all field types [here](./fields-reference). 
+Each element's definition is an array of key/value pairs. At minimum for a form field, you'll need specify the `type` (i.e. what type of field is it?) and `name`. In most cases, field types correspond either to their input type (e.g. *text*, *password*, *email*) or their HTML tag (e.g. *select*). You can find a reference list of all field types [here](./fields-reference). 
 
-Note that, as we will find out later, there are other element types available besides fields (for example, layout elements like Fieldset). Internally, a type is specified as its group followed by its type -- for example, *Field:Text*, *Layout:Fieldset*. Since fields are the most commonly used sort of element, to save typing it's assumed that if the group isn't specified (e.g. *Text*, *Radio*) then it's of the *Field:* group.
+Note that, as we will find out later, there are other element types available besides fields (for example, layout elements like `fieldset`). 
 
 In this case, we've also specified a `label` -- which is the text that appears alongside the field -- and also an `id`, because this allows the label element to be linked to the field (using `for="..."`). This is good practice for accessibility, and it also means that clicking on the label's text focuses on the linked field.  
 
@@ -115,7 +115,7 @@ $form = (new \ioForm\Form())
         'elements' => array(
 			array(
 				'label' => 'Your email:',
-				'type' => 'Email',
+				'type' => 'email',
 				'name' => 'email',
 				'id' => 'email',
 			)
@@ -147,19 +147,19 @@ $form = (new \ioForm\Form())
         'elements' => array(
 			array(
 				'label' => 'Your email:',
-				'type' => 'Email',
+				'type' => 'email',
 				'name' => 'email',
 				'id' => 'email',
 			),
 			array(
 				'label' => 'Your name:',
-				'type' => 'Text',
+				'type' => 'text',
 				'name' => 'name',
 				'id' => 'name',
 			),
 			array(
 				'label' => 'Email type:',
-				'type' => 'Radio',
+				'type' => 'radio',
 				'name' => 'email_type',
 				'id' => 'email_type',
 				'options' => array(
@@ -216,7 +216,7 @@ Now we create the email field:
 ```php
 // Create the email field
 $field = new \ioForm\Core\Definition();
-$field->type = 'Email';
+$field->type = 'email';
 $field->name = 'email';
 $field->label = 'Your email:';
 $field->id = 'email';

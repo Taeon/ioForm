@@ -31,7 +31,7 @@ class Form extends \ioForm\Core\Definition{
 			$buttons = array();
 			foreach( $this->buttons as $button ){
 				$definition = new \ioForm\Core\Definition();
-				$definition->type = 'Button';
+				$definition->type = 'button';
 				$definition->button_type = $button[ 'type' ];
 				if( isset( $button[ 'value' ] ) ){
 					$definition->value = $button[ 'value' ];
@@ -45,7 +45,7 @@ class Form extends \ioForm\Core\Definition{
 		if( $this->auto_tabindex ){
 			$index = $this->tabindex_start;
 			foreach( $this->fields as $field ){
-				if( $field->type != 'Radio' ){
+				if( $field->type != 'radio' ){
 					$field->tabindex = $index;
 					$index++;
 				} else {

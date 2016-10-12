@@ -2,10 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Week extends Text{
+class month extends text{
 	
 	protected $attributes = array(
-		'type' => 'week'
+		'type' => 'month'
 	);	
 	
 }

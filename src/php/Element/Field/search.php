@@ -2,10 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Month extends Text{
+class search extends text{
 	
 	protected $attributes = array(
-		'type' => 'month'
+		'type' => 'search'
 	);	
 	
 }

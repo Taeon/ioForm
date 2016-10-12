@@ -2,10 +2,11 @@
 
 namespace ioForm\Element\Field;
 
-class URL extends Text{
+class range extends text{
 	
 	protected $attributes = array(
-		'type' => 'url'
+		'type' => 'range'
 	);	
+
 	
 }

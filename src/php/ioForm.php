@@ -13,27 +13,31 @@ class ioForm{
 	 */
 	public static function CreateElement( \ioForm\Core\Definition $element_definition ){
 		$element = false;
-		if( strpos( $element_definition->type, ':' ) !== false ){
-			list( $element_class, $element_type ) = explode( ':', $element_definition->type );
-			switch( $element_class ){
-				case 'Layout':{
-					if( in_array( $element_type, array( 'Fieldset' ) ) ){
-						$element_class = '\\ioForm\\Element\\' . $element_class . '\\' . $element_type;
-					} else {
-						$element_definition->tag = strtolower( $element_type );
-						$element = new \ioForm\Element\Core\BaseElement( $element_definition );
-					}
-					break;
+		list( $element_class, $element_type ) = explode( ':', $element_definition->type . ':' );
+		$element_type = str_replace( '-', '_', $element_type );
+		switch( strtolower( $element_class ) ){
+			case 'layout':{
+				if( in_array( $element_type, array( 'fieldset' ) ) ){
+					$element_class = '\\ioForm\\Element\\Layout\\' . strtolower( $element_type );
+				} else {
+					$element_definition->tag = strtolower( $element_type );
+					$element = new \ioForm\Element\Core\BaseElement( $element_definition );
 				}
-				default:{
-					$element_class = '\\ioForm\\Element\\' . $element_class . '\\' . $element_type;
-					break;
-				}
+				break;
 			}
-		} elseif( $element_definition->type == 'Form' ) {
-			$element_class = '\\ioForm\\Element\\Form';
-		} else {
-			$element_class = '\\ioForm\\Element\\Field\\' . $element_definition->type;
+			case 'form':{
+				$element_class = '\\ioForm\\Element\\Form';
+				break;
+			}
+			default:{
+				// Is it a field?
+				if( $element_type == ''){
+					$element_class = '\\ioForm\\Element\\Field\\' . $element_definition->type;					
+				} else {
+					$element_class = '\\ioForm\\Element\\' . $element_class . '\\' . $element_type;
+				}
+				break;
+			}
 		}
 		
 		if( !$element ){

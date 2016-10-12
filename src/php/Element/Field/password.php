@@ -2,10 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Search extends Text{
+class password extends text{
 	
 	protected $attributes = array(
-		'type' => 'search'
+		'type' => 'password'
 	);	
 	
 }

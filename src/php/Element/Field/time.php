@@ -2,10 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Password extends Text{
+class time extends text{
 	
 	protected $attributes = array(
-		'type' => 'password'
+		'type' => 'time'
 	);	
 	
 }

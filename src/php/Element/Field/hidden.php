@@ -2,7 +2,7 @@
 
 namespace ioForm\Element\Field;
 
-class Hidden extends Text{
+class hidden extends text{
 	
 	public $container_template = false;
 	

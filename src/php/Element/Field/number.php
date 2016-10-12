@@ -5,7 +5,7 @@ namespace ioForm\Element\Field;
 /**
  * Number field
  */
-class Number extends Text{
+class number extends text{
 	
 	protected $attributes = array(
 		'type' => 'number',

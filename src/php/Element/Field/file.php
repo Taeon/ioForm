@@ -2,10 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Date extends Text{
+class file extends text{
 	
 	protected $attributes = array(
-		'type' => 'date'
-	);
+		'type' => 'file'
+	);	
 	
 }

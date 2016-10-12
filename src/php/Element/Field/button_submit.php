@@ -2,10 +2,11 @@
 
 namespace ioForm\Element\Field;
 
-class Email extends Text{
+class button_submit extends Button{
 	
 	protected $attributes = array(
-		'type' => 'email'
+		'type' => 'submit',
+		'value' => 'Submit'
 	);	
 	
 }

@@ -2,14 +2,14 @@
 
 Below is a list of all field types supported by ioForm. For convenience, example definitions are given as arrays.
 
-## Text
+## text
 
 A text input field.
 
 Example:
 ```php
 array(
-	'type' => 'Text',
+	'type' => 'text',
 	'name' => 'my_text',
 	'label' => 'My text',
 	'id' => 'field_my_text',
@@ -27,14 +27,14 @@ Result:
 
 ----------
 
-## Checkbox
+## checkbox
 
 A checkbox field.
 
 Example:
 ```php
 array(
-	'type' => 'Checkbox',
+	'type' => 'checkbox',
 	'name' => 'my_checkbox',
 	'label' => 'My checkbox',
 	'id' => 'field_my_checkbox',
@@ -53,14 +53,14 @@ Result:
 ----------
 
 
-## Radio
+## radio
 
 A set of radio buttons. Options are specified as an array, `options`, with each option represented as an array with `value` and `text` fields.
 
 Example:
 ```php
 array(
-	'type' => 'Radio',
+	'type' => 'radio',
 	'name' => 'my_radio_buttons',
 	'label' => 'My radio buttons',
 	'options' => array(
@@ -89,7 +89,7 @@ Result:
 ----------
 
 
-## Select
+## select
 
 A select field (drop-down). As with radio fields options are specified as an array, `options`, with each option represented as an array with `value` and `text` fields.
 
@@ -97,7 +97,7 @@ A select field (drop-down). As with radio fields options are specified as an arr
 Example:
 ```php
 array(
-	'type' => 'Select',
+	'type' => 'select',
 	'name' => 'my_select_field',
 	'label' => 'My select',
 	'options' => array(
@@ -124,14 +124,14 @@ Result:
 
 ----------
 
-## SelectMultiple
+## select_multiple
 
-A multiple select field. See the Select field type.
+A multiple select field. See the `select` field type.
 
 Example:
 ```php
 array(
-	'type' => 'SelectMultiple',
+	'type' => 'select_multiple',
 	'name' => 'my_select_field',
 	'label' => 'My select',
 	'options' => array(
@@ -158,14 +158,14 @@ Result:
 
 ----------
 
-## File
+## file
 
 A file upload field. Note that if your form includes a file element, ioForm will automatically set the form's `method` to *post* and its `enctype` to *multipart/form-data*.  
 
 Example:
 ```php
 array(
-	'type' => 'File',
+	'type' => 'file',
 	'name' => 'my_file_field',
 	'label' => 'My file upload field'
 )
@@ -184,14 +184,14 @@ Result:
 
 These are elements implemented in HTML5 only. Note that if you're intending to support older browsers (e.g. IE9) then you'll need to either avoid using these elements, or find a suitable polyfill.
 
-## Email
+## email
 
 An email input field. HTML5 only. Will automatically validate input unless `novalidate` is specified.
 
 Example:
 ```php
 array(
-	'type' => 'Email',
+	'type' => 'email',
 	'name' => 'your_email',
 	'label' => 'Enter your email',
 	'id' => 'field_email',

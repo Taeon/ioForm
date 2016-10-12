@@ -2,11 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class ButtonSubmit extends Button{
+class telephone extends text{
 	
 	protected $attributes = array(
-		'type' => 'submit',
-		'value' => 'Submit'
+		'type' => 'tel'
 	);	
 	
 }

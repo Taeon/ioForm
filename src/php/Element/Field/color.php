@@ -2,11 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Range extends Text{
+class color extends text{
 	
 	protected $attributes = array(
-		'type' => 'range'
-	);	
-
+		'type' => 'color'
+	);
 	
 }

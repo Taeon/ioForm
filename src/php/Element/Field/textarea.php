@@ -2,7 +2,7 @@
 
 namespace ioForm\Element\Field;
 
-class Textarea extends \ioForm\Element\Field{
+class textarea extends \ioForm\Element\Field{
 	protected $tag = 'textarea';
 	
 	protected $attributes = array(

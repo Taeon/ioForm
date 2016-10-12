@@ -2,10 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Color extends Text{
+class email extends text{
 	
 	protected $attributes = array(
-		'type' => 'color'
-	);
+		'type' => 'email'
+	);	
 	
 }

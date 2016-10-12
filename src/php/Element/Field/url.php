@@ -2,10 +2,10 @@
 
 namespace ioForm\Element\Field;
 
-class Telephone extends Text{
+class url extends text{
 	
 	protected $attributes = array(
-		'type' => 'tel'
+		'type' => 'url'
 	);	
 	
 }

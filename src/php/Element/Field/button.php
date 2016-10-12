@@ -2,7 +2,7 @@
 
 namespace ioForm\Element\Field;
 
-class Button extends \ioForm\Element\Field{
+class button extends \ioForm\Element\Field{
 	
 	protected $tag = 'input';
 	protected $button_type = 'submit';
