@@ -173,22 +173,22 @@
     
         <li class="main active"><a href="#field-types-reference">Field types reference</a></li>
         
-            <li><a href="#text">Text</a></li>
+            <li><a href="#text">text</a></li>
         
-            <li><a href="#checkbox">Checkbox</a></li>
+            <li><a href="#checkbox">checkbox</a></li>
         
-            <li><a href="#radio">Radio</a></li>
+            <li><a href="#radio">radio</a></li>
         
-            <li><a href="#select">Select</a></li>
+            <li><a href="#select">select</a></li>
         
-            <li><a href="#selectmultiple">SelectMultiple</a></li>
+            <li><a href="#select_multiple">select_multiple</a></li>
         
-            <li><a href="#file">File</a></li>
+            <li><a href="#file">file</a></li>
         
     
         <li class="main "><a href="#html5-elements">HTML5 elements</a></li>
         
-            <li><a href="#email">Email</a></li>
+            <li><a href="#email">email</a></li>
         
     
     </ul>
@@ -197,11 +197,11 @@
 
 <h1 id="field-types-reference">Field types reference</h1>
 <p>Below is a list of all field types supported by ioForm. For convenience, example definitions are given as arrays.</p>
-<h2 id="text">Text</h2>
+<h2 id="text">text</h2>
 <p>A text input field.</p>
 <p>Example:</p>
 <pre><code class="php">array(
-    'type' =&gt; 'Text',
+    'type' =&gt; 'text',
     'name' =&gt; 'my_text',
     'label' =&gt; 'My text',
     'id' =&gt; 'field_my_text',
@@ -215,11 +215,11 @@
 <hr />
 <p><label for="my_text">My text:</label><input type="text" id="my_text" name="my_text"/></p>
 <hr />
-<h2 id="checkbox">Checkbox</h2>
+<h2 id="checkbox">checkbox</h2>
 <p>A checkbox field.</p>
 <p>Example:</p>
 <pre><code class="php">array(
-    'type' =&gt; 'Checkbox',
+    'type' =&gt; 'checkbox',
     'name' =&gt; 'my_checkbox',
     'label' =&gt; 'My checkbox',
     'id' =&gt; 'field_my_checkbox',
@@ -233,11 +233,11 @@
 <hr />
 <p><label for="field_my_checkbox">My checkbox</label><input type="checkbox" id="field_my_checkbox" name="my_checkbox"/></p>
 <hr />
-<h2 id="radio">Radio</h2>
+<h2 id="radio">radio</h2>
 <p>A set of radio buttons. Options are specified as an array, <code>options</code>, with each option represented as an array with <code>value</code> and <code>text</code> fields.</p>
 <p>Example:</p>
 <pre><code class="php">array(
-    'type' =&gt; 'Radio',
+    'type' =&gt; 'radio',
     'name' =&gt; 'my_radio_buttons',
     'label' =&gt; 'My radio buttons',
     'options' =&gt; array(
@@ -261,11 +261,11 @@
 <hr />
 <p><label>My radio buttons</label><input type="radio" value="1" id="my_radio_buttons-1" name="my_radio_buttons" tabindex="3"/><label for="my_radio_buttons-1">First</label><input type="radio" value="2" id="my_radio_buttons-2" name="my_radio_buttons" tabindex="4"/><label for="my_radio_buttons-2">Second</label><input type="radio" value="3" id="my_radio_buttons-3" name="my_radio_buttons" tabindex="5"/><label for="my_radio_buttons-3">Third</label></p>
 <hr />
-<h2 id="select">Select</h2>
+<h2 id="select">select</h2>
 <p>A select field (drop-down). As with radio fields options are specified as an array, <code>options</code>, with each option represented as an array with <code>value</code> and <code>text</code> fields.</p>
 <p>Example:</p>
 <pre><code class="php">array(
-    'type' =&gt; 'Select',
+    'type' =&gt; 'select',
     'name' =&gt; 'my_select_field',
     'label' =&gt; 'My select',
     'options' =&gt; array(
@@ -288,11 +288,11 @@
 <hr />
 <p><label for="my_select_field">My select</label><select name="my_select_field" id="my_select_field"><option value="1">First</option><option value="2">Second</option><option value="3">Third</option></select></p>
 <hr />
-<h2 id="selectmultiple">SelectMultiple</h2>
-<p>A multiple select field. See the Select field type.</p>
+<h2 id="select_multiple">select_multiple</h2>
+<p>A multiple select field. See the <code>select</code> field type.</p>
 <p>Example:</p>
 <pre><code class="php">array(
-    'type' =&gt; 'SelectMultiple',
+    'type' =&gt; 'select_multiple',
     'name' =&gt; 'my_select_field',
     'label' =&gt; 'My select',
     'options' =&gt; array(
@@ -315,11 +315,11 @@
 <hr />
 <p><label for="my_select_field">My multiple select</label><select multiple="multiple" id="my_select_field" name="my_select_field"><option value="1">First</option><option value="2">Second</option><option value="3">Third</option></select></p>
 <hr />
-<h2 id="file">File</h2>
+<h2 id="file">file</h2>
 <p>A file upload field. Note that if your form includes a file element, ioForm will automatically set the form's <code>method</code> to <em>post</em> and its <code>enctype</code> to <em>multipart/form-data</em>.  </p>
 <p>Example:</p>
 <pre><code class="php">array(
-    'type' =&gt; 'File',
+    'type' =&gt; 'file',
     'name' =&gt; 'my_file_field',
     'label' =&gt; 'My file upload field'
 )
@@ -335,11 +335,11 @@
 <hr />
 <h1 id="html5-elements">HTML5 elements</h1>
 <p>These are elements implemented in HTML5 only. Note that if you're intending to support older browsers (e.g. IE9) then you'll need to either avoid using these elements, or find a suitable polyfill.</p>
-<h2 id="email">Email</h2>
+<h2 id="email">email</h2>
 <p>An email input field. HTML5 only. Will automatically validate input unless <code>novalidate</code> is specified.</p>
 <p>Example:</p>
 <pre><code class="php">array(
-    'type' =&gt; 'Email',
+    'type' =&gt; 'email',
     'name' =&gt; 'your_email',
     'label' =&gt; 'Enter your email',
     'id' =&gt; 'field_email',

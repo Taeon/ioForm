@@ -187,8 +187,8 @@
 <p>ioForm gives you complete control of the layout of your form, through a combination of simple but flexible templates and the use of structural elements.</p>
 <h2 id="structural-elements">Structural elements</h2>
 <p>So far, we've only added field elements to our form. But there's nothing stopping you from creating a more complex layout, through the use of structural elements.</p>
-<p>While you can use pretty much any markup you like within a form, if you're looking to follow best practice then in most cases, to break up a form you would use the <code>&lt;fieldset&gt;</code> element. You might remember from when it was briefly mentioned before, all elements are represented internally by their group and their type. So a text field's type is represented as <em>Field:Text</em>, for example, but you don't need to enter the group part ('Field:') because ioForm assumes that when the group part is missing, it's a field. </p>
-<p>In the case of layout elements, you have to specify the group. So for a fieldset, you need to enter <em>'Layout:Fieldset'</em>.  </p>
+<p>While you can use pretty much any markup you like within a form, if you're looking to follow best practice then in most cases, to break up a form you would use the <code>&lt;fieldset&gt;</code> element. In the case of layout elements, you just have to tell ioForm that it's a layout type of element, rather than a field. </p>
+<p>So for a fieldset, you need to enter <em>'layout:fieldset'</em>.  </p>
 <p>Just like the main <code>&lt;form&gt;</code> itself, a fieldset can accept a list of elements.</p>
 <pre><code class="php">$form = (new \ioForm\Form())
 -&gt;FromArray(
@@ -197,29 +197,30 @@
         'method' =&gt; 'post',
         'elements' =&gt; array(
             array(
-                'type' =&gt; 'Layout:Fieldset', // Instead of a 'Field', this is a 'Layout' element
+                'type' =&gt; 'layout:fieldset', // Instead of a 'field', this is a 'layout' element
                 'legend' =&gt; 'Details', // The title of our fieldset
                 'elements' =&gt; array(
                     array(
                         'label' =&gt; 'Your email:',
-                        'type' =&gt; 'Email',
+                        'type' =&gt; 'email',
                         'name' =&gt; 'email',
                         'id' =&gt; 'email',
                     ),
                     array(
                         'label' =&gt; 'Your name:',
-                        'type' =&gt; 'Text',
+                        'type' =&gt; 'text',
                         'name' =&gt; 'name',
                         'id' =&gt; 'name',
                     )
                 )
             ),
             array(
-                'type' =&gt; 'Layout:Fieldset',
+                'type' =&gt; 'layout:div',
+                'legend' =&gt; 'Options',
                 'elements' =&gt; array(
                     array(
                         'label' =&gt; 'Email type:',
-                        'type' =&gt; 'Radio',
+                        'type' =&gt; 'radio',
                         'name' =&gt; 'email_type',
                         'id' =&gt; 'email_type',
                         'options' =&gt; array(
@@ -229,15 +230,12 @@
                     ),
                     array(
                         'label' =&gt; 'I agree to the terms and conditions:',
-                        'type' =&gt; 'Checkbox',
+                        'type' =&gt; 'checkbox',
                         'name' =&gt; 'agree_terms',
                         'id' =&gt; 'agree_terms'
                     )                                   
                 )
             )
-        ),
-        'templates' =&gt; array(
-            'default' =&gt; '&lt;div class=&quot;form-row&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;' 
         )
     )
 );
@@ -246,38 +244,103 @@
 <pre><code class="html">&lt;form method=&quot;post&quot; action=&quot;/newsletter-form.php&quot;&gt;
     &lt;fieldset&gt;
         &lt;legend&gt;Details&lt;/legend&gt;
-        &lt;div class=&quot;form-row&quot;&gt;
-            &lt;label for=&quot;email&quot;&gt;Your email:&lt;/label&gt;
-            &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot;/&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;form-row&quot;&gt;
-            &lt;label for=&quot;name&quot;&gt;Your name:&lt;/label&gt;
-            &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot;/&gt;
-        &lt;/div&gt;
+        &lt;label for=&quot;email&quot;&gt;Your email:&lt;/label&gt;
+        &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot;/&gt;
+        &lt;label for=&quot;name&quot;&gt;Your name:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot;/&gt;
     &lt;/fieldset&gt;
     &lt;fieldset&gt;
-        &lt;div class=&quot;form-row&quot;&gt;
-            &lt;label&gt;Email type:&lt;/label&gt;
-            &lt;input type=&quot;radio&quot; value=&quot;html&quot; id=&quot;email_type-html&quot; name=&quot;email_type&quot;/&gt;
-            &lt;label for=&quot;email_type-html&quot;&gt;HTML&lt;/label&gt;
-            &lt;input type=&quot;radio&quot; value=&quot;text&quot; id=&quot;email_type-text&quot; name=&quot;email_type&quot;/&gt;
-            &lt;label for=&quot;email_type-text&quot;&gt;Text&lt;/label&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;form-row&quot;&gt;
-            &lt;label for=&quot;agree_terms&quot;&gt;I agree to the terms and conditions:&lt;/label&gt;
-            &lt;input type=&quot;checkbox&quot; id=&quot;agree_terms&quot; name=&quot;agree_terms&quot;/&gt;
-        &lt;/div&gt;
+        &lt;legend&gt;Details&lt;/legend&gt;
+        &lt;label&gt;Email type:&lt;/label&gt;
+        &lt;input type=&quot;radio&quot; value=&quot;html&quot; id=&quot;email_type-html&quot; name=&quot;email_type&quot;/&gt;
+        &lt;label for=&quot;email_type-html&quot;&gt;HTML&lt;/label&gt;
+        &lt;input type=&quot;radio&quot; value=&quot;text&quot; id=&quot;email_type-text&quot; name=&quot;email_type&quot;/&gt;
+        &lt;label for=&quot;email_type-text&quot;&gt;Text&lt;/label&gt;
+        &lt;label for=&quot;agree_terms&quot;&gt;I agree to the terms and conditions:&lt;/label&gt;
+        &lt;input type=&quot;checkbox&quot; id=&quot;agree_terms&quot; name=&quot;agree_terms&quot;/&gt;
     &lt;/fieldset&gt;
     &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
 &lt;/form&gt; 
 </code></pre>
 
 <hr />
-<form method="post" action="/newsletter-form.php"><fieldset><legend>Details</legend><div class="form-row"><label for="email">Your email:</label><input type="email" id="email" name="email"/></div><div class="form-row"><label for="name">Your name:</label><input type="text" id="name" name="name"/></div></fieldset><fieldset><div class="form-row"><label>Email type:</label><input type="radio" value="html" id="email_type-html" name="email_type"/><label for="email_type-html">HTML</label><input type="radio" value="text" id="email_type-text" name="email_type"/><label for="email_type-text">Text</label></div><div class="form-row"><label for="agree_terms">I agree to the terms and conditions:</label><input type="checkbox" id="agree_terms" name="agree_terms"/></div></fieldset><input type="submit" value="Submit"/></form>
-
+<p><form method="post" action="/newsletter-form.php">
+    <fieldset>
+        <legend>Details</legend>
+        <label for="email">Your email:</label>
+        <input type="email" id="email" name="email"/>
+        <label for="name">Your name:</label>
+        <input type="text" id="name" name="name"/>
+    </fieldset>
+    <fieldset>
+        <legend>Options</legend>
+        <label>Email type:</label>
+        <input type="radio" value="html" id="email_type-html" name="email_type"/>
+        <label for="email_type-html">HTML</label>
+        <input type="radio" value="text" id="email_type-text" name="email_type"/>
+        <label for="email_type-text">Text</label>
+        <label for="agree_terms">I agree to the terms and conditions:</label>
+        <input type="checkbox" id="agree_terms" name="agree_terms"/>
+    </fieldset>
+    <input type="submit" value="Submit"/>
+</form> </p>
 <hr />
 <p>Note that the <code>&lt;fieldset&gt;</code> can have a title, which is rendered as a <code>&lt;legend&gt;</code> element. Although in this definiton we've used <code>'legend'</code>, for simplicity/consistency you may also use <code>'label'</code> -- it will still render a <code>&lt;legend&gt;</code> tag.</p>
-<p>Of course <code>Fieldset</code> isn't always going to be appropriate, but that's OK because you can pass any HTML element type and it will render accordingly. So for example, you could just as easily specify <code>'Layout:Div'</code> or <code>'Layout:Section'</code> or whatever you need.</p>
+<p>Of course <code>fieldset</code> isn't always going to be appropriate, but that's OK because you can pass any HTML element type and it will render accordingly. So for example, you could just as easily specify <code>'layout:div'</code> or <code>'layout:section'</code> or whatever you need. ioForm doesn't validate this: if you entered <code>'layout:made_up_element'</code> it would render as</p>
+<pre><code class="html">&lt;made_up_element&gt;...&lt;/made_up_element&gt;
+</code></pre>
+
+<p>And of course, you can nest as deep as you like. So you might have:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'method' =&gt; 'post',
+        'elements' =&gt; array(
+            array(
+                'type' =&gt; 'layout:fieldset',
+                'legend' =&gt; 'Details',
+                'elements' =&gt; array(
+                    array(
+                        'label' =&gt; 'Your email:',
+                        'type' =&gt; 'email',
+                        'name' =&gt; 'email',
+                        'id' =&gt; 'email',
+                    ),
+                    array(
+                        'label' =&gt; 'Your name:',
+                        'type' =&gt; 'text',
+                        'name' =&gt; 'name',
+                        'id' =&gt; 'name',
+                    ),
+                    array(
+                        'type' =&gt; 'layout:fieldset',
+                        'elements' =&gt; array(
+                            array(
+                                'label' =&gt; 'Email type:',
+                                'type' =&gt; 'radio',
+                                'name' =&gt; 'email_type',
+                                'id' =&gt; 'email_type',
+                                'options' =&gt; array(
+                                    array( 'value' =&gt; 'html', 'text' =&gt; 'HTML' ),
+                                    array( 'value' =&gt; 'text', 'text' =&gt; 'Text' )
+                                )
+                            ),
+                            array(
+                                'label' =&gt; 'I agree to the terms and conditions:',
+                                'type' =&gt; 'checkbox',
+                                'name' =&gt; 'agree_terms',
+                                'id' =&gt; 'agree_terms'
+                            )                                   
+                        )
+                    )
+                )
+            )
+        )
+    )
+);
+</code></pre>
+
 <h2 id="templates">Templates</h2>
 <p>Structural elements are all very well, but if you're looking to add consistent markup to lots of fields, it would quickly become very laborious indeed. Luckily, ioForm offers a template system that makes it very easy to wrap custom markup around field elements. </p>
 <p>It's might not be obvious from the example code you've seen so far, but when it renders a form ioForm automatically wraps each field element in a 'container template'. The default container template looks like this:</p>
@@ -295,19 +358,19 @@
         'elements' =&gt; array(
             array(
                 'label' =&gt; 'Your email:',
-                'type' =&gt; 'Email',
+                'type' =&gt; 'email',
                 'name' =&gt; 'email',
                 'id' =&gt; 'email',
             ),
             array(
                 'label' =&gt; 'Your name:',
-                'type' =&gt; 'Text',
+                'type' =&gt; 'text',
                 'name' =&gt; 'name',
                 'id' =&gt; 'name',
             ),
             array(
                 'label' =&gt; 'Email type:',
-                'type' =&gt; 'Radio',
+                'type' =&gt; 'radio',
                 'name' =&gt; 'email_type',
                 'id' =&gt; 'email_type',
                 'options' =&gt; array(
@@ -360,13 +423,13 @@
         'elements' =&gt; array(
             array(
                 'label' =&gt; 'Enter product name:',
-                'type' =&gt; 'Text',
+                'type' =&gt; 'text',
                 'name' =&gt; 'name',
                 'id' =&gt; 'name',
             ),
             array(
                 'label' =&gt; 'Enter price:',
-                'type' =&gt; 'Number',
+                'type' =&gt; 'number',
                 'name' =&gt; 'price',
                 'id' =&gt; 'price',
                 'container_template' =&gt; 'price' // Use the new 'price' template for this field

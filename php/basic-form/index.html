@@ -201,7 +201,7 @@
         'elements' =&gt; array(
             array(
                 'label' =&gt; 'Your email:',
-                'type' =&gt; 'Email',
+                'type' =&gt; 'email',
                 'name' =&gt; 'email',
                 'id' =&gt; 'email',
             )
@@ -245,14 +245,14 @@ echo( $form-&gt;Render() );
 <p>Now we come to the field definition:</p>
 <pre><code class="php">array(
     'label' =&gt; 'Your email:',
-    'type' =&gt; 'Email',
+    'type' =&gt; 'email',
     'name' =&gt; 'email',
     'id' =&gt; 'email',
 )
 </code></pre>
 
-<p>Each element's definition is an array of key/value pairs. At minimum for a form field, you'll need specify the <code>type</code> (i.e. what type of field is it?) and <code>name</code>. Field types always start with a capital letter, for example <em>Text</em>, <em>Radio</em>, <em>Select</em>. You can find a reference list of all field types <a href="../fields-reference">here</a>. </p>
-<p>Note that, as we will find out later, there are other element types available besides fields (for example, layout elements like Fieldset). Internally, a type is specified as its group followed by its type -- for example, <em>Field:Text</em>, <em>Layout:Fieldset</em>. Since fields are the most commonly used sort of element, to save typing it's assumed that if the group isn't specified (e.g. <em>Text</em>, <em>Radio</em>) then it's of the <em>Field:</em> group.</p>
+<p>Each element's definition is an array of key/value pairs. At minimum for a form field, you'll need specify the <code>type</code> (i.e. what type of field is it?) and <code>name</code>. In most cases, field types correspond either to their input type (e.g. <em>text</em>, <em>password</em>, <em>email</em>) or their HTML tag (e.g. <em>select</em>). You can find a reference list of all field types <a href="../fields-reference">here</a>. </p>
+<p>Note that, as we will find out later, there are other element types available besides fields (for example, layout elements like <code>fieldset</code>). </p>
 <p>In this case, we've also specified a <code>label</code> -- which is the text that appears alongside the field -- and also an <code>id</code>, because this allows the label element to be linked to the field (using <code>for="..."</code>). This is good practice for accessibility, and it also means that clicking on the label's text focuses on the linked field.  </p>
 <p>Of course most forms will have more than one field: to do this, you would just have more field definitions in the <code>elements</code> array. See below for an example of this.</p>
 <h4 id="getting-the-html">Getting the HTML</h4>
@@ -270,7 +270,7 @@ echo( $form-&gt;Render() );
         'elements' =&gt; array(
             array(
                 'label' =&gt; 'Your email:',
-                'type' =&gt; 'Email',
+                'type' =&gt; 'email',
                 'name' =&gt; 'email',
                 'id' =&gt; 'email',
             )
@@ -298,19 +298,19 @@ echo( $form-&gt;Render() );
         'elements' =&gt; array(
             array(
                 'label' =&gt; 'Your email:',
-                'type' =&gt; 'Email',
+                'type' =&gt; 'email',
                 'name' =&gt; 'email',
                 'id' =&gt; 'email',
             ),
             array(
                 'label' =&gt; 'Your name:',
-                'type' =&gt; 'Text',
+                'type' =&gt; 'text',
                 'name' =&gt; 'name',
                 'id' =&gt; 'name',
             ),
             array(
                 'label' =&gt; 'Email type:',
-                'type' =&gt; 'Radio',
+                'type' =&gt; 'radio',
                 'name' =&gt; 'email_type',
                 'id' =&gt; 'email_type',
                 'options' =&gt; array(
@@ -357,7 +357,7 @@ $form-&gt;method = 'post';
 <p>Now we create the email field:</p>
 <pre><code class="php">// Create the email field
 $field = new \ioForm\Core\Definition();
-$field-&gt;type = 'Email';
+$field-&gt;type = 'email';
 $field-&gt;name = 'email';
 $field-&gt;label = 'Your email:';
 $field-&gt;id = 'email';
