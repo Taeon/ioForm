@@ -81,8 +81,20 @@
 
         
             
+<li >
+    <a href="../attributes/">ID, classes, data and other attributes</a>
+</li>
+
+        
+            
 <li class="active">
     <a href="./">Customising form layout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../manipulating_form/">Maniuplating form structure</a>
 </li>
 
         
@@ -116,12 +128,6 @@
 </li>
 
         
-            
-<li >
-    <a href="../manipulating_form/">=Maniuplating form</a>
-</li>
-
-        
     </ul>
   </li>
 
@@ -141,12 +147,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../basic-form/">
+                        <a rel="next" href="../attributes/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../form-options/">
+                        <a rel="prev" href="../manipulating_form/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -241,50 +247,10 @@
 );
 </code></pre>
 
-<pre><code class="html">&lt;form method=&quot;post&quot; action=&quot;/newsletter-form.php&quot;&gt;
-    &lt;fieldset&gt;
-        &lt;legend&gt;Details&lt;/legend&gt;
-        &lt;label for=&quot;email&quot;&gt;Your email:&lt;/label&gt;
-        &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot;/&gt;
-        &lt;label for=&quot;name&quot;&gt;Your name:&lt;/label&gt;
-        &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot;/&gt;
-    &lt;/fieldset&gt;
-    &lt;fieldset&gt;
-        &lt;legend&gt;Details&lt;/legend&gt;
-        &lt;label&gt;Email type:&lt;/label&gt;
-        &lt;input type=&quot;radio&quot; value=&quot;html&quot; id=&quot;email_type-html&quot; name=&quot;email_type&quot;/&gt;
-        &lt;label for=&quot;email_type-html&quot;&gt;HTML&lt;/label&gt;
-        &lt;input type=&quot;radio&quot; value=&quot;text&quot; id=&quot;email_type-text&quot; name=&quot;email_type&quot;/&gt;
-        &lt;label for=&quot;email_type-text&quot;&gt;Text&lt;/label&gt;
-        &lt;label for=&quot;agree_terms&quot;&gt;I agree to the terms and conditions:&lt;/label&gt;
-        &lt;input type=&quot;checkbox&quot; id=&quot;agree_terms&quot; name=&quot;agree_terms&quot;/&gt;
-    &lt;/fieldset&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
-&lt;/form&gt; 
-</code></pre>
+<p data-height="265" data-theme-id="dark" data-slug-hash="JRBQBR" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/JRBQBR/">ioForm: Customising form layout - structural elements</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<hr />
-<p><form method="post" action="/newsletter-form.php">
-    <fieldset>
-        <legend>Details</legend>
-        <label for="email">Your email:</label>
-        <input type="email" id="email" name="email"/>
-        <label for="name">Your name:</label>
-        <input type="text" id="name" name="name"/>
-    </fieldset>
-    <fieldset>
-        <legend>Options</legend>
-        <label>Email type:</label>
-        <input type="radio" value="html" id="email_type-html" name="email_type"/>
-        <label for="email_type-html">HTML</label>
-        <input type="radio" value="text" id="email_type-text" name="email_type"/>
-        <label for="email_type-text">Text</label>
-        <label for="agree_terms">I agree to the terms and conditions:</label>
-        <input type="checkbox" id="agree_terms" name="agree_terms"/>
-    </fieldset>
-    <input type="submit" value="Submit"/>
-</form> </p>
-<hr />
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
 <p>Note that the <code>&lt;fieldset&gt;</code> can have a title, which is rendered as a <code>&lt;legend&gt;</code> element. Although in this definiton we've used <code>'legend'</code>, for simplicity/consistency you may also use <code>'label'</code> -- it will still render a <code>&lt;legend&gt;</code> tag.</p>
 <p>Of course <code>fieldset</code> isn't always going to be appropriate, but that's OK because you can pass any HTML element type and it will render accordingly. So for example, you could just as easily specify <code>'layout:div'</code> or <code>'layout:section'</code> or whatever you need. ioForm doesn't validate this: if you entered <code>'layout:made_up_element'</code> it would render as</p>
 <pre><code class="html">&lt;made_up_element&gt;...&lt;/made_up_element&gt;
@@ -341,6 +307,10 @@
 );
 </code></pre>
 
+<p data-height="265" data-theme-id="dark" data-slug-hash="yaqdxm" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/yaqdxm/">ioForm: Customising form layout -- nested layout elements</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
 <h2 id="templates">Templates</h2>
 <p>Structural elements are all very well, but if you're looking to add consistent markup to lots of fields, it would quickly become very laborious indeed. Luckily, ioForm offers a template system that makes it very easy to wrap custom markup around field elements. </p>
 <p>It's might not be obvious from the example code you've seen so far, but when it renders a form ioForm automatically wraps each field element in a 'container template'. The default container template looks like this:</p>
@@ -381,38 +351,17 @@
         ),
         'templates' =&gt; array(
             // This is now our default field container
-            'default' =&gt; '&lt;div class=&quot;form-row&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;' 
+            'default' =&gt; '&lt;div&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;' 
         )
     )
 );
 </code></pre>
 
 <p>The <em>default</em> template is used (by...uh...default) by all fields (except radio button elements -- we'll explore that, later). So with the above code in place, our example form now renders like this:</p>
-<pre><code class="html">&lt;form method=&quot;post&quot; action=&quot;/newsletter-form.php&quot;&gt;
-    &lt;div class=&quot;form-row&quot;&gt;
-        &lt;label for=&quot;email&quot;&gt;Your email:&lt;/label&gt;
-        &lt;input type=&quot;email&quot; id=&quot;email&quot; name=&quot;email&quot;/&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;form-row&quot;&gt;
-        &lt;label for=&quot;name&quot;&gt;Your name:&lt;/label&gt;
-        &lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot;/&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;form-row&quot;&gt;
-        &lt;label&gt;Email type:&lt;/label&gt;
-            &lt;input type=&quot;radio&quot; value=&quot;html&quot; id=&quot;email_type-html&quot; name=&quot;email_type&quot;/&gt;
-            &lt;label for=&quot;email_type-html&quot;&gt;HTML&lt;/label&gt;
-            &lt;input type=&quot;radio&quot; value=&quot;text&quot; id=&quot;email_type-text&quot; name=&quot;email_type&quot;/&gt;
-            &lt;label for=&quot;email_type-text&quot;&gt;Text&lt;/label&gt;
-    &lt;/div&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
-&lt;/form&gt;
-</code></pre>
+<p data-height="265" data-theme-id="dark" data-slug-hash="LRBKXW" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/LRBKXW/">ioForm: Customising form layout - a simple template</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<p>...and looks like this:</p>
-<hr />
-<form method="post" action="/newsletter-form.php"><div class="form-row"><label for="email">Your email:</label><input type="email" id="email" name="email"/></div><div class="form-row"><label for="name">Your name:</label><input type="text" id="name" name="name"/></div><div class="form-row"><label>Email type:</label><input type="radio" value="html" id="email_type-html" name="email_type"/><label for="email_type-html">HTML</label><input type="radio" value="text" id="email_type-text" name="email_type"/><label for="email_type-text">Text</label></div><input type="submit" value="Submit"/></form>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
-<hr />
 <p>...OK it's still not going to win any design awards, but you get the idea. </p>
 <p>You can do pretty much whatever you want in a template, as long as you include the <code>&lt;elements/&gt;</code> marker. So for example, with this form we have a field that requires a textual prefix/suffix:</p>
 <pre><code class="php">$form = (new \ioForm\Form())
@@ -444,23 +393,45 @@
 );
 </code></pre>
 
-<p>Renders as</p>
-<pre><code class="html">&lt;form method=&quot;post&quot; action=&quot;/product-form.php&quot;&gt;
-    &lt;div class=&quot;form-row&quot;&gt;
-        &lt;label for=&quot;name&quot;&gt;Enter product name:&lt;/label&gt;&lt;input type=&quot;text&quot; id=&quot;name&quot; name=&quot;name&quot;/&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;form-row&quot;&gt;
-        &lt;label for=&quot;price&quot;&gt;Enter price:&lt;/label&gt; 
-        $&lt;input type=&quot;number&quot; id=&quot;price&quot; name=&quot;price&quot;/&gt; + TAX
-    &lt;/div&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
-&lt;/form&gt; 
+<p>Looks like this:</p>
+<p data-height="265" data-theme-id="dark" data-slug-hash="NRBkoo" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/NRBkoo/">ioForm: Customising form layout - field prefix and suffix</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Or how about the same form, but spruced up with a bit of Bootstrap?</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/product-form.php',
+        'method' =&gt; 'post',
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Enter product name:',
+                'type' =&gt; 'text',
+                'name' =&gt; 'name',
+                'id' =&gt; 'name',
+                'class' =&gt; 'form-control' // Pretty input
+            ),
+            array(
+                'label' =&gt; 'Enter price:',
+                'type' =&gt; 'number',
+                'name' =&gt; 'price',
+                'id' =&gt; 'price',
+                'class' =&gt; 'form-control', // Pretty input
+                'container_template' =&gt; 'price'
+            )
+        ),
+        'templates' =&gt; array(
+            'default' =&gt; '&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;',
+            'price' =&gt; '&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;div class=&quot;input-group&quot;&gt;&lt;div class=&quot;input-group-addon&quot;&gt;$&lt;/div&gt;&lt;elements/&gt;&lt;div class=&quot;input-group-addon&quot;&gt;+ TAX&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'  // Extra markup for prefix and suffix elements 
+        )
+    )
+);
 </code></pre>
 
-<hr />
-<form method="post" action="/product-form.php"><div class="form-row"><label for="name">Enter product name:</label><input type="text" id="name" name="name"/></div><div class="form-row"><label for="price">Enter price:</label> $<input type="number" id="price" name="price"/> + TAX</div><input type="submit" value="Submit"/></form>
+<p data-height="265" data-theme-id="dark" data-slug-hash="PGBALB" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/PGBALB/">ioForm: Customising form layout - templates and Bootstrap</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<hr /></div>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script></div>
             
         </div>
 

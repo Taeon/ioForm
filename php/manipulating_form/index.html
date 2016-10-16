@@ -9,7 +9,7 @@
         <link rel="canonical" href="https://taeon.github.io/ioForm/php/manipulating_form/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>=Maniuplating form - ioForm</title>
+	<title>Maniuplating form structure - ioForm</title>
 
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
@@ -82,7 +82,19 @@
         
             
 <li >
+    <a href="../attributes/">ID, classes, data and other attributes</a>
+</li>
+
+        
+            
+<li >
     <a href="../customising-layout/">Customising form layout</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">Maniuplating form structure</a>
 </li>
 
         
@@ -116,12 +128,6 @@
 </li>
 
         
-            
-<li class="active">
-    <a href="./">=Maniuplating form</a>
-</li>
-
-        
     </ul>
   </li>
 
@@ -141,12 +147,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../css-classes/">
+                        <a rel="next" href="../customising-layout/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
-                    <li class="disabled">
-                        <a rel="prev" >
+                    <li >
+                        <a rel="prev" href="../form-options/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -171,11 +177,201 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
+        <li class="main active"><a href="#manipulating-a-form">Manipulating a form</a></li>
+        
+    
+        <li class="main "><a href="#showinghiding-a-field-element">Showing/hiding a field element</a></li>
+        
+            <li><a href="#maniuplating-a-non-field-element">Maniuplating a non-field element</a></li>
+        
+            <li><a href="#adding-new-elements">Adding new elements</a></li>
+        
+            <li><a href="#creating-new-structures">Creating new structures</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-</div>
+<h1 id="manipulating-a-form">Manipulating a form</h1>
+<p>So far we've seen how to create a form from scratch. But what if you want to take an existing form and change it? You <em>could</em> just make a copy of the form definition and make the necessary changes. But you might find yourself wanting to create a single form definition, and then add or remove fields -- or entire sections -- without having to create a whole new form. </p>
+<p>Fortunately, ioForm provides a full set of functions to allow you to do this.</p>
+<h1 id="showinghiding-a-field-element">Showing/hiding a field element</h1>
+<p>Let's say we have a simple form with a few fields in it:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'method' =&gt; 'post',
+        'elements' =&gt; array(
+            array(
+                'type' =&gt; 'layout:fieldset',
+                'label' =&gt; 'Details',
+                'elements' =&gt; array(
+                    array(
+                        'label' =&gt; 'Your name:',
+                        'type' =&gt; 'text',
+                        'name' =&gt; 'name',
+                        'id' =&gt; 'name',
+                    ),
+                    array(
+                        'label' =&gt; 'Your address:',
+                        'type' =&gt; 'textarea',
+                        'name' =&gt; 'address'
+                    ),
+                    array(
+                        'label' =&gt; 'Your shoe size:',
+                        'type' =&gt; 'number',
+                        'name' =&gt; 'shoe_size',
+                        'id' =&gt; 'shoe_size'
+                    )                                   
+                )
+            )
+        ),
+        'templates' =&gt; array(
+            'default' =&gt; '&lt;div class=&quot;form-row&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;' 
+        )
+    )
+);
+</code></pre>
+
+<p>...we want to use the whole form in some places, but in others the 'shoe size' field isn't appropriate. No problem, just disable the field:</p>
+<pre><code class="php">$form-&gt;GetField( 'shoe_size' )-&gt;Disable();
+</code></pre>
+
+<p>Conversely, you could have a field that doesn't appear by default:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Your shoe size:',
+    'type' =&gt; 'number',
+    'name' =&gt; 'shoe_size',
+    'id' =&gt; 'shoe_size',
+    'enabled' =&gt; false // Does not appear by default
+)   
+</code></pre>
+
+<p>..and then show it when needed:</p>
+<pre><code class="php">$form-&gt;GetField( 'shoe_size' )-&gt;Enable();
+</code></pre>
+
+<h2 id="maniuplating-a-non-field-element">Maniuplating a non-field element</h2>
+<p>That's fine if we want to change a field's state, but what about other types of element? They work the same way (so you can use <code>Enable()</code> and <code>Disable()</code>, as well as the other methods we'll discuss later), but the difference lies in how you access them.</p>
+<p>To be able to fetch a non-field element from a form, that element needs an <code>alias</code>. So for example, here we have two groups of elements, and we want to be able to be able to change the second group. So we assign it an alias -- in this case, <code>'clothing'</code>:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'method' =&gt; 'post',
+        'elements' =&gt; array(
+            array(
+                'type' =&gt; 'layout:fieldset',
+                'label' =&gt; 'Details',
+                'elements' =&gt; array(
+                    array(
+                        'label' =&gt; 'Your name:',
+                        'type' =&gt; 'text',
+                        'name' =&gt; 'name',
+                        'id' =&gt; 'name',
+                    ),
+                    array(
+                        'label' =&gt; 'Your address:',
+                        'type' =&gt; 'textarea',
+                        'name' =&gt; 'address'
+                    )
+                )
+            ),
+            array(
+                'type' =&gt; 'layout:fieldset',
+                'label' =&gt; 'Clothing',
+                'alias' =&gt; 'clothing', // We use this to refer to this element
+                'elements' =&gt; array(
+                    array(
+                        'label' =&gt; 'Your shoe size:',
+                        'type' =&gt; 'number',
+                        'name' =&gt; 'shoe_size',
+                        'id' =&gt; 'shoe_size'
+                    ),
+                    array(
+                        'label' =&gt; 'Your hat size:',
+                        'type' =&gt; 'number',
+                        'name' =&gt; 'hat_size',
+                        'id' =&gt; 'hat_size'
+                    )
+                )
+            )
+        ),
+        'templates' =&gt; array(
+            'default' =&gt; '&lt;div class=&quot;form-row&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;' 
+        )
+    )
+);
+</code></pre>
+
+<p>...and now we can, for example, hide the <code>'clothing'</code> group with:</p>
+<pre><code class="php">$form-&gt;GetElementByAlias( 'clothing' )-&gt;Disable();
+</code></pre>
+
+<h2 id="adding-new-elements">Adding new elements</h2>
+<p>So we can show and hide existing elements, but what about adding completely new ones? As it happens, this is also quite simple.</p>
+<p>First, we create a new definition -- in pretty much the same way as we created the original form:</p>
+<pre><code class="php">$field = (new \ioForm\Core\Definition())-&gt;FromArray(
+    array(
+        'type' =&gt; 'text',
+        'name' =&gt; 'chest_size',
+        'id' =&gt; 'chest_size',
+        'label' =&gt; 'Chest measurement'
+    )
+);
+</code></pre>
+
+<p>...and then we insert it wherever we want it in the form. For example, let's just add it to the <code>'clothing'</code> group from the previous example:</p>
+<pre><code class="php">$form-&gt;GetElementByAlias( 'clothing' )-&gt;Append( $field );
+</code></pre>
+
+<p>Simple. But what if we wanted to insert it between the <code>'shoe_size'</code> and <code>'hat_size'</code> fields? Also simple:</p>
+<pre><code class="php">$form-&gt;GetField( 'shoe_size' )-&gt;After( $field );
+</code></pre>
+
+<p>There are also <code>Prepend()</code> and <code>Before()</code> methods, whose functions you can probably guess. There's even a <code>ReplaceWith()</code> method -- so you can replace an existing element with something new.</p>
+<h2 id="creating-new-structures">Creating new structures</h2>
+<p>Bear in mind that you can create any structure you like with this approach -- you don't have to limit yourself to creating a single element at a time. So we could create a whole new section:</p>
+<pre><code class="php">$colours_section = (new \ioForm\Core\Definition())-&gt;FromArray(
+    array(
+        'type' =&gt; 'layout:fieldset',
+        'label' =&gt; 'Favourite colours',
+        'elements' =&gt; array(
+            array(
+                'type' =&gt; 'select',
+                'name' =&gt; 'colour',
+                'id' =&gt; 'colour',
+                'label' =&gt; &quot;What's your favourite colour?&quot;,
+                'options' =&gt; array(
+                    array( 'value' =&gt; '', 'text' =&gt; 'Select one' ),
+                    array( 'value' =&gt; 'red', 'text' =&gt; 'Red' ),
+                    array( 'value' =&gt; 'green', 'text' =&gt; 'Green' ),
+                    array( 'value' =&gt; 'blue', 'text' =&gt; 'Blue' )
+                )
+            ),
+            array(
+                'type' =&gt; 'select',
+                'name' =&gt; 'shade',
+                'id' =&gt; 'shade',
+                'label' =&gt; &quot;What's your favourite shade?&quot;,
+                'options' =&gt; array(
+                    array( 'value' =&gt; '', 'text' =&gt; 'Select one' ),
+                    array( 'value' =&gt; 'light', 'text' =&gt; 'Light' ),
+                    array( 'value' =&gt; 'dark', 'text' =&gt; 'Dark' ),
+                )
+            )
+        )
+    )
+);
+
+$form-&gt;GetElementByAlias( 'clothing' )-&gt;After( $colours_section );
+</code></pre>
+
+<p data-height="265" data-theme-id="light" data-slug-hash="BLPApx" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" data-preview="true" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/BLPApx/">ioForm: Adding a new fieldset to a form</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script></div>
             
         </div>
 
