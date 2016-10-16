@@ -13,14 +13,15 @@ pages:
     - Requirements and installation!: requirements-installation.md
     - PHP:
         - A basic form: php/basic-form.md
+        - ID, classes, data and other attributes: php/attributes.md
         - Customising form layout: php/customising-layout.md
+        - Maniuplating form structure: php/manipulating_form.md
         - Form options: php/form-options.md
         - Field types reference: php/fields-reference.md
         - =Field options reference: php/field-options.md
         - =Get/set values: php/get-set-values.md
         - =CSS Classes: php/css-classes.md
-        - =Maniuplating form: php/manipulating_form.md
-
+        
 dev_addr: 0.0.0.0:8800
 
 

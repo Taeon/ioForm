@@ -26,6 +26,9 @@ class Form extends \ioForm\Core\Definition{
 	protected $auto_tabindex = false;
 	protected $tabindex_start = 1;
 	
+	protected $auto_field_id = false;
+	protected $auto_field_id_prefix = true;
+	
 	public function Render(){
 		if( $this->buttons ){
 			$buttons = array();
@@ -40,11 +43,11 @@ class Form extends \ioForm\Core\Definition{
 			}
 			$this->buttons = array();
 		}
-		// Set tabindex
-		// We do this just before render, because the form's structure might've changed
-		if( $this->auto_tabindex ){
-			$index = $this->tabindex_start;
-			foreach( $this->fields as $field ){
+		$index = $this->tabindex_start;
+		foreach( $this->fields as $field ){
+			// Set tabindex
+			// We do this just before render, because the form's structure might've changed
+			if( $this->auto_tabindex ){
 				if( $field->type != 'radio' ){
 					$field->tabindex = $index;
 					$index++;
@@ -55,7 +58,13 @@ class Form extends \ioForm\Core\Definition{
 					}
 				}
 			}
+			if( $this->auto_field_id ){
+				if( !( isset( $field->id ) ) ){
+					$field->id = (($this->id)?$this->id . '-':'' ) . $field->name;
+				}
+			}
 		}
+		
 
 		// Create a form element
 		$form = \ioForm\ioForm::CreateElement( $this );

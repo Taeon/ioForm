@@ -7,22 +7,30 @@ class Container extends \ioForm\Core\Element{
 	protected $lookup = array();
 	public $role = 'row';
 	
-	public $template_alias = '';
+	public $template = '';
 
 	protected $temp = array();
 	
 	public function __construct( $field_definition = null ){
 		parent::__construct( $field_definition );
 
-		$this->ParseTemplateString( $field_definition->GetTemplate( $field_definition->template_alias ) );
+		$this->ParseTemplateString( $this->template );
 
 		$this->lookup = (object)$this->lookup;
 	}
+	/**
+	 * Add class(es) to container element
+	 */
 	public function AddClass( $class, $element = false ){
+		
 		if( $element ){
+			// Add it to a specific element by lookup
 			$this->lookup->$element->AddClass( $class );
 		} else {
-			parent::AddClass( $class );
+			// Add it to root element(s)
+			foreach( $this->elements as $element ){
+				$element->AddClass( $class );
+			}
 		}
 	}
 	

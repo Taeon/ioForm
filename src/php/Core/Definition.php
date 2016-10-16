@@ -13,6 +13,7 @@ class Definition{
 	protected $templates = array();
 	protected $alias_lookup;
 	public $default;
+	public $id;
 	
 	public function __construct(){
 		$this->alias_lookup = new \stdClass();
@@ -93,10 +94,6 @@ class Definition{
 					}
 					break;
 				}
-				//case 'alias':{
-				//	$this->alias_lookup->{ $value } = $element_obj;
-				//	break;
-				//}
 				case 'elements':{
 					// Convert child elements to definitions
 					foreach( $element[ 'elements' ] as $child_definition ){
@@ -131,6 +128,27 @@ class Definition{
 		}
 		return $this->alias_lookup->$alias;
 	}
+
+	/**
+	 * Find a field
+	 *
+	 * @param		string		$field_name
+	 *
+	 * @return		\ioForm\Core\Definition
+	 */
+	public function GetField( $field_name ){
+		foreach( $this->elements as $element ){
+			if( isset( $element->name ) && $element->name == $field_name ){
+				return $element;
+			} else {
+				if( $field = $element->GetField( $field_name ) ){
+					return $field;
+				}
+			}
+		}
+		return null;
+	}
+
 	
 	/**
 	 * Insert an element before another element

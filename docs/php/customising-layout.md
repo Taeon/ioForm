@@ -65,52 +65,8 @@ $form = (new \ioForm\Form())
     )
 );
 ```
-```html
-<form method="post" action="/newsletter-form.php">
-	<fieldset>
-		<legend>Details</legend>
-		<label for="email">Your email:</label>
-		<input type="email" id="email" name="email"/>
-		<label for="name">Your name:</label>
-		<input type="text" id="name" name="name"/>
-	</fieldset>
-	<fieldset>
-		<legend>Details</legend>
-		<label>Email type:</label>
-		<input type="radio" value="html" id="email_type-html" name="email_type"/>
-		<label for="email_type-html">HTML</label>
-		<input type="radio" value="text" id="email_type-text" name="email_type"/>
-		<label for="email_type-text">Text</label>
-		<label for="agree_terms">I agree to the terms and conditions:</label>
-		<input type="checkbox" id="agree_terms" name="agree_terms"/>
-	</fieldset>
-	<input type="submit" value="Submit"/>
-</form> 
-```
-
-----------
-<form method="post" action="/newsletter-form.php">
-	<fieldset>
-		<legend>Details</legend>
-		<label for="email">Your email:</label>
-		<input type="email" id="email" name="email"/>
-		<label for="name">Your name:</label>
-		<input type="text" id="name" name="name"/>
-	</fieldset>
-	<fieldset>
-		<legend>Options</legend>
-		<label>Email type:</label>
-		<input type="radio" value="html" id="email_type-html" name="email_type"/>
-		<label for="email_type-html">HTML</label>
-		<input type="radio" value="text" id="email_type-text" name="email_type"/>
-		<label for="email_type-text">Text</label>
-		<label for="agree_terms">I agree to the terms and conditions:</label>
-		<input type="checkbox" id="agree_terms" name="agree_terms"/>
-	</fieldset>
-	<input type="submit" value="Submit"/>
-</form> 
-
-----------
+<p data-height="265" data-theme-id="dark" data-slug-hash="JRBQBR" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/JRBQBR/">ioForm: Customising form layout - structural elements</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 Note that the `<fieldset>` can have a title, which is rendered as a `<legend>` element. Although in this definiton we've used `'legend'`, for simplicity/consistency you may also use `'label'` -- it will still render a `<legend>` tag.
 
@@ -171,7 +127,8 @@ $form = (new \ioForm\Form())
     )
 );
 ```
-
+<p data-height="265" data-theme-id="dark" data-slug-hash="yaqdxm" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/yaqdxm/">ioForm: Customising form layout -- nested layout elements</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 ## Templates
 
@@ -220,7 +177,7 @@ $form = (new \ioForm\Form())
         ),
 		'templates' => array(
 			// This is now our default field container
-			'default' => '<div class="form-row"><label></label><elements/></div>' 
+			'default' => '<div><label></label><elements/></div>' 
 		)
     )
 );
@@ -228,34 +185,8 @@ $form = (new \ioForm\Form())
 
 The *default* template is used (by...uh...default) by all fields (except radio button elements -- we'll explore that, later). So with the above code in place, our example form now renders like this:
 
-```html
-<form method="post" action="/newsletter-form.php">
-	<div class="form-row">
-		<label for="email">Your email:</label>
-		<input type="email" id="email" name="email"/>
-	</div>
-	<div class="form-row">
-		<label for="name">Your name:</label>
-		<input type="text" id="name" name="name"/>
-	</div>
-	<div class="form-row">
-		<label>Email type:</label>
-			<input type="radio" value="html" id="email_type-html" name="email_type"/>
-			<label for="email_type-html">HTML</label>
-			<input type="radio" value="text" id="email_type-text" name="email_type"/>
-			<label for="email_type-text">Text</label>
-	</div>
-	<input type="submit" value="Submit"/>
-</form>
-```
-
-...and looks like this:
-
-----------
-
-<form method="post" action="/newsletter-form.php"><div class="form-row"><label for="email">Your email:</label><input type="email" id="email" name="email"/></div><div class="form-row"><label for="name">Your name:</label><input type="text" id="name" name="name"/></div><div class="form-row"><label>Email type:</label><input type="radio" value="html" id="email_type-html" name="email_type"/><label for="email_type-html">HTML</label><input type="radio" value="text" id="email_type-text" name="email_type"/><label for="email_type-text">Text</label></div><input type="submit" value="Submit"/></form> 
-
-----------
+<p data-height="265" data-theme-id="dark" data-slug-hash="LRBKXW" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/LRBKXW/">ioForm: Customising form layout - a simple template</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 ...OK it's still not going to win any design awards, but you get the idea. 
 
@@ -291,25 +222,43 @@ $form = (new \ioForm\Form())
 );
 ``` 
 
-Renders as
+Looks like this:
 
-```html
-<form method="post" action="/product-form.php">
-	<div class="form-row">
-		<label for="name">Enter product name:</label><input type="text" id="name" name="name"/>
-	</div>
-	<div class="form-row">
-		<label for="price">Enter price:</label> 
-		$<input type="number" id="price" name="price"/> + TAX
-	</div>
-	<input type="submit" value="Submit"/>
-</form> 
+<p data-height="265" data-theme-id="dark" data-slug-hash="NRBkoo" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/NRBkoo/">ioForm: Customising form layout - field prefix and suffix</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+Or how about the same form, but spruced up with a bit of Bootstrap?
+
+```php
+$form = (new \ioForm\Form())
+->FromArray(
+    array(
+        'action' => '/product-form.php',
+        'method' => 'post',
+        'elements' => array(
+            array(
+                'label' => 'Enter product name:',
+                'type' => 'text',
+                'name' => 'name',
+                'id' => 'name',
+				'class' => 'form-control' // Pretty input
+            ),
+            array(
+                'label' => 'Enter price:',
+                'type' => 'number',
+                'name' => 'price',
+                'id' => 'price',
+				'class' => 'form-control', // Pretty input
+                'container_template' => 'price'
+            )
+        ),
+        'templates' => array(
+            'default' => '<div class="form-group"><label></label><elements/></div>',
+            'price' => '<div class="form-group"><label></label><div class="input-group"><div class="input-group-addon">$</div><elements/><div class="input-group-addon">+ TAX</div></div></div>'  // Extra markup for prefix and suffix elements 
+        )
+    )
+);
 ```
 
-
-----------
-
-<form method="post" action="/product-form.php"><div class="form-row"><label for="name">Enter product name:</label><input type="text" id="name" name="name"/></div><div class="form-row"><label for="price">Enter price:</label> $<input type="number" id="price" name="price"/> + TAX</div><input type="submit" value="Submit"/></form> 
-
-----------
-
+<p data-height="265" data-theme-id="dark" data-slug-hash="PGBALB" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/PGBALB/">ioForm: Customising form layout - templates and Bootstrap</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
