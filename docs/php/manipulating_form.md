@@ -200,5 +200,5 @@ $colours_section = (new \ioForm\Core\Definition())->FromArray(
 		  
 $form->GetElementByAlias( 'clothing' )->After( $colours_section );
 ```
-<p data-height="265" data-theme-id="light" data-slug-hash="BLPApx" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" data-preview="true" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/BLPApx/">ioForm: Adding a new fieldset to a form</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<p data-height="265" data-theme-id="dark" data-slug-hash="BLPApx" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/BLPApx/">ioForm: Adding a new fieldset to a form</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
