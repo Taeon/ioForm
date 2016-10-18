@@ -128,6 +128,12 @@
 </li>
 
         
+            
+<li >
+    <a href="../buttons/">=Buttons</a>
+</li>
+
+        
     </ul>
   </li>
 
@@ -212,6 +218,24 @@
 <td>string</td>
 <td><em>None</em></td>
 <td>Form encoding type. Generally this isn't specified (it will default to <em>application/x-www-form-urlencoded</em>) but when the form includes one or more file input elements, it must be set to <em>multipart/form-data</em>. ioForm will do this for you automatically</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><em>None</em></td>
+<td>ID attribute of the form</td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>string</td>
+<td><em>None</em></td>
+<td>Additional class(es) to apply to the the form</td>
+</tr>
+<tr>
+<td><code>auto_field_id</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Automatically set the <code>id</code> attribute of any field element to match its <code>name</code> attribute (unless the field's ID is already provided by its definition). Will prepend the field's ID with the form's ID, if set.</td>
 </tr>
 <tr>
 <td><code>auto_tabindex</code></td>
