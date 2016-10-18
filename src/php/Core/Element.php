@@ -53,8 +53,14 @@ abstract class Element{
 											break;
 										}
 										// Anything else
-										default:{								
+										case 'container':{								
 											$container_classes[] = $class->classes;
+											break;
+										}
+										// Anything else
+										default:{								
+// Store for later e.g. help
+											//$container_classes[] = $class->classes;
 											break;
 										}
 									}
@@ -78,6 +84,8 @@ abstract class Element{
 							$this->$name = $value;
 						} elseif( array_key_exists( $name, $this->attributes ) ){
 							$this->attributes->$name = $value;
+						} else {
+							
 						}
 					}
 				}
@@ -196,6 +204,45 @@ abstract class Element{
 			return '';
 		}
 		
+		// Does it have a container?
+		if( $this->container ){
+			$temp = 				\ioForm\ioForm::CreateElement(
+					( new \ioForm\Core\Definition )->FromArray(
+						array(
+							'type'=>'Core:BaseElement'
+						)
+					)
+				);
+			$this->container->AddElement(
+				$temp
+			);
+		}
+
+		if( $this instanceof \ioForm\Element\Field ){
+			if( isset( $this->help ) ){
+				if( $this->container && $help = $this->container->GetByAlias( 'help' ) ){
+					$help->content = $this->help;
+				} else {
+					$help = \ioForm\ioForm::CreateElement(
+						( new \ioForm\Core\Definition )->FromArray(
+							array(
+								'type'=>'layout:div',
+								'content' => $this->help
+							)
+						)
+					);
+					$this->container->AddElement( $help );				
+				}
+				$help_id = $this->attributes->id . '-help';
+				$help->SetAttribute( 'id', $help_id );
+				$this->SetAttribute( 'aria-describedby', $help_id );
+			} else {
+				if( $this->container && $help = $this->container->GetByAlias( 'help' ) ){
+					$help->enabled = false;
+				}
+			}
+		}
+
 		$output = '';
 		
 		// Some elements only exist to render their child elements
@@ -259,27 +306,18 @@ abstract class Element{
 			if( $content = $this->GetContent() ){
 				$output .= $content;
 			}
+			
 			// Closing tag?
 			if( $this->tag ){
 				$output .= '</' . $this->tag .  '>';
 			}
 		}
 		
-		// Does it have a container?
 		if( $this->container ){
-			$this->container->AddElement(
-				\ioForm\ioForm::CreateElement(
-					( new \ioForm\Core\Definition )->FromArray(
-						array(
-							'type'=>'Core:BaseElement',
-							'content' => $output
-						)
-					)
-				)
-			);
+			$temp->content = $output;
 			return $this->container->Render();
 		}
-
+		
 		return $output;
 	}
 }

@@ -21,6 +21,7 @@ pages:
         - =Field options reference: php/field-options.md
         - =Get/set values: php/get-set-values.md
         - =CSS Classes: php/css-classes.md
+        - =Buttons: php/buttons.md
         
 dev_addr: 0.0.0.0:8800
 

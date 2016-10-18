@@ -34,6 +34,12 @@ class Container extends \ioForm\Core\Element{
 		}
 	}
 	
+	public function GetByAlias( $alias ){
+		if( isset( $this->lookup->{$alias} )){
+			return $this->lookup->{$alias};
+		}
+	}
+	
 	/**
 	 * Pass in the element(s) for this container
 	 *
@@ -161,10 +167,10 @@ class Container extends \ioForm\Core\Element{
 						break;
 					}
 					default:{
+						$node_obj->SetAttribute( $attribute->name, $attribute->value );
 						break;
 					}
 				}
-				$node_obj->SetAttribute( $attribute->name, $attribute->value );
 			}
 		}
 		if($node->childNodes){

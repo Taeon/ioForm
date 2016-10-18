@@ -11,6 +11,7 @@ abstract class Field extends \ioForm\Core\Element{
 		'disabled' => null,
 		'tabindex' => null
 	);
+	protected $help = null;
 	public $container_template = 'default';
 }
 	

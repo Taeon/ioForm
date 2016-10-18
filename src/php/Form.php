@@ -29,6 +29,8 @@ class Form extends \ioForm\Core\Definition{
 	protected $auto_field_id = false;
 	protected $auto_field_id_prefix = true;
 	
+	protected $auto_field_class = true;
+
 	public function Render(){
 		if( $this->buttons ){
 			$buttons = array();
@@ -58,10 +60,20 @@ class Form extends \ioForm\Core\Definition{
 					}
 				}
 			}
+			// Automatically set field ID from its name
 			if( $this->auto_field_id ){
 				if( !( isset( $field->id ) ) ){
+					// Auto-prepend with form ID, if set
 					$field->id = (($this->id)?$this->id . '-':'' ) . $field->name;
 				}
+			}
+			// Automatically set container class with field's type
+			if( $this->auto_field_class ){
+				if( !isset( $field->classes ) ){
+					$field->classes = array();
+				}
+				$field->classes[] = (object)array( 'element' => 'container', 'classes' => strtolower( $field->type ) );
+
 			}
 		}
 		
