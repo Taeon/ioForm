@@ -1,0 +1,10 @@
+# Exclude these files from releases
+/docs export-ignore
+/src export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+Gruntfile.js export-ignore
+LICENSE export-ignore
+mkdocs.yml export-ignore
+package.json export-ignore
+README.md export-ignore
