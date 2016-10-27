@@ -15,19 +15,25 @@ extend( ioFormFieldDate, ioFormField );
  *                          The displayed value will depend on the browser
  */
 ioFormFieldDate.prototype.SetValue = function( date ){
-    // Convert string to Date
-    if ( typeof date == 'string' ) {
-        date = new Date( Date.parse(date) );
-    }
-    if ( date.toString() != 'Invalid Date' ) {
-        // For Chrome's sake, we need to convert to yyyy-MM-dd
-        this.element.value = date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 );
-        //code
+    
+    if( date !== null ){
+        // Convert string to Date
+        if ( typeof date == 'string' ) {
+            date = new Date( Date.parse(date) );
+        }
+        if ( date.toString() != 'Invalid Date' ) {
+            // For Chrome's sake, we need to convert to yyyy-MM-dd
+            this.element.value = date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 );
+            //code
+        } else {
+            this.element.value = '';
+        }
     } else {
-        this.element.value = '';
+        this.element.value = '';        
     }
-    this.trigger( 'change' );
-}
+    
+    this.trigger( 'ioform:setvalue' );
+};
 /**
  * Return a date field's value, as a date object
  *

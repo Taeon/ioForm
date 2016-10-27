@@ -23,7 +23,9 @@ class radio extends \ioForm\Element\Field{
 			}
 			$definition->SetTemplates( $element_definition->GetTemplates() );
 			$definition->SetParent( $element_definition );
-			$this->AddElement( \ioForm\ioForm::CreateElement( $definition ) );
+			$option = \ioForm\ioForm::CreateElement( $definition );
+			$this->options[] = $option;
+			$this->AddElement( $option );
 		}
 		$this->SetAttribute( 'id', null );
 

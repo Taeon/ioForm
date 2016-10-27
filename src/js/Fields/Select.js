@@ -8,7 +8,7 @@ extend( ioFormFieldSelect, ioFormField );
 ioFormFieldSelect.prototype.GetValue = function(){
     var selected = this.element.querySelectorAll( 'option:checked' );
     // Select multiple fields return an array of values
-    if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' ) {
+    if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {
         var value = [];
         for( var i = 0; i < selected.length; i++ ){
             if ( selected[ i ].hasAttribute( 'value' ) ) {
@@ -18,7 +18,7 @@ ioFormFieldSelect.prototype.GetValue = function(){
     } else {
         var value = '';
         if ( selected.length > 0 ) {
-            var option = selected.pop();
+            var option = selected.item(0);
             if ( option.hasAttribute( 'value' ) ) {
                 var value = option.getAttribute( 'value' );
             }
@@ -26,7 +26,7 @@ ioFormFieldSelect.prototype.GetValue = function(){
     }
 
     return value;
-}
+};
 ioFormFieldSelect.prototype.SetValue = function( value ){
     if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {
         this.ClearOptions();
@@ -46,11 +46,11 @@ ioFormFieldSelect.prototype.SetValue = function( value ){
             options[ o ].selected = true;
         }
     }
-    this.trigger( 'change' );
-}
+    this.trigger( 'ioform:setvalue' );
+};
 ioFormFieldSelect.prototype.ClearOptions = function(){
     var options = this.element.querySelectorAll( 'option' );
     for( var o = 0; o < options.length; o++ ){
         options[ o ].selected = false;
     }
-}
+};

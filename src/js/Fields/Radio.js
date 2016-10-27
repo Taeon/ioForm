@@ -13,8 +13,8 @@ ioFormFieldRadio.prototype.SetValue = function( value ){
             break;
         }
     }
-    this.trigger( 'change' );
-}
+    this.trigger( 'ioform:setvalue' );
+};
 ioFormFieldRadio.prototype.GetValue = function(){
     for( var i = 0; i < this.element.length; i++ ){
         if ( this.element[ i ].checked ) {
@@ -22,14 +22,14 @@ ioFormFieldRadio.prototype.GetValue = function(){
         }
     }
     return null;
-}
+};
 ioFormFieldRadio.prototype.Disable = function(){
     for( var i = 0; i < this.element.length; i++){
         this.element[i].setAttribute( 'disabled', "disabled" );
     }
-}
+};
 ioFormFieldRadio.prototype.Enable = function(){
     for( var i = 0; i < this.element.length; i++){
         this.element[ i ].removeAttribute( 'disabled' );
     }
-}
+};

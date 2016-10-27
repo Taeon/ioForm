@@ -39,13 +39,24 @@ class Form extends \ioForm\Core\Element{
 	 * @return		\ioform\Element\Field
 	 */
 	public function GetField( $name ){
-		if( array_key_exists( $name, $this->fields ) ){
+		if( $this->HasField( $name ) ){
 			return $this->fields[ $name ];			
 		} else {
 			throw new \Exception( "Field '$name' not found" );
 		}
 	}
-
+	
+	/**
+	 * Return a field by its name
+	 *
+	 * @param		string		$name
+	 *
+	 * @return		\ioform\Element\Field
+	 */
+	public function HasField( $name ){
+		return array_key_exists( $name, $this->fields );
+	}
+	
 	/**
 	 * Iterate recursively through the structure to find all field elements
 	 *

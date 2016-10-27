@@ -17,6 +17,7 @@ class Container extends \ioForm\Core\Element{
 		$this->ParseTemplateString( $this->template );
 
 		$this->lookup = (object)$this->lookup;
+		$this->lookup->container = $this;
 	}
 	/**
 	 * Add class(es) to container element
@@ -54,12 +55,15 @@ class Container extends \ioForm\Core\Element{
 	 *
 	 * @param		\ioForm\Core\Element		$element
 	 */
-	public function AddElement( \ioForm\Core\Element $element ){
+	public function AddElement( \ioForm\Core\Element $element, $role = false ){
 		if( isset( $this->lookup->{'elements-container'} ) ){
 			$this->lookup->{'elements-container'}->AddElement( $element );
 		} else {
 			// Might not have parsed the structure yet, so store these for later
 			$this->temp[] = $element;
+		}
+		if( $role ){
+			$this->lookup->$role = $element;
 		}
 	}
 	

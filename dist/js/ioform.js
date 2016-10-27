@@ -1,3 +1,131 @@
+if (typeof Object.create !== 'function') {
+    Object.create = function (o) {function F() {}F.prototype = o;return new F();};
+}
+function extend(ch, p) {var cp = Object.create(p.prototype);cp.constructor = ch;ch.prototype = cp;}
+
+var Events = {
+	/**
+	 * Register any object to be able to register/trigger custom events
+	 */
+	Register:function( obj, target ){
+		// Create a DOM EventTarget object
+		if ( typeof target == 'undefined' ) {
+			target = document.createTextNode(null);			
+		}
+        obj.ready_events = [];
+        var _target = target;
+		obj.on = function( event_type, func ){
+            var target = _target;
+            // We only want this to run once
+			if ( event_type == 'ioform:ready' ){
+                obj.one( event_type, func );
+                if( obj.onReady ) {
+    				obj.onReady();
+                }
+			} else {
+                if ( Object.prototype.toString.call( target ) == '[object Array]' ) {
+                    for ( var i = 0; i < target.length; i++ ){
+                        target[ i ].addEventListener( event_type, func );
+                    }
+                    return;
+                } else {
+                    target.addEventListener( event_type, func );
+                }
+            }
+		};
+
+		obj.one = function( event_type, func ){
+            var target = _target;
+			if ( Object.prototype.toString.call( target ) == '[object Array]' ) {
+				for ( var i = 0; i < target.length; i++ ){
+					target[ i ].addEventListener( event_type, function(e) {
+						obj.off(event_type, arguments.callee);
+						return func(e);
+					});
+				}
+				return;
+			} else {
+				target.addEventListener(event_type, function(e) {
+					obj.off(event_type, arguments.callee);
+					return func(e);
+				});
+			}
+        };
+		obj.off = function( event_type, func ){
+            var target = _target;
+			if ( Object.prototype.toString.call( target ) == '[object Array]' ) {
+				for ( var i = 0; i < target.length; i++ ){
+				target[ i ].removeEventListener.bind(target);				}
+				return;
+			} else {
+				target.removeEventListener.bind(target);
+			}
+        };
+
+		obj.trigger = function( event_type, params ){
+            var target = _target;
+			if ( event_type == 'ioform:ready' && !obj.ready ) {
+				return;
+			}
+			
+			var detail = {};
+			var bubbles = false;
+			var cancelable = false;
+			for ( var index in params ) {
+				if( params.hasOwnProperty( index ) ){
+					switch ( index ) {
+						case 'bubbles':{
+							bubbles = params[ index ];
+							break;
+						}
+						case 'cancelable':{
+							cancelable = params[ index ];
+							break;
+						}
+						default:{
+							detail[ index ] = params[ index ];
+							break;
+						}
+					}					
+				}
+			}
+
+			var evt = new CustomEvent(
+				event_type,
+				{
+					bubbles: bubbles,
+					cancelable: cancelable,
+					detail:detail
+				}
+			);
+            if ( Object.prototype.toString.call( target ) == '[object Array]' ) {
+                target = target[0];
+            }
+            return target.dispatchEvent(evt);
+		};
+	}
+};
+// Explorer polyfill for events
+(function () {
+
+  if ( typeof window.CustomEvent === "function" ) return false;
+
+  function CustomEvent ( event, custom_params ) {
+	var params = { bubbles: false, cancelable: false, detail: undefined  };
+	for( var index in custom_params ){
+		if( custom_params.hasOwnProperty( index ) ){
+			params[ index ] = custom_params[ index ];
+		}
+	}
+	var evt = document.createEvent( 'CustomEvent' );
+	evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+	return evt;
+   }
+
+  CustomEvent.prototype = window.Event.prototype;
+
+  window.CustomEvent = CustomEvent;
+})();;
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
         define([], factory);
@@ -45,6 +173,8 @@
             if ( !( form.tagName && form.tagName.toLowerCase() == 'form' ) ) {
                 throw new Error( 'ioForm error: Element is not a form' );
             }
+
+            this.form = form;
             
             var field_name;
             
@@ -160,9 +290,27 @@
                 }
                 return null;
             },
+            GetValues: function(){
+                var values = {};
+                for( var field_name in this.fields ){
+                    if( this.fields.hasOwnProperty( field_name ) ){
+                        var field = this.fields[ field_name ];
+                        values[ field_name ] = field.GetValue();
+                    }
+                }
+                return values;
+            },
             SetValue: function( field_name, value ){
                 if ( this.HasField( field_name ) ) {
                     this.fields[ field_name ].SetValue( value );
+                }
+            },
+            Reset:function(){
+                this.form.reset();
+                for( var index in this.fields ){
+                    if( this.fields.hasOwnProperty( index ) ){
+                        this.fields[index].Reset();
+                    }
                 }
             }
         };
@@ -192,12 +340,15 @@ ioFormField.prototype = {
             this.trigger( 'ioform:ready', {field:this} );
         }
     },
+    GetName:function(){
+        return this.element.getAttribute( 'name' );
+    },
     GetValue:function(){
         return this.element.value;
     },
     SetValue:function( value ){
         this.element.value = value;
-        this.trigger( 'change' );
+        this.trigger( 'ioform:setvalue' );
     },
     Disable:function(){
         this.element.setAttribute( 'disabled', "" );
@@ -205,6 +356,9 @@ ioFormField.prototype = {
     Enable:function(){
         this.element.removeAttribute( 'disabled' );
     },
+    Reset:function(){
+        // This is a placeholder function
+    }
 };
 /**
  * Single checkbox
@@ -215,11 +369,11 @@ var ioFormFieldCheckbox = function( element ){
 extend( ioFormFieldCheckbox, ioFormField );
 ioFormFieldCheckbox.prototype.SetValue = function( value ){
     this.element.checked = value;
-    this.trigger( 'change' );
-}
+    this.trigger( 'ioform:setvalue' );    
+};
 ioFormFieldCheckbox.prototype.GetValue = function(){
     return this.element.checked;
-}
+};
 
 ioFormUtility = {
     ZeroPad: function( num, numZeros ) {
@@ -232,7 +386,7 @@ ioFormUtility = {
     
         return zeroString+n;
     }
-};
+};;
 /***
  * Date field
  * https://github.com/chemerisuk/better-dateinput-polyfill?
@@ -250,19 +404,25 @@ extend( ioFormFieldDate, ioFormField );
  *                          The displayed value will depend on the browser
  */
 ioFormFieldDate.prototype.SetValue = function( date ){
-    // Convert string to Date
-    if ( typeof date == 'string' ) {
-        date = new Date( Date.parse(date) );
-    }
-    if ( date.toString() != 'Invalid Date' ) {
-        // For Chrome's sake, we need to convert to yyyy-MM-dd
-        this.element.value = date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 );
-        //code
+    
+    if( date !== null ){
+        // Convert string to Date
+        if ( typeof date == 'string' ) {
+            date = new Date( Date.parse(date) );
+        }
+        if ( date.toString() != 'Invalid Date' ) {
+            // For Chrome's sake, we need to convert to yyyy-MM-dd
+            this.element.value = date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 );
+            //code
+        } else {
+            this.element.value = '';
+        }
     } else {
-        this.element.value = '';
+        this.element.value = '';        
     }
-    this.trigger( 'change' );
-}
+    
+    this.trigger( 'ioform:setvalue' );
+};
 /**
  * Return a date field's value, as a date object
  *
@@ -310,8 +470,8 @@ ioFormFieldRadio.prototype.SetValue = function( value ){
             break;
         }
     }
-    this.trigger( 'change' );
-}
+    this.trigger( 'ioform:setvalue' );
+};
 ioFormFieldRadio.prototype.GetValue = function(){
     for( var i = 0; i < this.element.length; i++ ){
         if ( this.element[ i ].checked ) {
@@ -319,17 +479,17 @@ ioFormFieldRadio.prototype.GetValue = function(){
         }
     }
     return null;
-}
+};
 ioFormFieldRadio.prototype.Disable = function(){
     for( var i = 0; i < this.element.length; i++){
         this.element[i].setAttribute( 'disabled', "disabled" );
     }
-}
+};
 ioFormFieldRadio.prototype.Enable = function(){
     for( var i = 0; i < this.element.length; i++){
         this.element[ i ].removeAttribute( 'disabled' );
     }
-}
+};
 ;
 /**
  * Select field
@@ -341,7 +501,7 @@ extend( ioFormFieldSelect, ioFormField );
 ioFormFieldSelect.prototype.GetValue = function(){
     var selected = this.element.querySelectorAll( 'option:checked' );
     // Select multiple fields return an array of values
-    if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' ) {
+    if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {
         var value = [];
         for( var i = 0; i < selected.length; i++ ){
             if ( selected[ i ].hasAttribute( 'value' ) ) {
@@ -351,7 +511,7 @@ ioFormFieldSelect.prototype.GetValue = function(){
     } else {
         var value = '';
         if ( selected.length > 0 ) {
-            var option = selected.pop();
+            var option = selected.item(0);
             if ( option.hasAttribute( 'value' ) ) {
                 var value = option.getAttribute( 'value' );
             }
@@ -359,7 +519,7 @@ ioFormFieldSelect.prototype.GetValue = function(){
     }
 
     return value;
-}
+};
 ioFormFieldSelect.prototype.SetValue = function( value ){
     if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {
         this.ClearOptions();
@@ -379,14 +539,14 @@ ioFormFieldSelect.prototype.SetValue = function( value ){
             options[ o ].selected = true;
         }
     }
-    this.trigger( 'change' );
-}
+    this.trigger( 'ioform:setvalue' );
+};
 ioFormFieldSelect.prototype.ClearOptions = function(){
     var options = this.element.querySelectorAll( 'option' );
     for( var o = 0; o < options.length; o++ ){
         options[ o ].selected = false;
     }
-};
+};;
 /***
  * Text field
  */

@@ -2,7 +2,7 @@
 
 namespace ioForm\Element\Field;
 
-class SelectMultiple extends Select{
+class select_multiple extends select{
 	
 	protected $tag = 'select';
 	

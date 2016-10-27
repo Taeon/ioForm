@@ -45,6 +45,8 @@
             if ( !( form.tagName && form.tagName.toLowerCase() == 'form' ) ) {
                 throw new Error( 'ioForm error: Element is not a form' );
             }
+
+            this.form = form;
             
             var field_name;
             
@@ -160,9 +162,27 @@
                 }
                 return null;
             },
+            GetValues: function(){
+                var values = {};
+                for( var field_name in this.fields ){
+                    if( this.fields.hasOwnProperty( field_name ) ){
+                        var field = this.fields[ field_name ];
+                        values[ field_name ] = field.GetValue();
+                    }
+                }
+                return values;
+            },
             SetValue: function( field_name, value ){
                 if ( this.HasField( field_name ) ) {
                     this.fields[ field_name ].SetValue( value );
+                }
+            },
+            Reset:function(){
+                this.form.reset();
+                for( var index in this.fields ){
+                    if( this.fields.hasOwnProperty( index ) ){
+                        this.fields[index].Reset();
+                    }
                 }
             }
         };

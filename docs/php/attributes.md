@@ -98,5 +98,83 @@ $form = (new \ioForm\Form())
 
 ## Setting an element's CSS classes
 
+Adding a class to any element is simple -- just set the class: 
+
+```php
+$form = (new \ioForm\Form())
+->FromArray(
+    array(
+        'action' => '/newsletter-form.php',
+		'id' => 'newsletter-form',
+        'elements' => array(
+			array(
+				'label' => 'Your name:',
+				'type' => 'text',
+				'name' => 'name',
+				'class' => 'my-custom-class', // Easy as that
+			),
+			array(
+				'label' => 'Your email:',
+				'type' => 'email',
+				'name' => 'email'
+			)
+        )
+    )
+);
+```
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="ORBoXE" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/ORBoXE/">ioForm: ID, classes, data and other attributes - Setting an element's CSS classes</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+You can do this for fields, layout elements, or even the form itself.
+
+But let's say you want to apply a custom CSS class to an element that's part of a container template. You can't access these elements directly, but you can assign classes to them using the `'classes'` directive.
+
+This directive takes an array of arrays, each with two fields: `element` and `class`. The `element` is an identifier for the element you want to apply the class to. 
+
+Let's say you have a template that looks like this:
+
+```html
+<div>
+	<label></label>
+	<elements/>
+</div>
+```
+
+ioForm automatically refers the 'root' element(s) of a template as the *container* (usually you would only have a single root element -- in the above example that would be the `<div>` element -- but if there's more than one then they're all referred to as the *container*). So if we wanted to apply a class to the `<div>` in this example, we'd use the following syntax:
 
 
+
+```php
+$form = (new \ioForm\Form())
+->FromArray(
+    array(
+        'action' => '/newsletter-form.php',
+        'id' => 'newsletter-form',
+        'elements' => array(
+            array(
+                'label' => 'Your name:',
+                'type' => 'text',
+                'name' => 'name',
+                'classes' => array(
+					array( 
+						'element' => 'container', // Apply classes to the 'container' 
+						'class' => 'my-custom-class' // The class(es) to apply
+					) 
+				)
+            ),
+            array(
+                'label' => 'Your email:',
+                'type' => 'email',
+                'name' => 'email'
+            )
+        ),
+		'templates' => array(
+			'default' => '<div><label></label><elements/></div>'
+		)
+    )
+);
+```
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="amRaWm" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/amRaWm/">ioForm: ID, classes, data and other attributes - custom CSS in templates</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>

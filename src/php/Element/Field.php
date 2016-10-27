@@ -12,6 +12,16 @@ abstract class Field extends \ioForm\Core\Element{
 		'tabindex' => null
 	);
 	protected $help = null;
+	protected $validators = array();
 	public $container_template = 'default';
+	
+	public function Render(){
+		foreach( $this->validators as $validator ){
+			foreach( $validator->GetFormAttributes() as $attribute => $value ){
+				$this->attributes->$attribute = $value;
+			}
+		}
+		return parent::Render();
+	}
 }
 	

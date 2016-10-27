@@ -30,6 +30,8 @@ class Form extends \ioForm\Core\Definition{
 	protected $auto_field_id_prefix = true;
 	
 	protected $auto_field_class = true;
+	
+	protected $values = array();
 
 	public function Render(){
 		if( $this->buttons ){
@@ -40,6 +42,9 @@ class Form extends \ioForm\Core\Definition{
 				$definition->button_type = $button[ 'type' ];
 				if( isset( $button[ 'value' ] ) ){
 					$definition->value = $button[ 'value' ];
+				}
+				if( isset( $button[ 'class' ] ) ){
+					$definition->class = $button[ 'class' ];
 				}
 				$this->elements[] = $definition;
 			}
@@ -72,15 +77,21 @@ class Form extends \ioForm\Core\Definition{
 				if( !isset( $field->classes ) ){
 					$field->classes = array();
 				}
-				$field->classes[] = (object)array( 'element' => 'container', 'classes' => strtolower( $field->type ) );
-
+				$field->classes[] = (object)array( 'element' => 'container', 'class' => strtolower( $field->type ) );
 			}
 		}
 		
 
 		// Create a form element
 		$form = \ioForm\ioForm::CreateElement( $this );
+		$form->Populate( $this->values );
 		return $form->Render();
+	}
+
+	public function SetValues( $values ){
+		foreach( $values as $name => $value ){
+			$this->values[ $name ] = $value;
+		}
 	}
 	
 	/**

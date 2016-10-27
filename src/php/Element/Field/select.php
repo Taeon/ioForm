@@ -23,7 +23,7 @@ class select extends \ioForm\Element\Field{
 					$this->options[ $index ][ 'selected' ] = false;
 				}					
 			} else {
-				if( $element[ 'value' ] == $value ){
+				if( $value !== null && $element[ 'value' ] === $value ){
 					$this->options[ $index ][ 'selected' ] = true;
 				} else {
 					$this->options[ $index ][ 'selected' ] = false;

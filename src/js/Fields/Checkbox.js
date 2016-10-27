@@ -7,11 +7,11 @@ var ioFormFieldCheckbox = function( element ){
 extend( ioFormFieldCheckbox, ioFormField );
 ioFormFieldCheckbox.prototype.SetValue = function( value ){
     this.element.checked = value;
-    this.trigger( 'change' );
-}
+    this.trigger( 'ioform:setvalue' );    
+};
 ioFormFieldCheckbox.prototype.GetValue = function(){
     return this.element.checked;
-}
+};
 
 ioFormUtility = {
     ZeroPad: function( num, numZeros ) {
@@ -24,4 +24,4 @@ ioFormUtility = {
     
         return zeroString+n;
     }
-}
+};

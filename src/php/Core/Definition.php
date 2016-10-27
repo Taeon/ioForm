@@ -11,6 +11,8 @@ class Definition{
 	public $enabled = true;
 	protected $elements = array();
 	protected $templates = array();
+	protected $field_container_template_default = array();
+	public $validators = array();
 	protected $alias_lookup;
 	public $default;
 	public $id;
@@ -61,12 +63,12 @@ class Definition{
 	/**
 	 * Convert an element definition array in an element definition object
 	 *
-	 * @param		array		$element		A definition in the form of an array
+	 * @param		array		$definition_array		A definition in the form of an array
 	 *
 	 * @return		ioform\Core\Definition
 	 */
-	public function FromArray( $element ){
-		return $this->ArrayToDefinition( $element, new Definition() );
+	public function FromArray( $definition_array ){
+		return $this->ArrayToDefinition( $definition_array, new Definition() );
 	}
 
 	/**
@@ -76,44 +78,62 @@ class Definition{
 	 *
 	 * @return		ioform\Core\Definition
 	 */
-	protected function ArrayToDefinition( $element, $element_obj ){
+	protected function ArrayToDefinition( $definition_array, $definition ){
 		// Assign properties
-		foreach( $element as $property => $value ){
+		foreach( $definition_array as $property => $value ){
 			switch( $property ){
 				// Convert classes to objects
-				case 'classes':{
-					foreach( $value as $index => $class ){
-						$value[ $index ] = (object)$class;
+				case 'classes':
+				case 'content':{
+					if( is_array( $value ) ){
+						foreach( $value as $index => $class ){
+							$value[ $index ] = (object)$class;
+						}
 					}
-					$element_obj->$property = $value;
+					$definition->$property = $value;
 					break;
 				}
 				case 'templates':{
 					foreach( $value as $index => $template ){
-						$element_obj->templates[ $index ] = $template;
+						$definition->templates[ $index ] = $template;
 					}
 					break;
 				}
 				case 'elements':{
 					// Convert child elements to definitions
-					foreach( $element[ 'elements' ] as $child_definition ){
+					foreach( $value as $child_definition ){
 						$child = $this->ArrayToDefinition( $child_definition, new Definition() );
-						$element_obj->AddElement( $child );
+						if( $definition->field_container_template_default ){
+							$child->field_container_template_default = array_merge( $child->field_container_template_default, $definition->field_container_template_default );
+						}
+						$definition->AddElement( $child );
+					}
+					break;
+				}
+				case 'validators':{
+					foreach( $value as $validator_definition ){
+						$validator_type = '\\ioValidate\\Validator\\' . $validator_definition[ 'type' ];
+						$validator = new $validator_type( (object)$validator_definition );
+						$definition->validators[] = $validator;
 					}
 					break;
 				}
 				default:{
-					$element_obj->$property = $value;
+					$definition->$property = $value;
 					break;
 				}
 			}
 		}
 		// Is it a field?
-		if( strpos( $element_obj->type, ':' ) === false && isset( $element_obj->name ) && $element_obj->name ){
-			$this->fields[ $element_obj->name ] = $element_obj;
+		if( strpos( $definition->type, ':' ) === false && isset( $definition->name ) && $definition->name ){
+			$this->fields[ $definition->name ] = $definition;
+			// Set default container template for field type
+			if( !isset( $definition->container_template ) && isset( $this->field_container_template_default[ $definition->type ] ) ){
+				$definition->container_template = $this->field_container_template_default[ $definition->type ];
+			}
 		}
 		
-		return $element_obj;
+		return $definition;
 
 	}	
 	
@@ -148,7 +168,26 @@ class Definition{
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Return a field by its name
+	 *
+	 * @param		string		$name
+	 *
+	 * @return		\ioform\Element\Field
+	 */
+	public function HasField( $field_name ){
+		foreach( $this->elements as $element ){
+			if( isset( $element->name ) && $element->name == $field_name ){
+				return true;
+			} else {
+				if( $field = $element->GetField( $field_name ) ){
+					return true;
+				}
+			}
+		}
+		return false;
+	}	
 	
 	/**
 	 * Insert an element before another element

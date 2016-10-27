@@ -21,12 +21,15 @@ ioFormField.prototype = {
             this.trigger( 'ioform:ready', {field:this} );
         }
     },
+    GetName:function(){
+        return this.element.getAttribute( 'name' );
+    },
     GetValue:function(){
         return this.element.value;
     },
     SetValue:function( value ){
         this.element.value = value;
-        this.trigger( 'change' );
+        this.trigger( 'ioform:setvalue' );
     },
     Disable:function(){
         this.element.setAttribute( 'disabled', "" );
@@ -34,4 +37,7 @@ ioFormField.prototype = {
     Enable:function(){
         this.element.removeAttribute( 'disabled' );
     },
+    Reset:function(){
+        // This is a placeholder function
+    }
 }

@@ -15,7 +15,9 @@ abstract class Element{
 	);
 	public $content = '';
 	public $container_template = false;
-	public $container_class = false;
+	protected $element_classes = array();
+	protected $element_content = array();
+	
 	public function GetTag(){
 		return $this->tag . ':' . ((isset($this->type))?$this->type: '');
 	}
@@ -30,7 +32,6 @@ abstract class Element{
 		}
 
 		$this->attributes = (object)$this->attributes;
-		$container_classes = array();
 		if( $element_definition ){
 			foreach( $element_definition as $name => $value ){
 				switch( $name ){
@@ -49,18 +50,15 @@ abstract class Element{
 									switch( $class->element ){
 										// The field itself. This isn't required -- just miss out the 'element' property
 										case 'element':{
-											$this->AddClass( $class->classes );
+											$this->AddClass( $class->class );
 											break;
 										}
 										// Anything else
-										case 'container':{								
-											$container_classes[] = $class->classes;
-											break;
-										}
-										// Anything else
-										default:{								
-// Store for later e.g. help
-											//$container_classes[] = $class->classes;
+										default:{
+											if( !isset( $this->element_classes[ $class->element ] ) ){
+												$this->element_classes[ $class->element ] =array();
+											}
+											$this->element_classes[ $class->element ][] = $class->class;
 											break;
 										}
 									}
@@ -71,6 +69,38 @@ abstract class Element{
 						} else {
 							// It's a string
 							$this->AddClass( $element_definition->classes );
+						}
+
+						break;
+					}
+					case 'content':{
+						if( is_array( $element_definition->content ) ){
+							// It's a list of objects with content details
+							foreach( $element_definition->content as $content ){
+								// By default it's added to the element utself, unless the 'element' property dictates otherwse
+								if( isset( $content->element ) && $content->element ){
+									switch( $content->element ){
+										// The field itself. This isn't required -- just miss out the 'element' property
+										case 'element':{
+											$this->content = $content->content;
+											break;
+										}
+										// Anything else
+										default:{
+											if( !isset( $this->element_content[ $content->element ] ) ){
+												$this->element_content[ $content->element ] = array();
+											}
+											$this->element_content[ $content->element ][] = $content->content;
+											break;
+										}
+									}
+								} else {
+									$this->content = $content->content;
+								}
+							}
+						} else {
+							// It's a string
+							$this->content = $element_definition->content;
 						}
 
 						break;
@@ -98,6 +128,7 @@ abstract class Element{
 				$this->AddElement( $element );
 			}		
 		}
+
 		$this->container = false;
 		if($this->container_template){
 			// Wrap in container
@@ -117,9 +148,6 @@ abstract class Element{
 			} else {
 				// Don't show a label
 				$this->container->SetLabel( null, $this );
-			}
-			foreach( $container_classes as $class ){
-				$this->container->AddClass($class);
 			}
 		}
 	}
@@ -206,13 +234,13 @@ abstract class Element{
 		
 		// Does it have a container?
 		if( $this->container ){
-			$temp = 				\ioForm\ioForm::CreateElement(
-					( new \ioForm\Core\Definition )->FromArray(
-						array(
-							'type'=>'Core:BaseElement'
-						)
+			$temp = \ioForm\ioForm::CreateElement(
+				( new \ioForm\Core\Definition )->FromArray(
+					array(
+						'type'=>'Core:BaseElement'
 					)
-				);
+				)
+			);
 			$this->container->AddElement(
 				$temp
 			);
@@ -231,7 +259,7 @@ abstract class Element{
 							)
 						)
 					);
-					$this->container->AddElement( $help );				
+					$this->container->AddElement( $help, 'help' );
 				}
 				$help_id = $this->attributes->id . '-help';
 				$help->SetAttribute( 'id', $help_id );
@@ -240,6 +268,20 @@ abstract class Element{
 				if( $this->container && $help = $this->container->GetByAlias( 'help' ) ){
 					$help->enabled = false;
 				}
+			}
+			
+			if( $this->container ){
+				// Apply classes for elements within container
+				foreach( $this->element_classes as $element => $classes ){
+					foreach( $classes as $class ){
+						$this->container->GetByAlias( $element )->AddClass( $class );
+					}
+				}				
+				foreach( $this->element_content as $element => $contents ){
+					foreach( $contents as $content ){
+						$this->container->GetByAlias( $element )->content .= $content;
+					}
+				}				
 			}
 		}
 
@@ -276,7 +318,7 @@ abstract class Element{
 			$attributes_strings = array();
 			if( count( $attributes ) > 0 ){
 				foreach( $attributes as $attribute => $value ){
-					$attributes_strings[] = $attribute . '="' . htmlentities( $value ) . '"';
+					$attributes_strings[] = $attribute . ((is_bool($value))?'':'="' . htmlentities( $value ) . '"');
 				}
 			}
 			$output .= '<' . $this->tag . ((count($attributes_strings) > 0)?' ':'') . implode( ' ', $attributes_strings);

@@ -7,6 +7,7 @@ module.exports = function(grunt) {
                     separator: ';\n'
                 },
                 src: [
+                    'src/js/utils.js',
                     'src/js/ioForm.js',
                     'src/js/Field.js',
                     'src/js/Fields/*.js'
