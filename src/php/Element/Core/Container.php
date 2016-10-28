@@ -70,7 +70,7 @@ class Container extends \ioForm\Core\Element{
 	public function SetLabel( $label, $field ){
 		
 		// No label
-		if( $label === null ){
+		if( $label === null && isset( $this->lookup->label ) ){
 			$this->lookup->label->enabled = false;
 			return;
 		}
