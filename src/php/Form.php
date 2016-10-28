@@ -19,6 +19,7 @@ class Form extends \ioForm\Core\Definition{
 		'default' => '<label></label><elements/>',
 		'radio-button' => '<elements/><label></label>'
 	);	
+	protected $buttons_container = 'buttons';	
 	protected $buttons = array(
 		array( 'type' => 'submit', 'value' => 'Submit' )
 	);	
@@ -46,6 +47,10 @@ class Form extends \ioForm\Core\Definition{
 				if( isset( $button[ 'class' ] ) ){
 					$definition->class = $button[ 'class' ];
 				}
+				if( $this->buttons_container ){
+					$definition->container_template = $this->buttons_container;
+				}
+				$definition->parent = $this;
 				$this->elements[] = $definition;
 			}
 			$this->buttons = array();

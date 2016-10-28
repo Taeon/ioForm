@@ -1,5 +1,6 @@
 # Exclude these files from releases
 /docs export-ignore
+.git export-ignore
 .gitignore export-ignore
 .gitattributes export-ignore
 Gruntfile.js export-ignore
