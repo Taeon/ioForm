@@ -37,6 +37,15 @@ class Form extends \ioForm\Core\Definition{
 	public function Render(){
 		if( $this->buttons ){
 			$buttons = array();
+			if( $this->buttons_container ){
+				$container = new \ioForm\Core\Definition();
+				$container->type = 'layout';
+				$container->parent = $this;
+				$container->container_template = $this->buttons_container;
+				$this->elements[] = $container;
+			} else {
+				$container = $this;
+			}
 			foreach( $this->buttons as $button ){
 				$definition = new \ioForm\Core\Definition();
 				$definition->type = 'button';
@@ -47,11 +56,8 @@ class Form extends \ioForm\Core\Definition{
 				if( isset( $button[ 'class' ] ) ){
 					$definition->class = $button[ 'class' ];
 				}
-				if( $this->buttons_container ){
-					$definition->container_template = $this->buttons_container;
-				}
-				$definition->parent = $this;
-				$this->elements[] = $definition;
+				$definition->parent = $container;
+				$container->elements[] = $definition;
 			}
 			$this->buttons = array();
 		}
