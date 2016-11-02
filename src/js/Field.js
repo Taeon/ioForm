@@ -24,7 +24,7 @@ ioFormField.prototype = {
     GetName:function(){
         return this.element.getAttribute( 'name' );
     },
-    GetValue:function(){
+    GetValue:function( raw ){
         return this.element.value;
     },
     SetValue:function( value ){

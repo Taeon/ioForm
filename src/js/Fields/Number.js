@@ -11,6 +11,10 @@ extend( ioFormFieldNumber, ioFormField );
  *
  * @return      Date
  */
-ioFormFieldNumber.prototype.GetValue = function(){
+ioFormFieldNumber.prototype.GetValue = function( raw ){
+    if( typeof raw !== 'undefined' && raw ){
+        return this.element.value;
+    }
+   
     return +this.element.value; // Convert string to number
 }

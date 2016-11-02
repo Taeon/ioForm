@@ -15,7 +15,7 @@ ioFormFieldRadio.prototype.SetValue = function( value ){
     }
     this.trigger( 'ioform:setvalue' );
 };
-ioFormFieldRadio.prototype.GetValue = function(){
+ioFormFieldRadio.prototype.GetValue = function( raw ){
     for( var i = 0; i < this.element.length; i++ ){
         if ( this.element[ i ].checked ) {
             return this.element[ i ].value;

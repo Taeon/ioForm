@@ -162,12 +162,12 @@
                 }
                 return null;
             },
-            GetValues: function(){
+            GetValues: function( raw ){
                 var values = {};
                 for( var field_name in this.fields ){
                     if( this.fields.hasOwnProperty( field_name ) ){
                         var field = this.fields[ field_name ];
-                        values[ field_name ] = field.GetValue();
+                        values[ field_name ] = field.GetValue( raw );
                     }
                 }
                 return values;

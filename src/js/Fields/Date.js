@@ -39,9 +39,13 @@ ioFormFieldDate.prototype.SetValue = function( date ){
  *
  * @return      Date
  */
-ioFormFieldDate.prototype.GetValue = function(){
+ioFormFieldDate.prototype.GetValue = function( raw ){
+    if( typeof raw !== 'undefined' && raw ){
+        return this.element.value;
+    }
+
     // Convert value to date object
-    var value = new Date( Date.parse(this.element.value) );
+    var value = new Date( Date.parse( this.GetValue( true ) ) );
     // Make sure it's valid
     if ( value.toString() != 'Invalid Date' ) {
         return value;

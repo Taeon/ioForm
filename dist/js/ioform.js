@@ -290,12 +290,12 @@ var Events = {
                 }
                 return null;
             },
-            GetValues: function(){
+            GetValues: function( raw ){
                 var values = {};
                 for( var field_name in this.fields ){
                     if( this.fields.hasOwnProperty( field_name ) ){
                         var field = this.fields[ field_name ];
-                        values[ field_name ] = field.GetValue();
+                        values[ field_name ] = field.GetValue( raw );
                     }
                 }
                 return values;
@@ -343,7 +343,7 @@ ioFormField.prototype = {
     GetName:function(){
         return this.element.getAttribute( 'name' );
     },
-    GetValue:function(){
+    GetValue:function( raw ){
         return this.element.value;
     },
     SetValue:function( value ){
@@ -371,7 +371,11 @@ ioFormFieldCheckbox.prototype.SetValue = function( value ){
     this.element.checked = value;
     this.trigger( 'ioform:setvalue' );    
 };
-ioFormFieldCheckbox.prototype.GetValue = function(){
+ioFormFieldCheckbox.prototype.GetValue = function( raw ){
+    if( typeof raw !== 'undefined' && raw ){
+        return ((this.element.checked)?1:0);
+    }
+
     return this.element.checked;
 };
 
@@ -428,9 +432,13 @@ ioFormFieldDate.prototype.SetValue = function( date ){
  *
  * @return      Date
  */
-ioFormFieldDate.prototype.GetValue = function(){
+ioFormFieldDate.prototype.GetValue = function( raw ){
+    if( typeof raw !== 'undefined' && raw ){
+        return this.element.value;
+    }
+
     // Convert value to date object
-    var value = new Date( Date.parse(this.element.value) );
+    var value = new Date( Date.parse( this.GetValue( true ) ) );
     // Make sure it's valid
     if ( value.toString() != 'Invalid Date' ) {
         return value;
@@ -451,7 +459,11 @@ extend( ioFormFieldNumber, ioFormField );
  *
  * @return      Date
  */
-ioFormFieldNumber.prototype.GetValue = function(){
+ioFormFieldNumber.prototype.GetValue = function( raw ){
+    if( typeof raw !== 'undefined' && raw ){
+        return this.element.value;
+    }
+   
     return +this.element.value; // Convert string to number
 }
 ;
@@ -472,7 +484,7 @@ ioFormFieldRadio.prototype.SetValue = function( value ){
     }
     this.trigger( 'ioform:setvalue' );
 };
-ioFormFieldRadio.prototype.GetValue = function(){
+ioFormFieldRadio.prototype.GetValue = function( raw ){
     for( var i = 0; i < this.element.length; i++ ){
         if ( this.element[ i ].checked ) {
             return this.element[ i ].value;
@@ -498,7 +510,7 @@ var ioFormFieldSelect = function( element ){
     ioFormField.call( this, element );
 };
 extend( ioFormFieldSelect, ioFormField );
-ioFormFieldSelect.prototype.GetValue = function(){
+ioFormFieldSelect.prototype.GetValue = function( raw ){
     var selected = this.element.querySelectorAll( 'option:checked' );
     // Select multiple fields return an array of values
     if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {

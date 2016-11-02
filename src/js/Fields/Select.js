@@ -5,7 +5,7 @@ var ioFormFieldSelect = function( element ){
     ioFormField.call( this, element );
 };
 extend( ioFormFieldSelect, ioFormField );
-ioFormFieldSelect.prototype.GetValue = function(){
+ioFormFieldSelect.prototype.GetValue = function( raw ){
     var selected = this.element.querySelectorAll( 'option:checked' );
     // Select multiple fields return an array of values
     if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {
