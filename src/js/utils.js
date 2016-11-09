@@ -1,7 +1,9 @@
-if (typeof Object.create !== 'function') {
-    Object.create = function (o) {function F() {}F.prototype = o;return new F();};
+if( typeof extend !== 'function' ){
+	if (typeof Object.create !== 'function') {
+		Object.create = function (o) {function F() {}F.prototype = o;return new F();};
+	}
+	var extend = function(ch, p) {var cp = Object.create(p.prototype);cp.constructor = ch;ch.prototype = cp;};
 }
-function extend(ch, p) {var cp = Object.create(p.prototype);cp.constructor = ch;ch.prototype = cp;}
 
 var Events = {
 	/**
@@ -69,8 +71,8 @@ var Events = {
 			}
 			
 			var detail = {};
-			var bubbles = false;
-			var cancelable = false;
+			var bubbles = true;
+			var cancelable = true;
 			for ( var index in params ) {
 				if( params.hasOwnProperty( index ) ){
 					switch ( index ) {

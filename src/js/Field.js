@@ -21,6 +21,9 @@ ioFormField.prototype = {
             this.trigger( 'ioform:ready', {field:this} );
         }
     },
+    GetElement:function(){
+        return this.element;  
+    },
     GetName:function(){
         return this.element.getAttribute( 'name' );
     },

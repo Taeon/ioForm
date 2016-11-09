@@ -1,7 +1,9 @@
-if (typeof Object.create !== 'function') {
-    Object.create = function (o) {function F() {}F.prototype = o;return new F();};
+if( typeof extend !== 'function' ){
+	if (typeof Object.create !== 'function') {
+		Object.create = function (o) {function F() {}F.prototype = o;return new F();};
+	}
+	var extend = function(ch, p) {var cp = Object.create(p.prototype);cp.constructor = ch;ch.prototype = cp;};
 }
-function extend(ch, p) {var cp = Object.create(p.prototype);cp.constructor = ch;ch.prototype = cp;}
 
 var Events = {
 	/**
@@ -69,8 +71,8 @@ var Events = {
 			}
 			
 			var detail = {};
-			var bubbles = false;
-			var cancelable = false;
+			var bubbles = true;
+			var cancelable = true;
 			for ( var index in params ) {
 				if( params.hasOwnProperty( index ) ){
 					switch ( index ) {
@@ -256,7 +258,9 @@ var Events = {
                 date: 'Date',
                 number: 'Number',
             },
-            
+            GetElement:function(){
+                return this.form; 
+            },
             onFieldReady:function(){
                 // Check that all fields are ready and then trigger ready event
                 for ( var field_name in this.fields ) {
@@ -276,6 +280,9 @@ var Events = {
             },
             HasField: function( field_name ){
                 return typeof this.fields[ field_name ] !== 'undefined';
+            },
+            GetFields: function(){
+                return this.fields;
             },
             GetField: function( field_name ){
                 if ( this.HasField( field_name ) ) {
@@ -304,6 +311,9 @@ var Events = {
                 if ( this.HasField( field_name ) ) {
                     this.fields[ field_name ].SetValue( value );
                 }
+            },
+            Submit:function(){
+                this.trigger( 'submit' );                
             },
             Reset:function(){
                 this.form.reset();
@@ -339,6 +349,9 @@ ioFormField.prototype = {
         if ( this.ready ) {
             this.trigger( 'ioform:ready', {field:this} );
         }
+    },
+    GetElement:function(){
+        return this.element;  
     },
     GetName:function(){
         return this.element.getAttribute( 'name' );

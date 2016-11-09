@@ -128,7 +128,9 @@
                 date: 'Date',
                 number: 'Number',
             },
-            
+            GetElement:function(){
+                return this.form; 
+            },
             onFieldReady:function(){
                 // Check that all fields are ready and then trigger ready event
                 for ( var field_name in this.fields ) {
@@ -148,6 +150,9 @@
             },
             HasField: function( field_name ){
                 return typeof this.fields[ field_name ] !== 'undefined';
+            },
+            GetFields: function(){
+                return this.fields;
             },
             GetField: function( field_name ){
                 if ( this.HasField( field_name ) ) {
@@ -176,6 +181,9 @@
                 if ( this.HasField( field_name ) ) {
                     this.fields[ field_name ].SetValue( value );
                 }
+            },
+            Submit:function(){
+                this.trigger( 'submit' );                
             },
             Reset:function(){
                 this.form.reset();

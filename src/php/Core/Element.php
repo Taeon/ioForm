@@ -105,6 +105,12 @@ abstract class Element{
 
 						break;
 					}
+					case 'attributes':{
+						foreach( $value as $key => $value ){
+							$this->attributes->$key = $value;
+						}
+						break;
+					}
 					case 'type':{
 						// Do nothing
 						break;
