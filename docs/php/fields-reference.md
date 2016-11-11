@@ -193,7 +193,31 @@ Example:
 array(
 	'type' => 'email',
 	'name' => 'your_email',
-	'label' => 'Enter your email',
-	'id' => 'field_email',
+	'label' => 'Enter your email'
 )
+```
+
+```html
+<label for="your_email" class="email">Enter your email</label>
+<input type="email" id="your_email" name="your_email"/>
+```
+
+## date
+
+A date input field. HTML5 only. 
+
+**Beware** when using `date` fields: behaviour varies widely across browsers. All mobile browsers (that I'm aware of) have pretty pop-up datepickers. But while some desktop browsers do implement a datepicker, others don't. And (as of the time of writing) they're all pretty ugly. You should strongly consider using some kind of prettified datepicker for desktop browsers (but don't ask me which one...).   
+
+Example:
+```php
+array(
+	'label' => 'Enter date:',
+	'type' => 'date',
+	'name' => 'my_date'
+)
+```
+
+```html
+<label for="my_date" class="date">Enter date:</label>
+<input type="date" id="my_date" name="my_date"/>
 ```
