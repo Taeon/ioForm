@@ -199,7 +199,7 @@
 <p>ioForm gives you complete control of the layout of your form, through a combination of simple but flexible templates and the use of structural elements.</p>
 <h2 id="structural-elements">Structural elements</h2>
 <p>So far, we've only added field elements to our form. But there's nothing stopping you from creating a more complex layout, through the use of structural elements.</p>
-<p>While you can use pretty much any markup you like within a form, if you're looking to follow best practice then in most cases, to break up a form you would use the <code>&lt;fieldset&gt;</code> element. In the case of layout elements, you just have to tell ioForm that it's a layout type of element, rather than a field. </p>
+<p>While you can use pretty much any markup you like within a form, if you're looking to follow best practice then in most cases, to break up a form you would use the <code>&lt;fieldset&gt;</code> element. In the case of layout elements, you just have to tell ioForm that it's a layout type of element, rather than a field.</p>
 <p>So for a fieldset, you need to enter <em>'layout:fieldset'</em>.  </p>
 <p>Just like the main <code>&lt;form&gt;</code> itself, a fieldset can accept a list of elements.</p>
 <pre><code class="php">$form = (new \ioForm\Form())
@@ -318,7 +318,7 @@
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 <h2 id="templates">Templates</h2>
-<p>Structural elements are all very well, but if you're looking to add consistent markup to lots of fields, it would quickly become very laborious indeed. Luckily, ioForm offers a template system that makes it very easy to wrap custom markup around field elements. </p>
+<p>Structural elements are all very well, but if you're looking to add consistent markup to lots of fields, it would quickly become very laborious indeed. Luckily, ioForm offers a template system that makes it very easy to wrap custom markup around field elements.</p>
 <p>It's might not be obvious from the example code you've seen so far, but when it renders a form ioForm automatically wraps each field element in a 'container template'. The default container template looks like this:</p>
 <pre><code class="html">&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;
 </code></pre>
@@ -357,7 +357,7 @@
         ),
         'templates' =&gt; array(
             // This is now our default field container
-            'default' =&gt; '&lt;div&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;' 
+            'default' =&gt; '&lt;div&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;'
         )
     )
 );
@@ -368,7 +368,7 @@
 
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
-<p>...OK it's still not going to win any design awards, but you get the idea. </p>
+<p>...OK it's still not going to win any design awards, but you get the idea.</p>
 <p>You can do pretty much whatever you want in a template, as long as you include the <code>&lt;elements/&gt;</code> marker. So for example, with this form we have a field that requires a textual prefix/suffix:</p>
 <pre><code class="php">$form = (new \ioForm\Form())
 -&gt;FromArray(
@@ -393,7 +393,7 @@
         'templates' =&gt; array(
             'default' =&gt; '&lt;div class=&quot;form-row&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;',
             // Our special template for price fields
-            'price' =&gt; '&lt;div class=&quot;form-row&quot;&gt;&lt;label&gt;&lt;/label&gt; $&lt;elements/&gt; + TAX&lt;/div&gt;' 
+            'price' =&gt; '&lt;div class=&quot;form-row&quot;&gt;&lt;label&gt;&lt;/label&gt; $&lt;elements/&gt; + TAX&lt;/div&gt;'
         )
     )
 );
@@ -429,7 +429,7 @@
         ),
         'templates' =&gt; array(
             'default' =&gt; '&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;',
-            'price' =&gt; '&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;div class=&quot;input-group&quot;&gt;&lt;div class=&quot;input-group-addon&quot;&gt;$&lt;/div&gt;&lt;elements/&gt;&lt;div class=&quot;input-group-addon&quot;&gt;+ TAX&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'  // Extra markup for prefix and suffix elements 
+            'price' =&gt; '&lt;div class=&quot;form-group&quot;&gt;&lt;label&gt;&lt;/label&gt;&lt;div class=&quot;input-group&quot;&gt;&lt;div class=&quot;input-group-addon&quot;&gt;$&lt;/div&gt;&lt;elements/&gt;&lt;div class=&quot;input-group-addon&quot;&gt;+ TAX&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'  // Extra markup for prefix and suffix elements
         )
     )
 );

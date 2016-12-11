@@ -185,7 +185,12 @@
     
         <li class="main active"><a href="#field-types-reference">Field types reference</a></li>
         
+    
+        <li class="main "><a href="#standard-elements">Standard elements</a></li>
+        
             <li><a href="#text">text</a></li>
+        
+            <li><a href="#textarea">textarea</a></li>
         
             <li><a href="#checkbox">checkbox</a></li>
         
@@ -197,10 +202,36 @@
         
             <li><a href="#file">file</a></li>
         
+            <li><a href="#password">password</a></li>
+        
+            <li><a href="#hidden">hidden</a></li>
+        
     
         <li class="main "><a href="#html5-elements">HTML5 elements</a></li>
         
             <li><a href="#email">email</a></li>
+        
+            <li><a href="#number">number</a></li>
+        
+            <li><a href="#date">date</a></li>
+        
+            <li><a href="#datetime_local">datetime_local</a></li>
+        
+            <li><a href="#month">month</a></li>
+        
+            <li><a href="#week">week</a></li>
+        
+            <li><a href="#time">time</a></li>
+        
+            <li><a href="#url">url</a></li>
+        
+            <li><a href="#telephone">telephone</a></li>
+        
+            <li><a href="#range">range</a></li>
+        
+            <li><a href="#search">search</a></li>
+        
+            <li><a href="#color">color</a></li>
         
     
     </ul>
@@ -209,6 +240,7 @@
 
 <h1 id="field-types-reference">Field types reference</h1>
 <p>Below is a list of all field types supported by ioForm. For convenience, example definitions are given as arrays.</p>
+<h1 id="standard-elements">Standard elements</h1>
 <h2 id="text">text</h2>
 <p>A text input field.</p>
 <p>Example:</p>
@@ -226,6 +258,24 @@
 
 <hr />
 <p><label for="my_text">My text:</label><input type="text" id="my_text" name="my_text"/></p>
+<hr />
+<h2 id="textarea">textarea</h2>
+<p>Box for entering multiline text.</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter some text',
+    'type' =&gt; 'textarea',
+    'name' =&gt; 'my_textarea'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_textarea&quot; class=&quot;textarea&quot;&gt;Enter some text&lt;/label&gt;
+&lt;textarea rows=&quot;2&quot; cols=&quot;20&quot; id=&quot;my_textarea&quot; name=&quot;my_textarea&quot;&gt;&lt;/textarea&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_textarea" class="textarea">Enter some text</label>
+<textarea rows="2" cols="20" id="my_textarea" name="my_textarea"></textarea></p>
 <hr />
 <h2 id="checkbox">checkbox</h2>
 <p>A checkbox field.</p>
@@ -345,18 +395,263 @@
 <hr />
 <p><label for="my_file_field">My file upload field</label><input type="file" id="my_file_field" name="my_file_field"/></p>
 <hr />
+<h2 id="password">password</h2>
+<p>A password field.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter password:',
+    'type' =&gt; 'password',
+    'name' =&gt; 'my_password'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">    &lt;label for=&quot;my_password&quot; class=&quot;password&quot;&gt;Enter password:&lt;/label&gt;
+    &lt;input type=&quot;password&quot; id=&quot;my_password&quot; name=&quot;my_password&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_password" class="password">Enter password:</label>
+<input type="password" id="my_password" name="my_password"/></p>
+<hr />
+<h2 id="hidden">hidden</h2>
+<p>A hidden field. Since it's not visible, it needs no label.</p>
+<pre><code class="php">array(
+    'type' =&gt; 'hidden',
+    'name' =&gt; 'my_hidden_value'
+)
+</code></pre>
+
+<pre><code class="html"> &lt;input type=&quot;hidden&quot; name=&quot;my_hidden_value&quot;/&gt;
+</code></pre>
+
+<hr />
 <h1 id="html5-elements">HTML5 elements</h1>
 <p>These are elements implemented in HTML5 only. Note that if you're intending to support older browsers (e.g. IE9) then you'll need to either avoid using these elements, or find a suitable polyfill.</p>
 <h2 id="email">email</h2>
-<p>An email input field. HTML5 only. Will automatically validate input unless <code>novalidate</code> is specified.</p>
+<p>An email input field. Will automatically validate input unless <code>novalidate</code> is specified.</p>
 <p>Example:</p>
 <pre><code class="php">array(
     'type' =&gt; 'email',
     'name' =&gt; 'your_email',
-    'label' =&gt; 'Enter your email',
-    'id' =&gt; 'field_email',
+    'label' =&gt; 'Enter your email'
 )
-</code></pre></div>
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;your_email&quot;&gt;Enter your email&lt;/label&gt;
+&lt;input type=&quot;email&quot; id=&quot;your_email&quot; name=&quot;your_email&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="your_email">Enter your email</label>
+<input type="email" id="your_email" name="your_email"/></p>
+<hr />
+<h2 id="number">number</h2>
+<p>A number field. Will automatically validate unless <code>novalidate</code> is specified.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter number:',
+    'type' =&gt; 'number',
+    'name' =&gt; 'my_number'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">    &lt;label for=&quot;my_number&quot;&gt;Enter number:&lt;/label&gt;
+    &lt;input type=&quot;number&quot; id=&quot;my_number&quot; name=&quot;my_number&quot;/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_number">Enter number:</label>
+<input type="number" id="my_number" name="my_number"/></p>
+<hr />
+<h2 id="date">date</h2>
+<p>A date input field.</p>
+<p><strong>Beware</strong> when using <code>date</code> fields: behaviour varies widely across browsers. All mobile browsers (that I'm aware of) have pretty pop-up datepickers. But while some desktop browsers do implement a datepicker, others don't. And (as of the time of writing) they're all pretty ugly. You should strongly consider using some kind of prettified datepicker for desktop browsers (but don't ask me which one...).   </p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter date:',
+    'type' =&gt; 'date',
+    'name' =&gt; 'my_date'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_date&quot;&gt;Enter date:&lt;/label&gt;
+&lt;input type=&quot;date&quot; id=&quot;my_date&quot; name=&quot;my_date&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_date">Enter date:</label>
+<input type="date" id="my_date" name="my_date"/></p>
+<hr />
+<h2 id="datetime_local">datetime_local</h2>
+<p>A field for entering date and time. As with the <code>date</code> field, use with caution as behaviour varies widely across browsers.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter date/time:',
+    'type' =&gt; 'datetime_local',
+    'name' =&gt; 'my_datetime'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_datetime&quot;&gt;Enter date/time:&lt;/label&gt;
+&lt;input type=&quot;datetime-local&quot; id=&quot;my_datetime&quot; name=&quot;my_datetime&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_datetime">Enter date/time:</label>
+<input type="datetime-local" id="my_datetime" name="my_datetime"/></p>
+<h2 id="month">month</h2>
+<p>A field for entering a month. Beware of variations in browser behaviour.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter month:',
+    'type' =&gt; 'month',
+    'name' =&gt; 'my_month'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_month&quot;&gt;Enter month:&lt;/label&gt;
+&lt;input type=&quot;month&quot; id=&quot;my_month&quot; name=&quot;my_month&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_month">Enter month:</label>
+<input type="month" id="my_month" name="my_month"/></p>
+<h2 id="week">week</h2>
+<p>A field for entering a week. Beware of variations in browser behaviour.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter week:',
+    'type' =&gt; 'week',
+    'name' =&gt; 'my_week'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_week&quot;&gt;Enter week:&lt;/label&gt;
+&lt;input type=&quot;week&quot; id=&quot;my_week&quot; name=&quot;my_week&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_week">Enter week:</label>
+<input type="week" id="my_week" name="my_week"/></p>
+<h2 id="time">time</h2>
+<p>A field for entering a time value. Beware of variations in browser behaviour.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter time:',
+    'type' =&gt; 'time',
+    'name' =&gt; 'my_time'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_time&quot;&gt;Enter time:&lt;/label&gt;
+&lt;input type=&quot;time&quot; id=&quot;my_time&quot; name=&quot;my_time&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_time">Enter time:</label>
+<input type="time" id="my_time" name="my_time"/></p>
+<h2 id="url">url</h2>
+<p>A field for entering a URL.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter URL:',
+    'type' =&gt; 'url',
+    'name' =&gt; 'my_url'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_url&quot;&gt;Enter URL:&lt;/label&gt;
+&lt;input type=&quot;url&quot; id=&quot;my_url&quot; name=&quot;my_url&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_url">Enter URL:</label>
+<input type="url" id="my_url" name="my_url"/></p>
+<h2 id="telephone">telephone</h2>
+<p>A field for entering a phone number. On mobile phones, this will (usually) open a numeric keypad.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter phone number:',
+    'type' =&gt; 'phone',
+    'name' =&gt; 'my_phone'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_phone&quot;&gt;Enter phone number:&lt;/label&gt;
+&lt;input type=&quot;tel&quot; id=&quot;my_phone&quot; name=&quot;my_phone&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_phone" class="telephone">Enter phone number:</label>
+<input type="tel" id="my_phone" name="my_phone"/></p>
+<h2 id="range">range</h2>
+<p>A field for selecting a value from a range (using a slider). Attributes <code>min</code>, <code>max</code> and <code>step</code> are all optional.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Choose value:',
+    'type' =&gt; 'range',
+    'name' =&gt; 'my_range_value',
+    'min' =&gt; 10, // Minimum value
+    'max' =&gt; 20, // Maximum value
+    'step' =&gt; 2 // Interval between values
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_range_value&quot;&gt;Choose value:&lt;/label&gt;
+&lt;input type=&quot;range&quot; id=&quot;my_range_value&quot; name=&quot;my_range_value&quot; min=&quot;10&quot; max=&quot;20&quot; step=&quot;2&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_range_value">Choose value:</label>
+<input type="range" id="my_range_value" name="my_range_value" min="10" max="20" step="2"/></p>
+<h2 id="search">search</h2>
+<p>A field for entering a search query. From what I can tell, the effect of this is that when you use an on-screen keyboard (e.g. on a mobile phone or tablet) it will display a slightly different 'enter' key.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Enter query:',
+    'type' =&gt; 'search',
+    'name' =&gt; 'my_search_query'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_search_query&quot;&gt;Enter query:&lt;/label&gt;
+&lt;input type=&quot;search&quot; id=&quot;my_search_query&quot; name=&quot;my_search_query&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_search_query">Enter query:</label>
+<input type="search" id="my_search_query" name="my_search_query"/></p>
+<h2 id="color">color</h2>
+<p>A field for selecting a colour. Beware variations in browser behaviour.</p>
+<p>Example:</p>
+<pre><code class="php">array(
+    'label' =&gt; 'Select colour:',
+    'type' =&gt; 'color',
+    'name' =&gt; 'my_color'
+)
+</code></pre>
+
+<p>Result:</p>
+<pre><code class="html">&lt;label for=&quot;my_color&quot;&gt;Select colour:&lt;/label&gt;
+&lt;input type=&quot;color&quot; id=&quot;my_color&quot; name=&quot;my_color&quot;/&gt;
+</code></pre>
+
+<hr />
+<p><label for="my_color">Select colour:</label>
+<input type="color" id="my_color" name="my_color"/></p></div>
             
         </div>
 

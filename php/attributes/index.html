@@ -282,7 +282,78 @@
 
 <p data-height="265" data-theme-id="dark" data-slug-hash="pEONmK" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/pEONmK/">ioForm: ID, classes, data and other attributes - overriding automatic ID</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 
-<h2 id="setting-an-elements-css-classes">Setting an element's CSS classes</h2></div>
+<h2 id="setting-an-elements-css-classes">Setting an element's CSS classes</h2>
+<p>Adding a class to any element is simple -- just set the class: </p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'id' =&gt; 'newsletter-form',
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Your name:',
+                'type' =&gt; 'text',
+                'name' =&gt; 'name',
+                'class' =&gt; 'my-custom-class', // Easy as that
+            ),
+            array(
+                'label' =&gt; 'Your email:',
+                'type' =&gt; 'email',
+                'name' =&gt; 'email'
+            )
+        )
+    )
+);
+</code></pre>
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="ORBoXE" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/ORBoXE/">ioForm: ID, classes, data and other attributes - Setting an element's CSS classes</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>You can do this for fields, layout elements, or even the form itself.</p>
+<p>But let's say you want to apply a custom CSS class to an element that's part of a container template. You can't access these elements directly, but you can assign classes to them using the <code>'classes'</code> directive.</p>
+<p>This directive takes an array of arrays, each with two fields: <code>element</code> and <code>class</code>. The <code>element</code> is an identifier for the element you want to apply the class to. </p>
+<p>Let's say you have a template that looks like this:</p>
+<pre><code class="html">&lt;div&gt;
+    &lt;label&gt;&lt;/label&gt;
+    &lt;elements/&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>ioForm automatically refers the 'root' element(s) of a template as the <em>container</em> (usually you would only have a single root element -- in the above example that would be the <code>&lt;div&gt;</code> element -- but if there's more than one then they're all referred to as the <em>container</em>). So if we wanted to apply a class to the <code>&lt;div&gt;</code> in this example, we'd use the following syntax:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'id' =&gt; 'newsletter-form',
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Your name:',
+                'type' =&gt; 'text',
+                'name' =&gt; 'name',
+                'classes' =&gt; array(
+                    array( 
+                        'element' =&gt; 'container', // Apply classes to the 'container' 
+                        'class' =&gt; 'my-custom-class' // The class(es) to apply
+                    ) 
+                )
+            ),
+            array(
+                'label' =&gt; 'Your email:',
+                'type' =&gt; 'email',
+                'name' =&gt; 'email'
+            )
+        ),
+        'templates' =&gt; array(
+            'default' =&gt; '&lt;div&gt;&lt;label&gt;&lt;/label&gt;&lt;elements/&gt;&lt;/div&gt;'
+        )
+    )
+);
+</code></pre>
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="amRaWm" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/amRaWm/">ioForm: ID, classes, data and other attributes - custom CSS in templates</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script></div>
             
         </div>
 
