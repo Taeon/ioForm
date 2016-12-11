@@ -8,7 +8,7 @@ ioForm gives you complete control of the layout of your form, through a combinat
 
 So far, we've only added field elements to our form. But there's nothing stopping you from creating a more complex layout, through the use of structural elements.
 
-While you can use pretty much any markup you like within a form, if you're looking to follow best practice then in most cases, to break up a form you would use the `<fieldset>` element. In the case of layout elements, you just have to tell ioForm that it's a layout type of element, rather than a field. 
+While you can use pretty much any markup you like within a form, if you're looking to follow best practice then in most cases, to break up a form you would use the `<fieldset>` element. In the case of layout elements, you just have to tell ioForm that it's a layout type of element, rather than a field.
 
 So for a fieldset, you need to enter *'layout:fieldset'*.  
 
@@ -132,7 +132,7 @@ $form = (new \ioForm\Form())
 
 ## Templates
 
-Structural elements are all very well, but if you're looking to add consistent markup to lots of fields, it would quickly become very laborious indeed. Luckily, ioForm offers a template system that makes it very easy to wrap custom markup around field elements. 
+Structural elements are all very well, but if you're looking to add consistent markup to lots of fields, it would quickly become very laborious indeed. Luckily, ioForm offers a template system that makes it very easy to wrap custom markup around field elements.
 
 It's might not be obvious from the example code you've seen so far, but when it renders a form ioForm automatically wraps each field element in a 'container template'. The default container template looks like this:
 
@@ -177,18 +177,18 @@ $form = (new \ioForm\Form())
         ),
 		'templates' => array(
 			// This is now our default field container
-			'default' => '<div><label></label><elements/></div>' 
+			'default' => '<div><label></label><elements/></div>'
 		)
     )
 );
-``` 
+```
 
 The *default* template is used (by...uh...default) by all fields (except radio button elements -- we'll explore that, later). So with the above code in place, our example form now renders like this:
 
 <p data-height="265" data-theme-id="dark" data-slug-hash="LRBKXW" data-default-tab="html,result" data-user="Taeon" data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/LRBKXW/">ioForm: Customising form layout - a simple template</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
-...OK it's still not going to win any design awards, but you get the idea. 
+...OK it's still not going to win any design awards, but you get the idea.
 
 You can do pretty much whatever you want in a template, as long as you include the `<elements/>` marker. So for example, with this form we have a field that requires a textual prefix/suffix:
 
@@ -216,11 +216,11 @@ $form = (new \ioForm\Form())
 		'templates' => array(
 			'default' => '<div class="form-row"><label></label><elements/></div>',
 			// Our special template for price fields
-			'price' => '<div class="form-row"><label></label> $<elements/> + TAX</div>' 
+			'price' => '<div class="form-row"><label></label> $<elements/> + TAX</div>'
 		)
     )
 );
-``` 
+```
 
 Looks like this:
 
@@ -254,7 +254,7 @@ $form = (new \ioForm\Form())
         ),
         'templates' => array(
             'default' => '<div class="form-group"><label></label><elements/></div>',
-            'price' => '<div class="form-group"><label></label><div class="input-group"><div class="input-group-addon">$</div><elements/><div class="input-group-addon">+ TAX</div></div></div>'  // Extra markup for prefix and suffix elements 
+            'price' => '<div class="form-group"><label></label><div class="input-group"><div class="input-group-addon">$</div><elements/><div class="input-group-addon">+ TAX</div></div></div>'  // Extra markup for prefix and suffix elements
         )
     )
 );
