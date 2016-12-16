@@ -3,7 +3,7 @@
 namespace ioForm\Core;
 
 abstract class Element{
-	
+
 	protected $enabled = true;
 	protected $tag;
 	protected $is_singleton = false; // true => will never have child elements so no need for closing tag
@@ -17,7 +17,7 @@ abstract class Element{
 	public $container_template = false;
 	protected $element_classes = array();
 	protected $element_content = array();
-	
+
 	public function GetTag(){
 		return $this->tag . ':' . ((isset($this->type))?$this->type: '');
 	}
@@ -121,7 +121,7 @@ abstract class Element{
 						} elseif( array_key_exists( $name, $this->attributes ) ){
 							$this->attributes->$name = $value;
 						} else {
-							
+
 						}
 					}
 				}
@@ -132,7 +132,7 @@ abstract class Element{
 				$element = \ioForm\ioForm::CreateElement( $element );
 				$element->parent = $this;
 				$this->AddElement( $element );
-			}		
+			}
 		}
 
 		$this->container = false;
@@ -224,7 +224,7 @@ abstract class Element{
 	public function AddElement( \ioForm\Core\Element $element ){
 		$this->elements[] = $element;
 	}
-	
+
 	/**
 	 * Process this element's properties and return it as a string for display
 	 *
@@ -232,12 +232,12 @@ abstract class Element{
 	 */
 
 	public function Render(){
-		
+
 		// Don't render at all
 		if( !$this->enabled ){
 			return '';
 		}
-		
+
 		// Does it have a container?
 		if( $this->container ){
 			$temp = \ioForm\ioForm::CreateElement(
@@ -275,34 +275,34 @@ abstract class Element{
 					$help->enabled = false;
 				}
 			}
-			
+
 			if( $this->container ){
 				// Apply classes for elements within container
 				foreach( $this->element_classes as $element => $classes ){
 					foreach( $classes as $class ){
 						$this->container->GetByAlias( $element )->AddClass( $class );
 					}
-				}				
+				}
 				foreach( $this->element_content as $element => $contents ){
 					foreach( $contents as $content ){
 						$this->container->GetByAlias( $element )->content .= $content;
 					}
-				}				
+				}
 			}
 		}
 
 		$output = '';
-		
+
 		// Some elements only exist to render their child elements
 		if( $this->tag ){
 			$attributes = array();
-			
+
 			// Assemble attributes into key/value pairs
 			foreach( $this->GetAttributes() as $name => $value ){
 				if( $value !== null ){
 					// Some attributes don't have a value, they're just true or false (so only attribute name is rendered)
 					// e.g. disabled, required
-					if( is_bool( $value ) ){ 
+					if( is_bool( $value ) ){
 						// Only render if true
 						if( $value ){
 							$attributes[$name] = false;
@@ -313,7 +313,7 @@ abstract class Element{
 				}
 			}
 
-			// Convert classes to a single attribute			
+			// Convert classes to a single attribute
 			if( count( $this->classes ) > 0 ){
 				if( isset( $attributes[ 'class' ] ) ){
 					$this->AddClass( $attributes[ 'class' ] );
@@ -329,7 +329,7 @@ abstract class Element{
 			}
 			$output .= '<' . $this->tag . ((count($attributes_strings) > 0)?' ':'') . implode( ' ', $attributes_strings);
 		}
-		
+
 		// No closing tag, e.g. <br/>, <input.../>
 		if( $this->is_singleton ){
 			if( $this->tag ){
@@ -339,7 +339,7 @@ abstract class Element{
 			if( $this->tag ){
 				$output .= '>';
 			}
-			
+
 			// Render child elements
 			if( count( $this->elements ) > 0 ){
 				$content = '';
@@ -354,18 +354,18 @@ abstract class Element{
 			if( $content = $this->GetContent() ){
 				$output .= $content;
 			}
-			
+
 			// Closing tag?
 			if( $this->tag ){
 				$output .= '</' . $this->tag .  '>';
 			}
 		}
-		
+
 		if( $this->container ){
 			$temp->content = $output;
 			return $this->container->Render();
 		}
-		
+
 		return $output;
 	}
 }

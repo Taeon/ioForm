@@ -566,12 +566,22 @@ ioFormFieldSelect.prototype.SetValue = function( value ){
     }
     this.trigger( 'ioform:setvalue' );
 };
+ioFormFieldSelect.prototype.AddOption = function( value, text ){
+    var opt = document.createElement( 'option' );
+    opt.setAttribute( 'value', value );
+    opt.innerText = text;
+    this.element.appendChild( opt );
+};
+ioFormFieldSelect.prototype.RemoveOptions = function( value, text ){
+    this.element.innerHTML = '';
+};
 ioFormFieldSelect.prototype.ClearOptions = function(){
     var options = this.element.querySelectorAll( 'option' );
     for( var o = 0; o < options.length; o++ ){
         options[ o ].selected = false;
     }
-};;
+};
+;
 /***
  * Text field
  */

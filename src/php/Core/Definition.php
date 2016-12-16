@@ -16,11 +16,11 @@ class Definition{
 	protected $alias_lookup;
 	public $default;
 	public $id;
-	
+
 	public function __construct(){
 		$this->alias_lookup = new \stdClass();
 	}
-	
+
 	public function SetTemplates( $templates ){
 		$this->templates = $templates;
 	}
@@ -59,7 +59,7 @@ class Definition{
 		return $this->elements;
 	}
 
-	
+
 	/**
 	 * Convert an element definition array in an element definition object
 	 *
@@ -114,6 +114,7 @@ class Definition{
 					foreach( $value as $validator_definition ){
 						$validator_type = '\\ioValidate\\Validator\\' . $validator_definition[ 'type' ];
 						$validator = new $validator_type( (object)$validator_definition );
+						$validator->value_type = $definition->type;
 						$definition->validators[] = $validator;
 					}
 					break;
@@ -132,11 +133,11 @@ class Definition{
 				$definition->container_template = $this->field_container_template_default[ $definition->type ];
 			}
 		}
-		
+
 		return $definition;
 
-	}	
-	
+	}
+
 	/**
 	 * Get an element by its alias
 	 *
@@ -168,7 +169,7 @@ class Definition{
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return a field by its name
 	 *
@@ -187,8 +188,8 @@ class Definition{
 			}
 		}
 		return false;
-	}	
-	
+	}
+
 	/**
 	 * Insert an element before another element
 	 *
@@ -282,4 +283,50 @@ class Definition{
 	public function Disable(){
 		$this->enabled = false;
 	}
+	/**
+	 * Add/amend an attribute value
+	 *
+	 * @param string $name  Name of attribute
+	 * @param mixed $value Value of the attribute
+	 */
+	public function SetAttribute( $name, $value )
+	{
+		$this->attributes[ $name ] = $value;
+	}
+
+	/**
+	 * Check whether an attribute has been set
+	 *
+	 * @param string $name  Name of attribute
+	 *
+	 * @return boolean
+	 */
+	public function HasAttribute( $name )
+	{
+		return isset( $this->attributes[ $name ] );
+	}
+
+	/**
+	 * Add/amend a data attribute value
+	 *
+	 * @param string $name  Name of data attribute (no need to include data-)
+	 * @param mixed $value Value of the attribute
+	 */
+	public function SetData( $name, $value )
+	{
+		$this->SetAttribute('data-' . $name, $value);
+	}
+
+	/**
+	 * Check whether a data attribute has been set
+	 *
+	 * @param string $name  Name of data attribute (no need to include data-)
+	 *
+	 * @return boolean
+	 */
+	public function HasData( $name )
+	{
+		return isset( $this->data[ $name ] );
+	}
+
 }

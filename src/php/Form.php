@@ -6,10 +6,10 @@ namespace ioForm;
  * Create a form definition
  */
 class Form extends \ioForm\Core\Definition{
-	
+
 	protected $fields = array();
 	public $type = 'Form';
-	
+
 	/**
 	 * Element container templates
 	 * Use whatever markup you want here
@@ -18,20 +18,20 @@ class Form extends \ioForm\Core\Definition{
 	protected $templates = array(
 		'default' => '<label></label><elements/>',
 		'radio-button' => '<elements/><label></label>'
-	);	
-	protected $buttons_container = 'buttons';	
+	);
+	protected $buttons_container = 'buttons';
 	protected $buttons = array(
 		array( 'type' => 'submit', 'value' => 'Submit' )
-	);	
-	
+	);
+
 	protected $auto_tabindex = false;
 	protected $tabindex_start = 1;
-	
+
 	protected $auto_field_id = false;
 	protected $auto_field_id_prefix = true;
-	
+
 	protected $auto_field_class = true;
-	
+
 	protected $values = array();
 
 	public function Render(){
@@ -91,7 +91,7 @@ class Form extends \ioForm\Core\Definition{
 				$field->classes[] = (object)array( 'element' => 'container', 'class' => strtolower( $field->type ) );
 			}
 		}
-		
+
 
 		// Create a form element
 		$form = \ioForm\ioForm::CreateElement( $this );
@@ -104,9 +104,9 @@ class Form extends \ioForm\Core\Definition{
 			$this->values[ $name ] = $value;
 		}
 	}
-	
+
 	/**
-	 * Add a validator to 
+	 * Add a validator to
 	 */
 	public function SetValidator( $validator_definition ){
 		foreach( $validator_definition->GetValidators() as $field_name => $validators ){
@@ -147,7 +147,7 @@ class Form extends \ioForm\Core\Definition{
 			}
 		}
 	}
-	
+
 	/**
 	 * Convert an element definition array in an element definition object
 	 *

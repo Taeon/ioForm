@@ -3,7 +3,7 @@
 namespace ioForm\Element;
 
 class Form extends \ioForm\Core\Element{
-	
+
 	protected $tag = 'form';
 	protected $attributes = array(
 		'id' => null,
@@ -12,12 +12,12 @@ class Form extends \ioForm\Core\Element{
 		'enctype' => null
 	);
 	protected $fields = array();
-	
+
 	public function __construct( \ioForm\Core\Definition $element_definition ){
 		parent::__construct( $element_definition );
 		$this->FindFields( $this );
 	}
-	
+
 	/**
 	 * Set the value of a set of fields in a form
 	 *
@@ -30,7 +30,7 @@ class Form extends \ioForm\Core\Element{
 			}
 		}
 	}
-	
+
 	/**
 	 * Return a field by its name
 	 *
@@ -40,12 +40,12 @@ class Form extends \ioForm\Core\Element{
 	 */
 	public function GetField( $name ){
 		if( $this->HasField( $name ) ){
-			return $this->fields[ $name ];			
+			return $this->fields[ $name ];
 		} else {
 			throw new \Exception( "Field '$name' not found" );
 		}
 	}
-	
+
 	/**
 	 * Return a field by its name
 	 *
@@ -56,7 +56,7 @@ class Form extends \ioForm\Core\Element{
 	public function HasField( $name ){
 		return array_key_exists( $name, $this->fields );
 	}
-	
+
 	/**
 	 * Iterate recursively through the structure to find all field elements
 	 *
@@ -81,4 +81,3 @@ class Form extends \ioForm\Core\Element{
 		}
 	}
 }
-	
