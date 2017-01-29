@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Pat Fox">
+        <link rel="canonical" href="https://taeon.github.io/ioForm/javascript/initialisation-basic-usage/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>Initialisation and basic usage - ioForm</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">ioForm</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../../requirements-installation/">Requirements and installation!</a>
+</li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">PHP</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../php/basic-form/">A basic form</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/attributes/">ID, classes, data and other attributes</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/customising-layout/">Customising form layout</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/manipulating_form/">Maniuplating form structure</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/form-options/">Form options</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/fields-reference/">Field types reference</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/field-options/">=Field options reference</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/get-set-values/">=Get/set values</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/css-classes/">=CSS Classes</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../php/buttons/">=Buttons</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">JavaScript</a>
+    <ul class="dropdown-menu">
+        
+            
+<li class="active">
+    <a href="./">Initialisation and basic usage</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../../php/buttons/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="prev" >
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/Taeon/ioForm">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#initialisation-and-basic-usage">Initialisation and basic usage</a></li>
+        
+            <li><a href="#initialising-ioform">Initialising ioForm</a></li>
+        
+            <li><a href="#getting-a-value">Getting a value</a></li>
+        
+            <li><a href="#setting-a-value">Setting a value</a></li>
+        
+            <li><a href="#events">Events</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="initialisation-and-basic-usage">Initialisation and basic usage</h1>
+<h2 id="initialising-ioform">Initialising ioForm</h2>
+<p>To use ioForm's JavaScript form handling, you simply need to include the script file (see <a href="../../requirements-installation">Requirements and installation</a>), and then initialise the form with the following code:</p>
+<pre><code class="javascript">    var form = new ioForm( '#my-form' );
+</code></pre>
+
+<p>Note that the selector (in this case, '#my-form') can be any of the following:</p>
+<ul>
+<li>An actual form element (e.g. the result of a call to <code>document.getElementById()</code>)</li>
+<li>Any jquery-like (or more accurately, in this case <code>document.querySelector()</code>-like) selector that returns a form, for example an ID (<code>'#my-form'</code>) or a class ( <code>'.formclass'</code> ) or element ( <code>'form'</code> )</li>
+<li>A jQuery object that contains a form element (i.e. the result of a jquery call such as <code>$( '#my-form' )</code>)</li>
+</ul>
+<p>However you should also be aware that if the submitted argument returns (or contains) more than one element, then all but the first element will be ignored and a warning will be issued via the console.</p>
+<p>Once you've called this method on a form, the result is cached so that further calls to the same method will return the same object. So while it would usually make most sense to store the returned object if you're going to use it again later, there's very little penalty in terms of performance (and none in terms of functionality) to do something like this:</p>
+<pre><code class="javascript">    // First call
+    var form = new ioForm( '#my-form' );
+
+    // ... some stuff happens
+
+    // Second call
+    var form2 = new ioForm( '#my-form' ); // form and form2 are the same object
+</code></pre>
+
+<h2 id="getting-a-value">Getting a value</h2>
+<p>The main purpose of ioForm is to make form interactions simpler, more logical, and more consistent. This is most obvious when getting (and setting, as we'll see later) a form's values.</p>
+<p>In plain JavaScript, some field types, such as <code>input type="text"</code> fields, single <code>select</code> fields, and <code>textarea</code> fields, support <code>element.value</code>:</p>
+<pre><code class="javascript">    console.log( document.getElementById( 'my_input' ).value );
+</code></pre>
+
+<p>But how do you get the selected value of a <code>radio</code> button? Or all selected values in a multiple <code>select</code> element? That requires some more complex logic.</p>
+<p>With ioForm, getting and a value for <em>all</em> field types uses the same method: <code>GetValue()</code>. So for example, a radio button:</p>
+<p data-height="129" data-theme-id="0" data-slug-hash="QdOepq" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: Getting a radio button value" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/QdOepq/">ioForm: Getting a radio button value</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>A multiple select field will return an array:</p>
+<p data-height="142" data-theme-id="0" data-slug-hash="ygPmbK" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: Get multiple select value" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/ygPmbK/">ioForm: Get multiple select value</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>When using a date field, instead of a string you get a date object:</p>
+<p data-height="124" data-theme-id="0" data-slug-hash="QdOegq" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: Get date field value" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/QdOegq/">ioForm: Get date field value</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<h2 id="setting-a-value">Setting a value</h2>
+<p>If you want to set a field's value the following will work (in pretty much all reasonably modern browsers) for some field types, such as <code>input type="text"</code> fields, single <code>select</code> fields, and <code>textarea</code> fields:</p>
+<pre><code class="js">    var my_input = document.getElementById( 'my_input' );
+    input.value = 'Hello world';
+</code></pre>
+
+<p>If you want to set the value of a <code>radio</code> button, or pass an array of values to a multiple <code>select</code> element then you'd have to start fiddling around with finding individual elements, and setting  a particular attribute (<code>checked</code>, <code>selected</code> or whichever is appropriate). [Yes some browsers support setting a multiple select's value with .value, but not all].</p>
+<p>Again, With ioForm setting values for <em>all</em> field types uses the same method: <code>SetValue()</code>. So for example, you can set the value of a radio button like this:</p>
+<p data-height="203" data-theme-id="0" data-slug-hash="vgWqWb" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: Setting a radio button's value" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/vgWqWb/">ioForm: Setting a radio button's value</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Or you could pass an array of values to a multiple select field:</p>
+<p data-height="143" data-theme-id="0" data-slug-hash="ZLadjJ" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: Set multiple select value" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/ZLadjJ/">ioForm: Set multiple select value</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>Or what if you're using a date field, and you don't want to mess about converting a date object to a string? No problem:</p>
+<p data-height="142" data-theme-id="0" data-slug-hash="WRXqax" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: set date field value" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/WRXqax/">ioForm: set date field value</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<h2 id="events">Events</h2>
+<p>In addition to providing consistent methods for getting and setting values, ioForm also implements a simple system for listening for field events. Like jQuery's event handling, it uses the <code>on()</code> method.</p>
+<p>For example, if you want to know when a radio field's value changes:</p>
+<p data-height="206" data-theme-id="0" data-slug-hash="vgWowy" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: Listen for change event" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/vgWowy/">ioForm: Listen for change event</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
