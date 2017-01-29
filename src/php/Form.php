@@ -30,11 +30,15 @@ class Form extends \ioForm\Core\Definition{
 	protected $auto_field_id = false;
 	protected $auto_field_id_prefix = true;
 
+	// Use button elements instead of inputs for buttons (e.g. submit)
+	protected $use_buttons = false;
+
 	protected $auto_field_class = true;
 
 	protected $values = array();
 
 	public function Render(){
+
 		if( $this->buttons ){
 			$buttons = array();
 			if( $this->buttons_container ){
@@ -46,15 +50,20 @@ class Form extends \ioForm\Core\Definition{
 			} else {
 				$container = $this;
 			}
+
 			foreach( $this->buttons as $button ){
 				$definition = new \ioForm\Core\Definition();
 				$definition->type = 'button';
+				$definition->is_button = $this->use_buttons;
 				$definition->button_type = $button[ 'type' ];
 				if( isset( $button[ 'value' ] ) ){
 					$definition->value = $button[ 'value' ];
 				}
 				if( isset( $button[ 'class' ] ) ){
 					$definition->class = $button[ 'class' ];
+				}
+				if( isset( $button[ 'data' ] ) ){
+					$definition->data = $button[ 'data' ];
 				}
 				$definition->parent = $container;
 				$container->elements[] = $definition;
@@ -102,6 +111,13 @@ class Form extends \ioForm\Core\Definition{
 	public function SetValues( $values ){
 		foreach( $values as $name => $value ){
 			$this->values[ $name ] = $value;
+		}
+	}
+
+	public function GetValues(){
+		if( strtolower( $_SERVER[ 'HTTP_METHOD' ] ) == strtolower( $this->method ) ){
+			exit;
+
 		}
 	}
 

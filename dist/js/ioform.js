@@ -144,8 +144,8 @@ var Events = {
          * Handles form interaction
          */
         var ioForm = function( form ){
-        
-            // What sort of element/selector have we been given?    
+
+            // What sort of element/selector have we been given?
             if ( typeof form == 'string' ) {
                 // String
                 var items = document.querySelectorAll( form );
@@ -170,37 +170,41 @@ var Events = {
                     form = form[0];
                 }
             }
-        
+
             // Make sure we've been passed a form element
             if ( !( form.tagName && form.tagName.toLowerCase() == 'form' ) ) {
                 throw new Error( 'ioForm error: Element is not a form' );
             }
 
             this.form = form;
-            
+
             var field_name;
-            
+
             // Already initialised?
             if ( form.ioForm ) {
                 // Return current instance
                 return form.ioForm;
             } else {
                 this.ready = false;
-                
+
                 Events.Register( this, form );
-                
+
                 form.ioForm = this;
-                
+
                 this.fields = {};
-        
+
                 // Find all field elements (except radio buttons)
                 var field_elements = form.querySelectorAll( 'input,select,textarea' );
                 var radio_fields = {};
                 for ( var i = 0; i < field_elements.length; i++ ) {
                     var field_element = field_elements[ i ];
-        
+
                     if ( field_element.hasAttribute( 'name' ) ) {
                         field_name = field_element.getAttribute( 'name' );
+						if( field_element.getAttribute( 'data-ioform-field-name' ) !== null ){
+							field_name = field_element.getAttribute( 'data-ioform-field-name' );
+						}
+
                         switch ( field_element.tagName.toLowerCase() ) {
                             case 'input':{
                                 var type = field_element.getAttribute( 'type' ).toLowerCase();
@@ -244,7 +248,7 @@ var Events = {
                     }
                 }
             }
-            // Check if all fields are ready 
+            // Check if all fields are ready
             for( field_name in this.fields ){
                 if( this.fields.hasOwnProperty( field_name ) ){
                     this.fields[ field_name ].onFormReady();
@@ -252,14 +256,15 @@ var Events = {
             }
         };
         ioForm.prototype = {
-            
+
             input_field_types:{
                 checkbox: 'Checkbox',
                 date: 'Date',
                 number: 'Number',
+                file: 'File',
             },
             GetElement:function(){
-                return this.form; 
+                return this.form;
             },
             onFieldReady:function(){
                 // Check that all fields are ready and then trigger ready event
@@ -267,7 +272,7 @@ var Events = {
                     if( this.fields.hasOwnProperty( field_name ) ){
                         if ( !this.fields[ field_name ].ready ) {
                             return;
-                        }                        
+                        }
                     }
                 }
                 this.ready = true;
@@ -313,7 +318,7 @@ var Events = {
                 }
             },
             Submit:function(){
-                this.trigger( 'submit' );                
+                this.trigger( 'submit' );
             },
             Reset:function(){
                 this.form.reset();
@@ -326,7 +331,8 @@ var Events = {
         };
         return ioForm;
     }
-));;
+));
+;
 /*********
  * Base class for fields
  */
@@ -382,7 +388,7 @@ var ioFormFieldCheckbox = function( element ){
 extend( ioFormFieldCheckbox, ioFormField );
 ioFormFieldCheckbox.prototype.SetValue = function( value ){
     this.element.checked = value;
-    this.trigger( 'ioform:setvalue' );    
+    this.trigger( 'ioform:setvalue' );
 };
 ioFormFieldCheckbox.prototype.GetValue = function( raw ){
     if( typeof raw !== 'undefined' && raw ){
@@ -391,19 +397,7 @@ ioFormFieldCheckbox.prototype.GetValue = function( raw ){
 
     return this.element.checked;
 };
-
-ioFormUtility = {
-    ZeroPad: function( num, numZeros ) {
-        var n = Math.abs(num);
-        var zeros = Math.max(0, numZeros - Math.floor(n).toString().length );
-        var zeroString = Math.pow(10,zeros).toString().substr(1);
-        if( num < 0 ) {
-            zeroString = '-' + zeroString;
-        }
-    
-        return zeroString+n;
-    }
-};;
+;
 /***
  * Date field
  * https://github.com/chemerisuk/better-dateinput-polyfill?
@@ -459,6 +453,29 @@ ioFormFieldDate.prototype.GetValue = function( raw ){
         return null;
     }
 };
+/**
+ * Single checkbox
+ */
+var ioFormFieldFile = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldFile, ioFormField );
+ioFormFieldFile.prototype.GetValue = function( raw ){
+    if( typeof raw !== 'undefined' && raw ){
+        return this.element.value;
+    }
+
+    input = this.element;
+    if (!input.files) {
+         return this.element.value;
+    }
+    if (!input.files[0]) {
+      return null;
+    }
+
+    return input.files;
+};
+;
 /***
  * Number field
  * https://github.com/chemerisuk/better-dateinput-polyfill?
