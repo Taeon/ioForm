@@ -14,7 +14,12 @@ abstract class Element{
 		'id' => null
 	);
 	public $content = '';
+
+	// Refer to a container template by its index in the templates array
 	public $container_template = false;
+	// Pass a string directly to be used as a container template. Overrides $container_template
+	public $container = false;
+
 	protected $element_classes = array();
 	protected $element_content = array();
 
@@ -135,25 +140,32 @@ abstract class Element{
 			}
 		}
 
-		$this->container = false;
-		if($this->container_template){
+		$container_template = false;
+		// Container?
+		if( $this->container ){
+			$container_template = $this->container;
+		} elseif( $this->container_template ){
+			$container_template = $element_definition->GetTemplate( $this->container_template );
+		}
+		$this->container_element = false;
+		if( $container_template ){
 			// Wrap in container
 			$container_definition = new \ioForm\Core\Definition();
 			$container_definition->type = 'Core:Container';
-			$container_definition->template = $element_definition->GetTemplate( $this->container_template );
+			$container_definition->template = $container_template;
 			// Check if it's been cached already (to save re-parsing the template string)
-			$hash = sha1( $element_definition->GetTemplate( $this->container_template ) );
-			if( !$this->container = \ioForm\Cache::Retrieve( $hash ) ){
+			$hash = sha1( $container_template );
+			if( !$this->container_element = \ioForm\Cache::Retrieve( $hash ) ){
 				// Nope, need to create a new one
-				$this->container = \ioForm\ioForm::CreateElement( $container_definition );
-				\ioForm\Cache::Store( $hash, $this->container );
+				$this->container_element = \ioForm\ioForm::CreateElement( $container_definition );
+				\ioForm\Cache::Store( $hash, $this->container_element );
 			}
 			if( property_exists( $element_definition, 'label' ) ){
 				// Set label
-				$this->container->SetLabel( $element_definition->label, $this );
+				$this->container_element->SetLabel( $element_definition->label, $this );
 			} else {
 				// Don't show a label
-				$this->container->SetLabel( null, $this );
+				$this->container_element->SetLabel( null, $this );
 			}
 		}
 	}
@@ -239,7 +251,7 @@ abstract class Element{
 		}
 
 		// Does it have a container?
-		if( $this->container ){
+		if( $this->container_element ){
 			$temp = \ioForm\ioForm::CreateElement(
 				( new \ioForm\Core\Definition )->FromArray(
 					array(
@@ -247,14 +259,14 @@ abstract class Element{
 					)
 				)
 			);
-			$this->container->AddElement(
+			$this->container_element->AddElement(
 				$temp
 			);
 		}
 
 		if( $this instanceof \ioForm\Element\Field ){
 			if( isset( $this->help ) ){
-				if( $this->container && $help = $this->container->GetByAlias( 'help' ) ){
+				if( $this->container_element && $help = $this->container_element->GetByAlias( 'help' ) ){
 					$help->content = $this->help;
 				} else {
 					$help = \ioForm\ioForm::CreateElement(
@@ -265,27 +277,27 @@ abstract class Element{
 							)
 						)
 					);
-					$this->container->AddElement( $help, 'help' );
+					$this->container_element->AddElement( $help, 'help' );
 				}
 				$help_id = $this->attributes->id . '-help';
 				$help->SetAttribute( 'id', $help_id );
 				$this->SetAttribute( 'aria-describedby', $help_id );
 			} else {
-				if( $this->container && $help = $this->container->GetByAlias( 'help' ) ){
+				if( $this->container_element && $help = $this->container_element->GetByAlias( 'help' ) ){
 					$help->enabled = false;
 				}
 			}
 
-			if( $this->container ){
+			if( $this->container_element ){
 				// Apply classes for elements within container
 				foreach( $this->element_classes as $element => $classes ){
 					foreach( $classes as $class ){
-						$this->container->GetByAlias( $element )->AddClass( $class );
+						$this->container_element->GetByAlias( $element )->AddClass( $class );
 					}
 				}
 				foreach( $this->element_content as $element => $contents ){
 					foreach( $contents as $content ){
-						$this->container->GetByAlias( $element )->content .= $content;
+						$this->container_element->GetByAlias( $element )->content .= $content;
 					}
 				}
 			}
@@ -361,9 +373,9 @@ abstract class Element{
 			}
 		}
 
-		if( $this->container ){
+		if( $this->container_element ){
 			$temp->content = $output;
-			return $this->container->Render();
+			return $this->container_element->Render();
 		}
 
 		return $output;
