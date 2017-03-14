@@ -17,7 +17,8 @@ class Form extends \ioForm\Core\Definition{
 	 */
 	protected $templates = array(
 		'default' => '<label></label><elements/>',
-		'radio-button' => '<elements/><label></label>'
+		'radio-button' => '<elements/><label></label>',
+		'buttons' => '<elements/>'
 	);
 	protected $buttons_container = 'buttons';
 	protected $buttons = array(
@@ -114,11 +115,78 @@ class Form extends \ioForm\Core\Definition{
 		}
 	}
 
-	public function GetValues(){
-		if( strtolower( $_SERVER[ 'HTTP_METHOD' ] ) == strtolower( $this->method ) ){
-			exit;
+	/**
+	 * Get a list of all form values
+	 *
+	 * @param 		boolean		$raw		Return raw values rather than converted
+	 *
+	 * @return		array
+	 */
+	public function GetValues( $raw = false ){
+		// Get values that have been applied by code
+		$values = $this->values;
 
+		// Get submitted values (if any)
+		$raw_values = array();
+		if( strtolower( $_SERVER[ 'REQUEST_METHOD' ] ) == strtolower( $this->method ) ){
+			switch( strtolower( $this->method ) ){
+				case 'get':{
+					$raw_values = $_GET;
+					break;
+				}
+				case 'post':{
+					$raw_values = $_POST;
+					break;
+				}
+				default:{
+					throw new \Exception( "GetValue not supported for method '" . $this->method . "'" );
+				}
+			}
 		}
+
+		// Get a list of all fields
+		foreach( $this->fields as $field ){
+			// Is there a submitted value?
+			if( isset( $raw_values[ $field->name ] ) ){
+				// Yes there's a submitted value
+				$values[ $field->name ] = $raw_values[ $field->name ];
+			} elseif( !isset( $values[ $field->name ] ) ){
+				// No value submitted and nothing set by code, so...
+				// is there a default value?
+				if( $field->default !== null ){
+					$values[ $field->name ] = $field->default;
+				} else {
+					// No default value, so just return an empty string
+					$values[ $field->name ] = '';
+				}
+			}
+			// Convert values or return raw?
+			if( !$raw ){
+				// Conert values
+				switch( $field->type ){
+					case 'date':{
+						if( $values[ $field->name ] !== '' ){
+							// Convert to DateTime object
+							$values[ $field->name ] = new \DateTime( $values[ $field->name ] );
+						}
+						break;
+					}
+					case 'number':{
+						if( $values[ $field->name ] !== '' ){
+							// Convert to number
+							$values[ $field->name ] = $values[ $field->name ] + 0;
+						}
+						break;
+					}
+					case 'checkbox':{
+						$values[ $field->name ] = (boolean)$values[ $field->name ];
+						break;
+					}
+				}
+			}
+		}
+
+		return $values;
 	}
 
 	/**

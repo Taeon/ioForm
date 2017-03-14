@@ -18,8 +18,8 @@ pages:
         - Maniuplating form structure: php/manipulating_form.md
         - Form options: php/form-options.md
         - Field types reference: php/fields-reference.md
+        - Getting and setting values: php/get-set-values.md
         - =Field options reference: php/field-options.md
-        - =Get/set values: php/get-set-values.md
         - =CSS Classes: php/css-classes.md
         - =Buttons: php/buttons.md
     - JavaScript:

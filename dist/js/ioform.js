@@ -332,6 +332,19 @@ var Events = {
         return ioForm;
     }
 ));
+
+ioFormUtility = {
+	ZeroPad: function( num, numZeros ) {
+		var n = Math.abs(num);
+		var zeros = Math.max(0, numZeros - Math.floor(n).toString().length );
+		var zeroString = Math.pow(10,zeros).toString().substr(1);
+		if( num < 0 ) {
+			zeroString = '-' + zeroString;
+		}
+
+		return zeroString+n;
+	}
+}
 ;
 /*********
  * Base class for fields
@@ -339,7 +352,7 @@ var Events = {
 var ioFormField = function( element ){
     this.ready = false;
     this.element = element;
-    
+
     // Radio buttons
     if ( false ){//Object.prototype.toString.call( element ) == '[object Array]' ) {
         Events.Register( this );
@@ -357,9 +370,15 @@ ioFormField.prototype = {
         }
     },
     GetElement:function(){
-        return this.element;  
+        return this.element;
     },
     GetName:function(){
+        return this.element.getAttribute( 'name' );
+    },
+	GetFieldName:function(){
+		if( this.element.hasAttribute( 'data-ioform-field-name' ) ){
+			return this.element.getAttribute( 'data-ioform-field-name' );
+		}
         return this.element.getAttribute( 'name' );
     },
     GetValue:function( raw ){
@@ -378,7 +397,8 @@ ioFormField.prototype = {
     Reset:function(){
         // This is a placeholder function
     }
-};
+}
+;
 /**
  * Single checkbox
  */
