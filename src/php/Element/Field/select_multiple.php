@@ -11,7 +11,7 @@ class select_multiple extends select{
 	);
 
 	public function Render(){
-		$this->attributes->{ 'data-ioform-field-name' } .= $this->attributes->name;
+		$this->attributes->{ 'data-ioform-field-name' } = $this->attributes->name;
 		$this->attributes->name .= '[]';
 		return parent::Render();
 	}
