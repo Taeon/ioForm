@@ -7,7 +7,7 @@ class Form extends \ioForm\Core\Element{
 	protected $tag = 'form';
 	protected $attributes = array(
 		'id' => null,
-		'method' => 'get',
+		'method' => null,
 		'action' => null,
 		'enctype' => null
 	);

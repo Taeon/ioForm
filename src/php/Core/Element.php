@@ -35,8 +35,8 @@ abstract class Element{
 			$reflection = new \ReflectionClass( $classes[ $i ]);
 			$this->attributes = array_merge( $this->attributes, $reflection->getdefaultProperties()[ 'attributes' ] );
 		}
-
 		$this->attributes = (object)$this->attributes;
+
 		if( $element_definition ){
 			foreach( $element_definition as $name => $value ){
 				switch( $name ){
@@ -48,9 +48,10 @@ abstract class Element{
 					}
 					case 'classes':{
 						if( is_array( $element_definition->classes ) ){
+
 							// It's a list of objects with class details
 							foreach( $element_definition->classes as $class ){
-								// By default it's added to the element utself, unless the 'element' property dictates otherwse
+								// By default it's added to the element itself, unless the 'element' property dictates otherwise
 								if( isset( $class->element ) && $class->element ){
 									switch( $class->element ){
 										// The field itself. This isn't required -- just miss out the 'element' property
@@ -61,14 +62,19 @@ abstract class Element{
 										// Anything else
 										default:{
 											if( !isset( $this->element_classes[ $class->element ] ) ){
-												$this->element_classes[ $class->element ] =array();
+												$this->element_classes[ $class->element ] = array();
 											}
 											$this->element_classes[ $class->element ][] = $class->class;
 											break;
 										}
 									}
 								} else {
-									$this->AddClass( $class->classes );
+									if( is_string( $class ) ){
+										$this->AddClass( $class );
+									} else {
+										throw new \Exception( 'Additional field classes not defined correctly.' );
+										exit;
+									}
 								}
 							}
 						} else {

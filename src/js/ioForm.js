@@ -109,6 +109,7 @@
                             }
                         }
                         this.fields[ field_name ].on( 'ioform:ready', this.onFieldReady.bind( this ) );
+						this.fields[ field_name ].type = type;
                     }
                 }
                 for( field_name in radio_fields ){

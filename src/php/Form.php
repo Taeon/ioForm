@@ -9,6 +9,7 @@ class Form extends \ioForm\Core\Definition{
 
 	protected $fields = array();
 	public $type = 'Form';
+	public $method = 'get';
 
 	/**
 	 * Element container templates
@@ -20,6 +21,7 @@ class Form extends \ioForm\Core\Definition{
 		'radio-button' => '<elements/><label></label>',
 		'buttons' => '<elements/>'
 	);
+
 	protected $buttons_container = 'buttons';
 	protected $buttons = array(
 		array( 'type' => 'submit', 'value' => 'Submit' )
@@ -38,8 +40,52 @@ class Form extends \ioForm\Core\Definition{
 
 	protected $values = array();
 
-	public function Render(){
+	public function ElementAdded( $definition ){
+		parent::ElementAdded( $definition );
+		$type = explode( ':', $definition->type );
+		// It's a field, so store it in the fields lookup
+		if( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $definition->name ) && $definition->name ){
+			$this->fields[ $definition->name ] = $definition;
+		}
+	}
+	public function ElementRemoved( $definition ){
+		parent::ElementRemoved( $definition );
+		$type = explode( ':', $definition->type );
+		// It's a field, so store it in the fields lookup
+		if( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $definition->name ) && $definition->name && isset( $this->fields[ $definition->name ] ) ){
+			unset( $this->fields[ $definition->name ] );
+		}
+	}
 
+	/**
+	 * Find a field
+	 *
+	 * @param		string		$field_name
+	 *
+	 * @return		\ioForm\Core\Definition
+	 */
+	public function GetField( $field_name ){
+		if( isset( $this->fields[ $field_name ] ) ){
+			return $this->fields[ $field_name ];
+		}
+		return null;
+	}
+
+	/**
+	 * Return a field by its name
+	 *
+	 * @param		string		$name
+	 *
+	 * @return		\ioform\Element\Field
+	 */
+	public function HasField( $field_name ){
+		if( isset( $this->fields[ $field_name ] ) ){
+			return true;
+		}
+		return false;
+	}
+
+	public function Render(){
 		if( $this->buttons ){
 			$buttons = array();
 			if( $this->buttons_container ){
@@ -72,7 +118,7 @@ class Form extends \ioForm\Core\Definition{
 			$this->buttons = array();
 		}
 		$index = $this->tabindex_start;
-		foreach( $this->fields as $field ){
+		foreach( $this->FindFields( $this ) as $field ){
 			// Set tabindex
 			// We do this just before render, because the form's structure might've changed
 			if( $this->auto_tabindex ){
@@ -97,6 +143,11 @@ class Form extends \ioForm\Core\Definition{
 			if( $this->auto_field_class ){
 				if( !isset( $field->classes ) ){
 					$field->classes = array();
+				} else {
+					// Just in case
+					if( is_string( $field->classes ) ){
+						$field->classes = array( $field->classes );
+					}
 				}
 				$field->classes[] = (object)array( 'element' => 'container', 'class' => strtolower( $field->type ) );
 			}
@@ -243,5 +294,18 @@ class Form extends \ioForm\Core\Definition{
 		$this->ArrayToDefinition( $element, $this );
 		return $this;
 
+	}
+
+	public function FindFields( $definition ){
+		$fields = array();
+		foreach( $definition->elements as $element ){
+			if( strpos( $element->type, ':' ) === false && isset( $element->name ) ){
+				$fields[] = $element;
+			}
+			if( count( $element->elements ) > 0 ){
+				$fields = array_merge( $fields, $this->FindFields( $element ) );
+			}
+		}
+		return $fields;
 	}
 }

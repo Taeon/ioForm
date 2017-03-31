@@ -41,14 +41,37 @@ class Definition{
 	public function AddElement( \ioForm\Core\Definition $definition ){
 		$definition->parent = $this;
 		$this->elements[] = $definition;
+		$this->ElementAdded( $definition );
+	}
+
+	/**
+	 * Called whenever an element (i.e. a definition) is added to the form
+	 */
+	public function ElementAdded( $definition ){
+		// Store in alias lookup
 		if( $definition->alias ){
 			$this->alias_lookup->{ $definition->alias } = $definition;
 		}
-		// Cascade aliases up the chain
-		foreach( $definition->alias_lookup as $alias => $child ){
-			$this->alias_lookup->{ $alias } = $child;
+		// Notify parent
+		if( $this->parent ){
+			$this->parent->ElementAdded( $definition );
 		}
 	}
+	/**
+	 * Called whenever an element (i.e. a definition) is removed from the form
+	 */
+	public function ElementRemoved( $definition ){
+		// Store in alias lookup
+		if( $definition->alias && isset( $this->alias_lookup->{ $definition->alias } ) ){
+			unset( $this->alias_lookup->{ $definition->alias } );
+		}
+		// Notify parent
+		if( $this->parent ){
+			$this->parent->ElementRemoved( $definition );
+		}
+	}
+
+
 	public function GetParent(){
 		return $this->parent;
 	}
@@ -87,7 +110,11 @@ class Definition{
 				case 'content':{
 					if( is_array( $value ) ){
 						foreach( $value as $index => $class ){
-							$value[ $index ] = (object)$class;
+							if( is_array( $class ) ){
+								$value[ $index ] = (object)$class;
+							} else {
+								$value[ $index ] = $class;
+							}
 						}
 					}
 					$definition->$property = $value;
@@ -102,7 +129,9 @@ class Definition{
 				case 'elements':{
 					// Convert child elements to definitions
 					foreach( $value as $child_definition ){
-						$child = $this->ArrayToDefinition( $child_definition, new Definition() );
+						$child = new Definition();
+						$child->parent = $this;
+						$this->ArrayToDefinition( $child_definition, $child );
 						if( $definition->field_container_template_default ){
 							$child->field_container_template_default = array_merge( $child->field_container_template_default, $definition->field_container_template_default );
 						}
@@ -126,8 +155,8 @@ class Definition{
 			}
 		}
 		// Is it a field?
-		if( strpos( $definition->type, ':' ) === false && isset( $definition->name ) && $definition->name ){
-			$this->fields[ $definition->name ] = $definition;
+		$type = explode( ':', $definition->type );
+		if( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $definition->name ) && $definition->name ){
 			// Set default container template for field type
 			if( !isset( $definition->container_template ) && isset( $this->field_container_template_default[ $definition->type ] ) ){
 				$definition->container_template = $this->field_container_template_default[ $definition->type ];
@@ -151,46 +180,6 @@ class Definition{
 	}
 
 	/**
-	 * Find a field
-	 *
-	 * @param		string		$field_name
-	 *
-	 * @return		\ioForm\Core\Definition
-	 */
-	public function GetField( $field_name ){
-		foreach( $this->elements as $element ){
-			if( isset( $element->name ) && $element->name == $field_name ){
-				return $element;
-			} else {
-				if( $field = $element->GetField( $field_name ) ){
-					return $field;
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Return a field by its name
-	 *
-	 * @param		string		$name
-	 *
-	 * @return		\ioform\Element\Field
-	 */
-	public function HasField( $field_name ){
-		foreach( $this->elements as $element ){
-			if( isset( $element->name ) && $element->name == $field_name ){
-				return true;
-			} else {
-				if( $field = $element->GetField( $field_name ) ){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Insert an element before another element
 	 *
 	 * @param		ioForm\Core\Element		$element
@@ -205,6 +194,7 @@ class Definition{
 			$elements[] = $child_element;
 		}
 		$this->parent->elements = $elements;
+		$this->ElementAdded( $element );
 	}
 
 	/**
@@ -222,6 +212,7 @@ class Definition{
 			}
 		}
 		$this->parent->elements = $elements;
+		$this->ElementAdded( $element );
 	}
 
 	/**
@@ -240,6 +231,7 @@ class Definition{
 			}
 		}
 		$this->parent->elements = $elements;
+		$this->ElementAdded( $element );
 	}
 
 	/**
@@ -254,6 +246,7 @@ class Definition{
 			$elements[] = $child_element;
 		}
 		$this->parent->elements = $elements;
+		$this->ElementAdded( $element );
 	}
 	/**
 	 * Append an element to this element's child elements (an alias for AddElement())
@@ -276,6 +269,7 @@ class Definition{
 			}
 		}
 		$this->parent->elements = $elements;
+		$this->ElementRemoved( $this );
 	}
 	public function Enable(){
 		$this->enabled = true;
