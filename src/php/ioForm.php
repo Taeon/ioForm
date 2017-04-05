@@ -32,14 +32,14 @@ class ioForm{
 			default:{
 				// Is it a field?
 				if( $element_type == ''){
-					$element_class = '\\ioForm\\Element\\Field\\' . $element_definition->type;					
+					$element_class = '\\ioForm\\Element\\Field\\' . $element_definition->type;
 				} else {
 					$element_class = '\\ioForm\\Element\\' . $element_class . '\\' . $element_type;
 				}
 				break;
 			}
 		}
-		
+
 		if( !$element ){
 			$element = new $element_class( $element_definition );
 		}
@@ -58,7 +58,7 @@ class ioForm{
 		//						break;
 		//					}
 		//					// Anything else
-		//					default:{								
+		//					default:{
 		//						$container_classes[] = $class;
 		//						break;
 		//					}
@@ -72,7 +72,7 @@ class ioForm{
 		//		$element->AddClass( $element_definition->classes );
 		//	}
 		//}
-		
+
 		//// Does it have a container?
 		//if( $element->container_template ){
 		//	// Wrap in container
@@ -107,13 +107,13 @@ class ioForm{
 		//			$container->AddClass( $class->classes, $class->element );
 		//		}
 		//	}
-		//	
+		//
 		//	$element = $container;
 		//}
 		if( property_exists( $element_definition, 'content' ) ){
-			$element->content = $element_definition->content;			
+			$element->content = $element_definition->content;
 		}
-		
+
 		return $element;
 	}
 

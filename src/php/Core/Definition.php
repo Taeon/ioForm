@@ -15,7 +15,6 @@ class Definition{
 	public $validators = array();
 	protected $alias_lookup;
 	public $default;
-	public $content = '';
 	public $id;
 
 	public function __construct(){
