@@ -42,18 +42,28 @@ class Form extends \ioForm\Core\Definition{
 
 	public function ElementAdded( $definition ){
 		parent::ElementAdded( $definition );
-		$type = explode( ':', $definition->type );
 		// It's a field, so store it in the fields lookup
-		if( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $definition->name ) && $definition->name ){
+		if( $definition->IsField() ){
 			$this->fields[ $definition->name ] = $definition;
+		} else {
+			// We need to recurse into child elements
+			foreach( $definition->elements as $child ){
+				$this->ElementAdded( $child );
+			}
 		}
 	}
 	public function ElementRemoved( $definition ){
 		parent::ElementRemoved( $definition );
-		$type = explode( ':', $definition->type );
 		// It's a field, so store it in the fields lookup
-		if( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $definition->name ) && $definition->name && isset( $this->fields[ $definition->name ] ) ){
-			unset( $this->fields[ $definition->name ] );
+		if( $definition->IsField() ){
+			if( isset( $this->fields[ $definition->name ] ) ){
+				unset( $this->fields[ $definition->name ] );
+			}
+		} else {
+			// We need to recurse into child elements
+			foreach( $definition->elements as $child ){
+				$this->ElementRemoved( $child );
+			}
 		}
 	}
 
@@ -288,7 +298,7 @@ class Form extends \ioForm\Core\Definition{
 	 *
 	 * @param		array		$element		A definition in the form of an array
 	 *
-	 * @return		ioform\Core\Definition
+	 * @return		ioform\Core\DefinitionF
 	 */
 	public function FromArray( $element ){
 		$this->ArrayToDefinition( $element, $this );
@@ -296,14 +306,23 @@ class Form extends \ioForm\Core\Definition{
 
 	}
 
-	public function FindFields( $definition ){
+	public function FindFields( $definition, $field_container_template_default = array() ){
+
 		$fields = array();
+		foreach( $definition->field_container_template_default as $type => $template ){
+			$field_container_template_default[ $type ] = $template;
+		}
+
 		foreach( $definition->elements as $element ){
-			if( strpos( $element->type, ':' ) === false && isset( $element->name ) ){
+			if( $element->IsField() ){
 				$fields[] = $element;
+				// Set default container template for field type
+				if( !isset( $element->container_template ) && isset( $field_container_template_default[ $element->type ] ) ){
+					$element->container_template = $field_container_template_default[ $element->type ];
+				}
 			}
 			if( count( $element->elements ) > 0 ){
-				$fields = array_merge( $fields, $this->FindFields( $element ) );
+				$fields = array_merge( $fields, $this->FindFields( $element, $field_container_template_default ) );
 			}
 		}
 		return $fields;

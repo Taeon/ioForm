@@ -41,10 +41,12 @@ ioFormField.prototype = {
         this.trigger( 'ioform:setvalue' );
     },
     Disable:function(){
-        this.element.setAttribute( 'disabled', "" );
+		this.trigger( 'ioform:disabled' );
+		this.element.setAttribute( 'disabled', 'disabled' );
     },
     Enable:function(){
         this.element.removeAttribute( 'disabled' );
+		this.trigger( 'ioform:enabled' );
     },
     Reset:function(){
         // This is a placeholder function

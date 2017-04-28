@@ -44,6 +44,11 @@ class Definition{
 		$this->ElementAdded( $definition );
 	}
 
+	public function IsField(){
+		$type = explode( ':', $this->type );
+		return ( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $this->name ) && $this->name );
+	}
+
 	/**
 	 * Called whenever an element (i.e. a definition) is added to the form
 	 */
@@ -64,6 +69,12 @@ class Definition{
 		// Store in alias lookup
 		if( $definition->alias && isset( $this->alias_lookup->{ $definition->alias } ) ){
 			unset( $this->alias_lookup->{ $definition->alias } );
+		}
+		if( property_exists( $this, 'fields' ) ){
+			$type = explode( ':', $definition->type );
+			if( $definition->IsField() ){
+				unset( $this->fields[ $definition->name ] );
+			}
 		}
 		// Notify parent
 		if( $this->parent ){
@@ -102,6 +113,7 @@ class Definition{
 	 * @return		ioform\Core\Definition
 	 */
 	protected function ArrayToDefinition( $definition_array, $definition ){
+
 		// Assign properties
 		foreach( $definition_array as $property => $value ){
 			switch( $property ){
@@ -132,9 +144,6 @@ class Definition{
 						$child = new Definition();
 						$child->parent = $this;
 						$this->ArrayToDefinition( $child_definition, $child );
-						if( $definition->field_container_template_default ){
-							$child->field_container_template_default = array_merge( $child->field_container_template_default, $definition->field_container_template_default );
-						}
 						$definition->AddElement( $child );
 					}
 					break;
@@ -152,14 +161,6 @@ class Definition{
 					$definition->$property = $value;
 					break;
 				}
-			}
-		}
-		// Is it a field?
-		$type = explode( ':', $definition->type );
-		if( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $definition->name ) && $definition->name ){
-			// Set default container template for field type
-			if( !isset( $definition->container_template ) && isset( $this->field_container_template_default[ $definition->type ] ) ){
-				$definition->container_template = $this->field_container_template_default[ $definition->type ];
 			}
 		}
 
@@ -185,16 +186,22 @@ class Definition{
 	 * @param		ioForm\Core\Element		$element
 	 */
 	public function Before( $element ){
-		$elements = array();
-		foreach( $this->parent->elements as $child_element ){
-			if( $child_element == $this ){
-				$element->SetParent( $this->parent );
-				$elements[] = $element;
+		if( is_array( $element ) ){
+			foreach( $element as $item ){
+				$this->Before( $item );
 			}
-			$elements[] = $child_element;
+		} else {
+			$elements = array();
+			foreach( $this->parent->elements as $child_element ){
+				if( $child_element == $this ){
+					$element->SetParent( $this->parent );
+					$elements[] = $element;
+				}
+				$elements[] = $child_element;
+			}
+			$this->parent->elements = $elements;
+			$this->ElementAdded( $element );
 		}
-		$this->parent->elements = $elements;
-		$this->ElementAdded( $element );
 	}
 
 	/**
@@ -203,16 +210,22 @@ class Definition{
 	 * @param		ioForm\Core\Element		$element
 	 */
 	public function After( $element ){
-		$elements = array();
-		foreach( $this->parent->elements as $child_element ){
-			$elements[] = $child_element;
-			if( $child_element == $this ){
-				$element->SetParent( $this->parent );
-				$elements[] = $element;
+		if( is_array( $element ) ){
+			foreach( array_reverse( $element ) as $item ){
+				$this->After( $item );
 			}
+		} else {
+			$elements = array();
+			foreach( $this->parent->elements as $child_element ){
+				$elements[] = $child_element;
+				if( $child_element == $this ){
+					$element->SetParent( $this->parent );
+					$elements[] = $element;
+				}
+			}
+			$this->parent->elements = $elements;
+			$this->ElementAdded( $element );
 		}
-		$this->parent->elements = $elements;
-		$this->ElementAdded( $element );
 	}
 
 	/**
@@ -222,16 +235,28 @@ class Definition{
 	 */
 	public function ReplaceWith( $element ){
 		$elements = array();
+		// Step through all siblings
 		foreach( $this->parent->elements as $child_element ){
 			if( $child_element == $this ){
-				$element->SetParent( $this->parent );
-				$elements[] = $element;
+				// Element to be replaced
+				$this->Remove();
+				// Insert new elements
+				if( is_array( $element ) ){
+					foreach( $element as $item ){
+						$item->SetParent( $this->parent );
+						$elements[] = $item;
+						$this->ElementAdded( $item );
+					}
+				} else {
+					$element->SetParent( $this->parent );
+					$elements[] = $element;
+					$this->ElementAdded( $element );
+				}
 			} else {
 				$elements[] = $child_element;
 			}
 		}
 		$this->parent->elements = $elements;
-		$this->ElementAdded( $element );
 	}
 
 	/**
@@ -240,13 +265,19 @@ class Definition{
 	 * @param		ioForm\Core\Element		$element
 	 */
 	public function Prepend( $element ){
-		$element->SetParent( $this->parent );
-		$elements = array( $element );
-		foreach( $this->parent->elements as $child_element ){
-			$elements[] = $child_element;
+		if( is_array( $element ) ){
+			foreach( $element as $item ){
+				$this->Prepend( $item );
+			}
+		} else {
+			$element->SetParent( $this );
+			$elements = array( $element );
+			foreach( $this->elements as $child_element ){
+				$elements[] = $child_element;
+			}
+			$this->elements = $elements;
+			$this->ElementAdded( $element );
 		}
-		$this->parent->elements = $elements;
-		$this->ElementAdded( $element );
 	}
 	/**
 	 * Append an element to this element's child elements (an alias for AddElement())
@@ -254,7 +285,13 @@ class Definition{
 	 * @param		ioForm\Core\Element		$element
 	 */
 	public function Append( $element ){
-		$this->AddElement( $element );
+		if( is_array( $element ) ){
+			foreach( $element as $item ){
+				$this->AddElement( $item );
+			}
+		} else {
+			$this->AddElement( $element );
+		}
 	}
 	/**
 	 * Remove an element
