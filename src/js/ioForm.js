@@ -134,6 +134,11 @@
                 number: 'Number',
                 file: 'File',
             },
+			/**
+			 * Get the form's HTML element
+			 *
+			 * @return		HTMLELement
+			 */
             GetElement:function(){
                 return this.form;
             },
@@ -154,12 +159,33 @@
                     this.trigger( 'ioform:ready', {form:this} );
                 }
             },
+			/**
+			 * Check if a field is present in the form
+			 *
+			 * @param		string		field_name		The name of the field
+			 *
+			 * @return		boolean
+			 */
             HasField: function( field_name ){
                 return typeof this.fields[ field_name ] !== 'undefined';
             },
+			/**
+			 * Get an array of all field objects in this form
+			 *
+			 * @return		array of fields
+			 */
             GetFields: function(){
                 return this.fields;
             },
+			/**
+			 * Get a field object
+			 * i.e. a Javascript object that represents the field
+			 * ...not the field element itself (use [field].GetElement() for that)
+			 *
+			 * @param		string		field_name		The name of the field
+			 *
+			 * @return		ioFormField object
+			 */
             GetField: function( field_name ){
                 if ( this.HasField( field_name ) ) {
                     return this.fields[ field_name ];
@@ -167,12 +193,27 @@
                     return null;
                 }
             },
-            GetValue: function( field_name ){
+			/**
+			 * Get the value of a field
+			 *
+			 * @param		string		field_name		The name of the field
+			 * @param		boolean		raw				Return raw value e.g. string instead of Date object (for a date field)
+			 *
+			 * @return		mixed
+			 */
+            GetValue: function( field_name, raw ){
                 if ( this.HasField( field_name ) ) {
-                    return this.fields[ field_name ].GetValue();
+                    return this.fields[ field_name ].GetValue( raw );
                 }
                 return null;
             },
+			/**
+			 * Get an array of all field values in this form
+			 *
+			 * @param		boolean		raw				Return raw values e.g. string instead of Date object (for a date field)
+			 *
+			 * @return		array of fields
+			 */
             GetValues: function( raw ){
                 var values = {};
                 for( var field_name in this.fields ){
@@ -183,14 +224,28 @@
                 }
                 return values;
             },
+			/**
+			 * Set the value of a field
+			 *
+			 * @param		string		field_name		The name of the field
+			 * @param		mixed		value
+			 *
+			 * @return		mixed
+			 */
             SetValue: function( field_name, value ){
                 if ( this.HasField( field_name ) ) {
                     this.fields[ field_name ].SetValue( value );
                 }
             },
+			/**
+			 * Submit the form
+			 */
             Submit:function(){
                 this.trigger( 'submit' );
             },
+			/**
+			 * Reset the form
+			 */
             Reset:function(){
                 this.form.reset();
                 for( var index in this.fields ){

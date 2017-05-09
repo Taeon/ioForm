@@ -264,6 +264,11 @@ var Events = {
                 number: 'Number',
                 file: 'File',
             },
+			/**
+			 * Get the form's HTML element
+			 *
+			 * @return		HTMLELement
+			 */
             GetElement:function(){
                 return this.form;
             },
@@ -284,12 +289,33 @@ var Events = {
                     this.trigger( 'ioform:ready', {form:this} );
                 }
             },
+			/**
+			 * Check if a field is present in the form
+			 *
+			 * @param		string		field_name		The name of the field
+			 *
+			 * @return		boolean
+			 */
             HasField: function( field_name ){
                 return typeof this.fields[ field_name ] !== 'undefined';
             },
+			/**
+			 * Get an array of all field objects in this form
+			 *
+			 * @return		array of fields
+			 */
             GetFields: function(){
                 return this.fields;
             },
+			/**
+			 * Get a field object
+			 * i.e. a Javascript object that represents the field
+			 * ...not the field element itself (use [field].GetElement() for that)
+			 *
+			 * @param		string		field_name		The name of the field
+			 *
+			 * @return		ioFormField object
+			 */
             GetField: function( field_name ){
                 if ( this.HasField( field_name ) ) {
                     return this.fields[ field_name ];
@@ -297,12 +323,27 @@ var Events = {
                     return null;
                 }
             },
-            GetValue: function( field_name ){
+			/**
+			 * Get the value of a field
+			 *
+			 * @param		string		field_name		The name of the field
+			 * @param		boolean		raw				Return raw value e.g. string instead of Date object (for a date field)
+			 *
+			 * @return		mixed
+			 */
+            GetValue: function( field_name, raw ){
                 if ( this.HasField( field_name ) ) {
-                    return this.fields[ field_name ].GetValue();
+                    return this.fields[ field_name ].GetValue( raw );
                 }
                 return null;
             },
+			/**
+			 * Get an array of all field values in this form
+			 *
+			 * @param		boolean		raw				Return raw values e.g. string instead of Date object (for a date field)
+			 *
+			 * @return		array of fields
+			 */
             GetValues: function( raw ){
                 var values = {};
                 for( var field_name in this.fields ){
@@ -313,14 +354,28 @@ var Events = {
                 }
                 return values;
             },
+			/**
+			 * Set the value of a field
+			 *
+			 * @param		string		field_name		The name of the field
+			 * @param		mixed		value
+			 *
+			 * @return		mixed
+			 */
             SetValue: function( field_name, value ){
                 if ( this.HasField( field_name ) ) {
                     this.fields[ field_name ].SetValue( value );
                 }
             },
+			/**
+			 * Submit the form
+			 */
             Submit:function(){
                 this.trigger( 'submit' );
             },
+			/**
+			 * Reset the form
+			 */
             Reset:function(){
                 this.form.reset();
                 for( var index in this.fields ){
@@ -370,33 +425,77 @@ ioFormField.prototype = {
             this.trigger( 'ioform:ready', {field:this} );
         }
     },
+	/**
+	 * Get the field's HTML element
+	 *
+	 * @return		HTMLELement
+	 */
     GetElement:function(){
         return this.element;
     },
+	/**
+	 * Get the field's name attribute
+	 * This might have been changed by ioForm
+	 * Some fields, e.g. multiple select, use a different format for their name
+	 * ...in order to submit as an array e.g. myselect becomes myselect[]
+	 *
+	 * @return		string
+	 */
     GetName:function(){
         return this.element.getAttribute( 'name' );
     },
+	/**
+	 * Get the field's original name.
+	 * Some fields, e.g. multiple select, use a different format for their name
+	 * ...in order to submit as an array e.g. myselect becomes myselect[]
+	 * This method will return the original name attribute's value
+	 *
+	 * @return		string
+	 */
 	GetFieldName:function(){
 		if( this.element.hasAttribute( 'data-ioform-field-name' ) ){
 			return this.element.getAttribute( 'data-ioform-field-name' );
 		}
         return this.element.getAttribute( 'name' );
     },
+	/**
+	 * Get the field's value
+	 *
+	 * @param		boolean		raw				Return raw value e.g. string instead of Date object (for a date field)
+	 *
+	 * @return		mixed
+	 */
     GetValue:function( raw ){
         return this.element.value;
     },
+	/**
+	 * Set the field's value
+	 *
+	 * @param		mixed		value
+	 *
+	 * @return		mixed
+	 */
     SetValue:function( value ){
         this.element.value = value;
         this.trigger( 'ioform:setvalue' );
     },
+	/**
+	 * Disable the field
+	 */
     Disable:function(){
 		this.trigger( 'ioform:disabled' );
 		this.element.setAttribute( 'disabled', 'disabled' );
     },
+	/**
+	 * Enable the field
+	 */
     Enable:function(){
         this.element.removeAttribute( 'disabled' );
 		this.trigger( 'ioform:enabled' );
     },
+	/**
+	 * Reset the field
+	 */
     Reset:function(){
         // This is a placeholder function
     }
@@ -409,10 +508,20 @@ var ioFormFieldCheckbox = function( element ){
     ioFormField.call( this, element );
 };
 extend( ioFormFieldCheckbox, ioFormField );
+/**
+ * Checkbox is really boolean, so setting value is just setting the 'checked' attribute
+ *
+ * @param		boolean		value
+ */
 ioFormFieldCheckbox.prototype.SetValue = function( value ){
     this.element.checked = value;
     this.trigger( 'ioform:setvalue' );
 };
+/**
+ * Checkbox is really boolean, so return true or false depending on the  'checked' attribute
+ *
+ * @return		boolean
+ */
 ioFormFieldCheckbox.prototype.GetValue = function( raw ){
     if( typeof raw !== 'undefined' && raw ){
         return ((this.element.checked)?1:0);

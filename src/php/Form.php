@@ -68,6 +68,15 @@ class Form extends \ioForm\Core\Definition{
 	}
 
 	/**
+	 * List all fields
+	 *
+	 * @return		\ioForm\Core\Definition
+	 */
+	public function GetFields(){
+		return $this->fields;
+	}
+
+	/**
 	 * Find a field
 	 *
 	 * @param		string		$field_name
@@ -172,8 +181,11 @@ class Form extends \ioForm\Core\Definition{
 
 	public function SetValues( $values ){
 		foreach( $values as $name => $value ){
-			$this->values[ $name ] = $value;
+			$this->SetValue( $name, $value );
 		}
+	}
+	public function SetValue( $name, $value ){
+		$this->values[ $name ] = $value;
 	}
 
 	/**
@@ -251,49 +263,6 @@ class Form extends \ioForm\Core\Definition{
 	}
 
 	/**
-	 * Add a validator to
-	 */
-	public function SetValidator( $validator_definition ){
-		foreach( $validator_definition->GetValidators() as $field_name => $validators ){
-			$field = $this->GetField( $field_name );
-			if( !$field ){
-				continue;
-			}
-			foreach( $validators as $validator ){
-				switch( $validator[ 'type' ] ){
-					case 'Number':{
-						if( isset( $validator[ 'values' ][ 'min' ] ) ){
-							$field->SetAttribute( 'min', $validator[ 'values' ][ 'min' ] );
-						}
-						if( isset( $validator[ 'values' ][ 'max' ] ) ){
-							$field->SetAttribute( 'max', $validator[ 'values' ][ 'max' ] );
-						}
-						if( isset( $validator[ 'values' ][ 'step' ] ) ){
-							$field->SetAttribute( 'step', $validator[ 'values' ][ 'step' ] );
-						}
-						break;
-					}
-					case 'Length':{
-						if( isset( $validator[ 'values' ][ 'min' ] ) ){
-							$field->SetAttribute( 'data-nvalidate-minlength', $validator[ 'values' ][ 'min' ] );
-						}
-						if( isset( $validator[ 'values' ][ 'max' ] ) ){
-							$field->SetAttribute( 'maxlength', $validator[ 'values' ][ 'max' ] );
-						}
-						break;
-					}
-					case 'Required':{
-						if( !(isset( $validator[ 'enabled' ] ) && $validator[ 'enabled' ] == false ) ){
-							$field->SetAttribute( 'required', true );
-						}
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	/**
 	 * Convert an element definition array in an element definition object
 	 *
 	 * @param		array		$element		A definition in the form of an array
@@ -303,7 +272,6 @@ class Form extends \ioForm\Core\Definition{
 	public function FromArray( $element ){
 		$this->ArrayToDefinition( $element, $this );
 		return $this;
-
 	}
 
 	public function FindFields( $definition, $field_container_template_default = array() ){
