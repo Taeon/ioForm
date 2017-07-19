@@ -219,6 +219,9 @@ class Form extends \ioForm\Core\Definition{
 
 		// Get a list of all fields
 		foreach( $this->fields as $field ){
+			if( !$field->enabled ){
+				continue;
+			}
 			// Is there a submitted value?
 			if( isset( $raw_values[ $field->name ] ) ){
 				// Yes there's a submitted value
@@ -252,7 +255,7 @@ class Form extends \ioForm\Core\Definition{
 						break;
 					}
 					case 'checkbox':{
-						$values[ $field->name ] = (boolean)$values[ $field->name ];
+						$values[ $field->name ] = ($values[ $field->name ]==='false')?false:(boolean)$values[ $field->name ];
 						break;
 					}
 				}
