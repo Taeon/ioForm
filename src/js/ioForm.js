@@ -219,7 +219,10 @@
                 for( var field_name in this.fields ){
                     if( this.fields.hasOwnProperty( field_name ) ){
                         var field = this.fields[ field_name ];
-                        values[ field_name ] = field.GetValue( raw );
+                        // Don't return values for disabled fields
+                        if ( !field.IsDisabled() ){
+                            values[ field_name ] = field.GetValue( raw );
+                        }
                     }
                 }
                 return values;

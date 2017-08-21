@@ -89,6 +89,12 @@ ioFormField.prototype = {
         this.element.removeAttribute( 'disabled' );
 		this.trigger( 'ioform:enabled' );
     },
+    /**
+	 * Enable the field
+	 */
+    IsDisabled:function(){
+        return this.element.hasAttribute( 'disabled' );
+    },
 	/**
 	 * Reset the field
 	 */

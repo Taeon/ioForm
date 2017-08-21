@@ -33,3 +33,11 @@ ioFormFieldRadio.prototype.Enable = function(){
         this.element[ i ].removeAttribute( 'disabled' );
     }
 };
+ioFormFieldRadio.prototype.IsDisabled = function(){
+    for( var i = 0; i < this.element.length; i++){
+        if( this.element[i].hasAttribute( 'disabled' ) && this.element[i].getAttribute( 'disabled' ) ){
+            return true;
+        }
+    }
+    return false;
+};

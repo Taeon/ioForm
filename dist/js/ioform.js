@@ -349,7 +349,10 @@ var Events = {
                 for( var field_name in this.fields ){
                     if( this.fields.hasOwnProperty( field_name ) ){
                         var field = this.fields[ field_name ];
-                        values[ field_name ] = field.GetValue( raw );
+                        // Don't return values for disabled fields
+                        if ( !field.IsDisabled() ){
+                            values[ field_name ] = field.GetValue( raw );
+                        }
                     }
                 }
                 return values;
@@ -492,6 +495,12 @@ ioFormField.prototype = {
     Enable:function(){
         this.element.removeAttribute( 'disabled' );
 		this.trigger( 'ioform:enabled' );
+    },
+    /**
+	 * Enable the field
+	 */
+    IsDisabled:function(){
+        return this.element.hasAttribute( 'disabled' );
     },
 	/**
 	 * Reset the field
@@ -669,6 +678,14 @@ ioFormFieldRadio.prototype.Enable = function(){
     for( var i = 0; i < this.element.length; i++){
         this.element[ i ].removeAttribute( 'disabled' );
     }
+};
+ioFormFieldRadio.prototype.IsDisabled = function(){
+    for( var i = 0; i < this.element.length; i++){
+        if( this.element[i].hasAttribute( 'disabled' ) && this.element[i].getAttribute( 'disabled' ) ){
+            return true;
+        }
+    }
+    return false;
 };
 ;
 /**
