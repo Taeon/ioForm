@@ -21,8 +21,15 @@ ioFormFieldCheckbox.prototype.SetValue = function( value ){
  */
 ioFormFieldCheckbox.prototype.GetValue = function( raw ){
     if( typeof raw !== 'undefined' && raw ){
-        return ((this.element.checked)?1:0);
+        var value = this.element.getAttribute( 'value' );
+        if( value === null ){
+            // No value set on element so send 1 or 0
+            value = ((this.element.checked)?1:0);
+        } else {
+            // Send value or blank if not checked
+            value = ((this.element.checked)?value:'');
+        }
+        return value;
     }
-
     return this.element.checked;
 };

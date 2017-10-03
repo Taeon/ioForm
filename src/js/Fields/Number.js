@@ -1,6 +1,5 @@
 /***
  * Number field
- * https://github.com/chemerisuk/better-dateinput-polyfill?
  */
 var ioFormFieldNumber = function( element ){
     ioFormField.call( this, element );
