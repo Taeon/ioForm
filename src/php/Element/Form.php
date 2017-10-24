@@ -25,7 +25,7 @@ class Form extends \ioForm\Core\Element{
 	 */
 	public function Populate( $values ){
 		foreach( $values as $field_name => $value ){
-			if( $field = $this->GetField( $field_name ) ){
+			if( $this->HasField( $field_name ) && $field = $this->GetField( $field_name ) ){
 				$field->SetValue( $value );
 			}
 		}
