@@ -3,7 +3,7 @@
 namespace ioForm\Element\Field;
 
 class radio extends \ioForm\Element\Field{
-	
+
 	protected $tag = false;
 	protected $options = array();
 	public $show_label_for = false;
@@ -11,11 +11,13 @@ class radio extends \ioForm\Element\Field{
 	public function __construct( $element_definition ){
 		parent::__construct( $element_definition );
 		$this->options = array();
+		// This prevents conflicts with other radio buttons with the same name in other forms
+		$id = date('U') . rand( 0,10000 ) . '-' . $this->GetAttribute( 'name' ) . '-';
 		foreach( $element_definition->options as $option ){
 			$definition = new \ioform\Core\Definition();
 			$definition->type = 'radio_button';
 			$definition->name = $this->GetAttribute( 'name' );
-			$definition->id = $this->GetAttribute( 'name' ) . '-' . $option[ 'value' ];
+			$definition->id = $id . $option[ 'value' ];
 			$definition->value = $option[ 'value' ];
 			$definition->label = $option[ 'text' ];
 			if( isset( $option[ 'tabindex' ] ) && $option[ 'tabindex' ] !== null ){
@@ -37,11 +39,11 @@ class radio extends \ioForm\Element\Field{
 			$this->SetValue( $element_definition->default );
 		}
 	}
-	
+
 	public function GetOptions(){
 		return $this->options;
 	}
-	
+
 	/**
 	 * Recursively look through this field's element structure for option objects
 	 */

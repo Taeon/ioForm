@@ -137,6 +137,10 @@ class Form extends \ioForm\Core\Definition{
 			$this->buttons = array();
 		}
 		$index = $this->tabindex_start;
+		$form_id = $this->id;
+		if( !$this->id ){
+			$form_id = date('U') . rand( 0,10000 );
+		}
 		foreach( $this->FindFields( $this ) as $field ){
 			// Set tabindex
 			// We do this just before render, because the form's structure might've changed
@@ -155,7 +159,7 @@ class Form extends \ioForm\Core\Definition{
 			if( $this->auto_field_id ){
 				if( !( isset( $field->id ) ) ){
 					// Auto-prepend with form ID, if set
-					$field->id = (($this->id)?$this->id . '-':'' ) . $field->name;
+					$field->id = $form_id . '-' . $field->name;
 				}
 			}
 			// Automatically set container class with field's type
