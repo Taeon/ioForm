@@ -244,7 +244,7 @@
 			 * Submit the form
 			 */
             Submit:function(){
-                this.trigger( 'submit' );
+                this.form.submit();
             },
 			/**
 			 * Reset the form

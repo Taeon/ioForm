@@ -12,7 +12,7 @@ var Events = {
 	Register:function( obj, target ){
 		// Create a DOM EventTarget object
 		if ( typeof target == 'undefined' ) {
-			target = document.createTextNode(null);			
+			target = document.createTextNode(null);
 		}
         obj.ready_events = [];
         var _target = target;
@@ -69,7 +69,7 @@ var Events = {
 			if ( event_type == 'ioform:ready' && !obj.ready ) {
 				return;
 			}
-			
+
 			var detail = {};
 			var bubbles = true;
 			var cancelable = true;
@@ -88,7 +88,7 @@ var Events = {
 							detail[ index ] = params[ index ];
 							break;
 						}
-					}					
+					}
 				}
 			}
 
