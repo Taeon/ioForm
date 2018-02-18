@@ -3,14 +3,14 @@
 namespace ioForm\Element\Core;
 
 class Container extends \ioForm\Core\Element{
-	
+
 	protected $lookup = array();
 	public $role = 'row';
-	
+
 	public $template = '';
 
 	protected $temp = array();
-	
+
 	public function __construct( $field_definition = null ){
 		parent::__construct( $field_definition );
 
@@ -23,7 +23,7 @@ class Container extends \ioForm\Core\Element{
 	 * Add class(es) to container element
 	 */
 	public function AddClass( $class, $element = false ){
-		
+
 		if( $element ){
 			// Add it to a specific element by lookup
 			$this->lookup->$element->AddClass( $class );
@@ -34,13 +34,13 @@ class Container extends \ioForm\Core\Element{
 			}
 		}
 	}
-	
+
 	public function GetByAlias( $alias ){
 		if( isset( $this->lookup->{$alias} )){
 			return $this->lookup->{$alias};
 		}
 	}
-	
+
 	/**
 	 * Pass in the element(s) for this container
 	 *
@@ -49,7 +49,7 @@ class Container extends \ioForm\Core\Element{
 	public function SetElements( $elements ){
 		$this->lookup->{'elements-container'}->elements = $elements;
 	}
-	
+
 	/**
 	 * Add a child element to this element
 	 *
@@ -66,9 +66,9 @@ class Container extends \ioForm\Core\Element{
 			$this->lookup->$role = $element;
 		}
 	}
-	
+
 	public function SetLabel( $label, $field ){
-		
+
 		// No label
 		if( $label === null && isset( $this->lookup->label ) ){
 			$this->lookup->label->enabled = false;
@@ -77,8 +77,8 @@ class Container extends \ioForm\Core\Element{
 		if( !isset( $this->lookup->label ) ){
 			return;
 		}
-		
-		$this->lookup->label->content = htmlentities( $label );
+
+		$this->lookup->label->content = $label;
 
 		// Link label to field with 'for' attribute
 		$id = null;
@@ -92,7 +92,7 @@ class Container extends \ioForm\Core\Element{
 			$field->SetAttribute( 'id', $id );
 		}
 	}
-	
+
 	/**
 	 * Populate this container from an HTML string
 	 */
@@ -142,7 +142,7 @@ class Container extends \ioForm\Core\Element{
 		} else{
 			$definition->tag = null;
 			$definition->content = $node->nodeValue;
-			// Empty text node (or whitespace) 
+			// Empty text node (or whitespace)
 			if( trim( $definition->content ) == '' ){
 				return null;
 			}
@@ -195,4 +195,3 @@ class Container extends \ioForm\Core\Element{
         }
     }
 }
-	

@@ -375,7 +375,7 @@ var Events = {
 			 * Submit the form
 			 */
             Submit:function(){
-                this.form.submit();
+                this.trigger( 'submit' );
             },
 			/**
 			 * Reset the form
