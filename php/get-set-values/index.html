@@ -9,7 +9,7 @@
         <link rel="canonical" href="https://taeon.github.io/ioForm/php/get-set-values/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
-	<title>=Get/set values - ioForm</title>
+	<title>Getting and setting values - ioForm</title>
 
         <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
         <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
@@ -111,14 +111,14 @@
 
         
             
-<li >
-    <a href="../field-options/">=Field options reference</a>
+<li class="active">
+    <a href="./">Getting and setting values</a>
 </li>
 
         
             
-<li class="active">
-    <a href="./">=Get/set values</a>
+<li >
+    <a href="../field-options/">=Field options reference</a>
 </li>
 
         
@@ -168,12 +168,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../field-options/">
+                        <a rel="next" href="../fields-reference/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../css-classes/">
+                        <a rel="prev" href="../field-options/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -198,11 +198,143 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
+        <li class="main active"><a href="#getting-and-setting-values">Getting and setting values</a></li>
+        
+            <li><a href="#setting-a-default-value">Setting a default value</a></li>
+        
+            <li><a href="#setting-values">Setting values</a></li>
+        
+            <li><a href="#getting-values">Getting values</a></li>
+        
+    
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
-</div>
+<h1 id="getting-and-setting-values">Getting and setting values</h1>
+<p>You're going to want to be able to change, and retrieve, your form's values. Here's how.</p>
+<h2 id="setting-a-default-value">Setting a default value</h2>
+<p>If you want to give a field a pre-set value that will always be populated when the form is loaded, just use the <code>default</code> parameter:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Your name:',
+                'type' =&gt; 'text',
+                'default' =&gt; 'Bob Smith',
+                'name' =&gt; 'your_name'
+            )
+        )
+    )
+);
+echo( $form-&gt;Render() );
+</code></pre>
+
+<pre><code class="html">&lt;form method=&quot;get&quot; action=&quot;/newsletter-form.php&quot;&gt;
+    &lt;label for=&quot;your_name&quot; class=&quot;text&quot;&gt;Your name:&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;your_name&quot; name=&quot;your_name&quot; value=&quot;Bob Smith&quot;/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+&lt;/form&gt;
+</code></pre>
+
+<form method="get" action="/newsletter-form.php">
+    <label for="your_name" class="text">Your name:</label>
+    <input type="text" id="your_name" name="your_name" value="Bob Smith"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<p>Note that a <code>default</code> value is not the same as <code>placeholder</code>: when you set a default, it will be submitted as the field's value (unless it's deleted or changed), whereas a placeholder value is just a visual cue for the user and will never be submitted. If you want to set a placeholder then you can with the (surprise!) <code>placeholder</code> option:</p>
+<pre><code class="php">$form = (new \ioForm\Form())
+-&gt;FromArray(
+    array(
+        'action' =&gt; '/newsletter-form.php',
+        'elements' =&gt; array(
+            array(
+                'label' =&gt; 'Your name:',
+                'type' =&gt; 'text',
+                'placeholder' =&gt; 'Enter your name',
+                'name' =&gt; 'your_name'
+            ),
+            array(
+                'label' =&gt; 'Your email address:',
+                'type' =&gt; 'email',
+                'placeholder' =&gt; 'Enter your email address',
+                'name' =&gt; 'your_email'
+            )
+        )
+    )
+);
+echo( $form-&gt;Render() );
+</code></pre>
+
+<pre><code class="html">&lt;form method=&quot;get&quot; action=&quot;/newsletter-form.php&quot;&gt;
+    &lt;label for=&quot;your_name&quot; class=&quot;text&quot;&gt;Your name:&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;your_name&quot; name=&quot;your_name&quot; placeholder=&quot;Enter your name&quot;/&gt;
+    &lt;label for=&quot;your_email&quot; class=&quot;email&quot;&gt;Your email address:&lt;/label&gt;
+    &lt;input type=&quot;email&quot; id=&quot;your_email&quot; name=&quot;your_email&quot; placeholder=&quot;Enter your email address&quot;/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+&lt;/form&gt;
+</code></pre>
+
+<form method="get" action="/newsletter-form.php">
+    <label for="your_name" class="text">Your name:</label>
+    <input type="text" id="your_name" name="your_name" placeholder="Enter your name"/>
+    <label for="your_email" class="email">Your email address:</label>
+    <input type="email" id="your_email" name="your_email" placeholder="Enter your email address"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<h2 id="setting-values">Setting values</h2>
+<p>If you want to set the value of one or more fields in a pre-defined form, then you <em>could</em> overwrite the default value that's been set in the form definition (see above). However, that's a little clumsy. An easier approach is to use the <code>SetValue()</code> and <code>SetValues()</code> methods. These will override the default value (if set).</p>
+<h3 id="setting-a-single-value">Setting a single value</h3>
+<p>Easy -- just call <code>ioForm::SetValue( [field], [value] );</code> on your form. So for example, using the form above:</p>
+<pre><code class="php">$form-&gt;SetValue( 'your_name', 'Alice Smith' );
+</code></pre>
+
+<form method="get" action="/newsletter-form.php">
+    <label for="your_name" class="text">Your name:</label>
+    <input type="text" id="your_name" name="your_name" placeholder="Enter your name" value="Alice Smith"/>
+    <label for="your_email" class="email">Your email address:</label>
+    <input type="email" id="your_email" name="your_email" placeholder="Enter your email address"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<p>Alternatively, you could use <code>$form-&gt;GetField( 'your_name' )-&gt;SetValue( 'Alice Smith' );</code> -- which does the same thing.</p>
+<p>Note that with some fields, you can pass in a value that is appropriate to the field's type. So, for example, you can pass a DateTime object to a <code>date</code>  field, or an array of values to a multiple <code>select</code> field.</p>
+<h3 id="setting-a-multiple-values">Setting a multiple values</h3>
+<p>You can pass multiple values using either an array or an object and <code>ioForm::SetValues( [values] );</code>:</p>
+<pre><code class="php">$form-&gt;SetValues(
+    array(
+        'your_name' =&gt; 'Alice Smith',
+        'your_email' =&gt; 'alice@smith.com'
+    )
+);
+</code></pre>
+
+<form method="get" action="/newsletter-form.php">
+    <label for="your_name" class="text">Your name:</label>
+    <input type="text" id="your_name" name="your_name" placeholder="Enter your name" value="Alice Smith"/>
+    <label for="your_email" class="email">Your email address:</label>
+    <input type="email" id="your_email" name="your_email" placeholder="Enter your email address" value="alice@smith.com"/>
+    <input type="submit" value="Submit"/>
+</form>
+
+<h2 id="getting-values">Getting values</h2>
+<p>If you want to know what value a given form field has been set to, then you can use the <code>GetValue( [field] )</code> method:</p>
+<pre><code class="php">echo( $form-&gt;GetValue( 'your_name' ) ); // 'Alice Smith'
+</code></pre>
+
+<p>Alternatively, you could use <code>$form-&gt;GetField( 'your_name' )-&gt;GetValue();</code> -- which does the same thing.</p>
+<p>This will take into account a default value (if set), a value passed using <code>SetValue()</code> or <code>SetValues()</code>, or -- if the form has been submitted -- the value entered into the form (i.e. the corresponding value in <code>$_GET</code> or <code>$_POST</code>).</p>
+<p>ioForm will, by default, return an appropriate value based on the field's type. So for example, a date field will return a DateTime object, a number field will return a number (as opposed to a string representation of a number). If you want to be sure to get the 'raw' value of a field, i.e. the value as it was passed in (generally a string), then pass a second parameter of <code>true</code>:</p>
+<pre><code class="php">echo( $form-&gt;GetValue( 'my_date_field', true ) ); // Returns a string rather than a DateTime object
+</code></pre>
+
+<p>Note that if a value of <code>null</code> is returned then it means that this field's value has not been set.</p>
+<h3 id="getting-multiple-values">Getting multiple values</h3>
+<p>There's also a corresponding method <code>GetValues()</code> which will return all a form's values (as an associative array). Again, it will return processed values unless you pass in a parameter of <code>true</code>, in which case raw values will be returned instead.</p></div>
             
         </div>
 
