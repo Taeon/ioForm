@@ -19,7 +19,9 @@ class Definition{
 	public $id;
 
 	public function __construct(){
-		$this->alias_lookup = new \stdClass();
+		if( !$this->alias_lookup ){
+			$this->alias_lookup = new \stdClass();
+		}
 	}
 
 	public function SetTemplates( $templates ){
@@ -56,6 +58,9 @@ class Definition{
 	public function ElementAdded( $definition ){
 		// Store in alias lookup
 		if( $definition->alias ){
+			if( !$this->alias_lookup ){
+				$this->alias_lookup = new \stdClass;
+			}
 			$this->alias_lookup->{ $definition->alias } = $definition;
 		}
 		// Notify parent

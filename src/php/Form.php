@@ -105,37 +105,6 @@ class Form extends \ioForm\Core\Definition{
 	}
 
 	public function Render(){
-		if( $this->buttons ){
-			$buttons = array();
-			if( $this->buttons_container ){
-				$container = new \ioForm\Core\Definition();
-				$container->type = 'layout';
-				$container->parent = $this;
-				$container->container_template = $this->buttons_container;
-				$this->elements[] = $container;
-			} else {
-				$container = $this;
-			}
-
-			foreach( $this->buttons as $button ){
-				$definition = new \ioForm\Core\Definition();
-				$definition->type = 'button';
-				$definition->is_button = $this->use_buttons;
-				$definition->button_type = $button[ 'type' ];
-				if( isset( $button[ 'value' ] ) ){
-					$definition->value = $button[ 'value' ];
-				}
-				if( isset( $button[ 'class' ] ) ){
-					$definition->class = $button[ 'class' ];
-				}
-				if( isset( $button[ 'data' ] ) ){
-					$definition->data = $button[ 'data' ];
-				}
-				$definition->parent = $container;
-				$container->elements[] = $definition;
-			}
-			$this->buttons = array();
-		}
 		$index = $this->tabindex_start;
 		$form_id = $this->id;
 		if( !$this->id ){
@@ -278,6 +247,44 @@ class Form extends \ioForm\Core\Definition{
 	 */
 	public function FromArray( $element ){
 		$this->ArrayToDefinition( $element, $this );
+		if( $this->buttons ){
+			$buttons = array();
+			if( $this->buttons_container ){
+				$container = new \ioForm\Core\Definition();
+				$container->type = 'layout';
+				$container->parent = $this;
+				$container->container_template = $this->buttons_container;
+				$this->elements[] = $container;
+				$this->ElementAdded( $container );
+			} else {
+				$container = $this;
+			}
+
+			foreach( $this->buttons as $button ){
+				$definition = new \ioForm\Core\Definition();
+				$definition->type = 'button';
+				$definition->is_button = $this->use_buttons;
+				$definition->button_type = $button[ 'type' ];
+				if( isset( $button[ 'value' ] ) ){
+					$definition->value = $button[ 'value' ];
+				}
+				if( isset( $button[ 'class' ] ) ){
+					$definition->class = $button[ 'class' ];
+				}
+				if( isset( $button[ 'data' ] ) ){
+					$definition->data = $button[ 'data' ];
+				}
+				if( isset( $button[ 'alias' ] ) ){
+					$definition->alias = $button[ 'alias' ];
+				}
+
+				$definition->parent = $container;
+				$container->elements[] = $definition;
+				$this->ElementAdded( $definition );
+			}
+			$this->buttons = array();
+		}
+
 		return $this;
 	}
 
