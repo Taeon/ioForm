@@ -55,6 +55,8 @@ When using a date field, instead of a string you get a date object:
 <p data-height="124" data-theme-id="0" data-slug-hash="QdOegq" data-default-tab="js,result" data-user="Taeon" data-embed-version="2" data-pen-title="ioForm: Get date field value" class="codepen">See the Pen <a href="https://codepen.io/Taeon/pen/QdOegq/">ioForm: Get date field value</a> by Taeon (<a href="http://codepen.io/Taeon">@Taeon</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
+If you pass a second parameter of ```true``` to ```GetValue()```, then the 'raw' value of the field will be returned -- so for example, a ```date``` field will return a string instead of a Date object.
+
 ## Setting a value
 
 If you want to set a field's value the following will work (in pretty much all reasonably modern browsers) for some field types, such as ```input type="text"``` fields, single ```select``` fields, and ```textarea``` fields:
