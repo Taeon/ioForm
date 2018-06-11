@@ -20,6 +20,9 @@ class radio extends \ioForm\Element\Field{
 			$definition->id = $id . $option[ 'value' ];
 			$definition->value = $option[ 'value' ];
 			$definition->label = $option[ 'text' ];
+			if( isset( $definition->class ) ){
+				$definition->class = $element_definition->class;
+			}
 			if( isset( $option[ 'tabindex' ] ) && $option[ 'tabindex' ] !== null ){
 				$definition->tabindex = $option[ 'tabindex' ];
 			}
