@@ -156,10 +156,14 @@ class Definition{
 				}
 				case 'validators':{
 					foreach( $value as $validator_definition ){
-						$validator_type = '\\ioValidate\\Validator\\' . $validator_definition[ 'type' ];
-						$validator = new $validator_type( (object)$validator_definition );
-						$validator->value_type = $definition->type;
-						$definition->validators[] = $validator;
+						if( gettype( $validator_definition ) == 'array' ){
+							$validator_type = '\\ioValidate\\Validator\\' . $validator_definition[ 'type' ];
+							$validator = new $validator_type( (object)$validator_definition );
+							$validator->value_type = $definition->type;
+							$definition->validators[] = $validator;
+						} else {
+							$definition->validators[] = $validator_definition;
+						}
 					}
 					break;
 				}
