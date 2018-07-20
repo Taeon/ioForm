@@ -708,7 +708,7 @@ ioFormFieldSelect.prototype.GetValue = function( raw ){
     if ( typeof this.element.getAttribute( 'multiple' ) != 'undefined' && this.element.getAttribute( 'multiple' ) != null ) {
         var value = [];
         for( var i = 0; i < selected.length; i++ ){
-            if ( selected[ i ].hasAttribute( 'value' ) ) {
+            if ( selected[ i ].hasAttribute( 'value' ) && selected[ i ].value.trim() != '' ) {
                 value.push( selected[ i ].getAttribute( 'value' ) );
             }
         }
