@@ -9,6 +9,19 @@ class radio extends \ioForm\Element\Field{
 	public $show_label_for = false;
 
 	public function __construct( $element_definition ){
+		// Separate out element classes
+		$classes = array();
+		$element_classes = array();
+		if( isset( $element_definition->classes ) ){
+			foreach( $element_definition->classes as $class ){
+				if( strpos( $class->element, 'element-' ) === 0 ){
+					$element_classes[] = $class;
+				} else {
+					$classes[] = $class;
+				}
+			}
+		}
+		$element_definition->classes = $classes;
 		parent::__construct( $element_definition );
 		$this->options = array();
 		// This prevents conflicts with other radio buttons with the same name in other forms
@@ -23,6 +36,7 @@ class radio extends \ioForm\Element\Field{
 			if( isset( $element_definition->class ) ){
 				$definition->class = $element_definition->class;
 			}
+			$definition->classes = $element_classes;
 			if( isset( $option[ 'tabindex' ] ) && $option[ 'tabindex' ] !== null ){
 				$definition->tabindex = $option[ 'tabindex' ];
 			}
