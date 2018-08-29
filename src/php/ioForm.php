@@ -17,7 +17,7 @@ class ioForm{
 		$element_type = str_replace( '-', '_', $element_type );
 		switch( strtolower( $element_class ) ){
 			case 'layout':{
-				if( in_array( $element_type, array( 'fieldset' ) ) ){
+				if( in_array( $element_type, array( 'fieldset', 'button' ) ) ){
 					$element_class = '\\ioForm\\Element\\Layout\\' . strtolower( $element_type );
 				} else {
 					$element_definition->tag = strtolower( $element_type );
