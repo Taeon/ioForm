@@ -104,7 +104,7 @@
                                 break;
                             }
                             case 'textarea':{
-                                this.fields[ field_name ] = new ioFormFieldTextarea( field_element );
+                                this.fields[ field_name ] = new ioFormFieldDefault( field_element );
                                 break;
                             }
                         }

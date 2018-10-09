@@ -23,13 +23,13 @@ ioFormFieldDate.prototype.SetValue = function( date ){
         }
         if ( date.toString() != 'Invalid Date' ) {
             // For Chrome's sake, we need to convert to yyyy-MM-dd
-            this.element.setAttribute( 'value', date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 ) );
+            this.element.value = date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 );
             //code
         } else {
-            this.element.setAttribute( 'value', '' );
+            this.element.value = '';
         }
     } else {
-        this.element.setAttribute( 'value', '' );
+        this.element.value = '';
     }
 
     this.trigger( 'ioform:setvalue' );

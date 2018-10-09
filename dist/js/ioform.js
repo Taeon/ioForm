@@ -235,7 +235,7 @@ var Events = {
                                 break;
                             }
                             case 'textarea':{
-                                this.fields[ field_name ] = new ioFormFieldTextarea( field_element );
+                                this.fields[ field_name ] = new ioFormFieldDefault( field_element );
                                 break;
                             }
                         }
@@ -572,13 +572,13 @@ ioFormFieldDate.prototype.SetValue = function( date ){
         }
         if ( date.toString() != 'Invalid Date' ) {
             // For Chrome's sake, we need to convert to yyyy-MM-dd
-            this.element.setAttribute( 'value', date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 ) );
+            this.element.value = date.getFullYear() + '-' + ioFormUtility.ZeroPad( date.getMonth() + 1, 2 ) + '-' + ioFormUtility.ZeroPad( date.getDate(), 2 );
             //code
         } else {
-            this.element.setAttribute( 'value', '' );
+            this.element.value = '';
         }
     } else {
-        this.element.setAttribute( 'value', '' );
+        this.element.value = '';
     }
 
     this.trigger( 'ioform:setvalue' );
@@ -767,14 +767,4 @@ ioFormFieldSelect.prototype.ClearOptions = function(){
 var ioFormFieldDefault = function( element ){
     ioFormField.call( this, element );
 };
-extend( ioFormFieldDefault, ioFormField );;
-/***
- * Textarea
- */
-var ioFormFieldTextarea = function( element ){
-    ioFormField.call( this, element );
-};
-extend( ioFormFieldTextarea, ioFormField );
-ioFormFieldTextarea.prototype.SetValue = function( value ){
-    this.element.value = value;
-}
+extend( ioFormFieldDefault, ioFormField );
