@@ -235,7 +235,7 @@ var Events = {
                                 break;
                             }
                             case 'textarea':{
-                                this.fields[ field_name ] = new ioFormFieldDefault( field_element );
+                                this.fields[ field_name ] = new ioFormFieldTextarea( field_element );
                                 break;
                             }
                         }
@@ -767,4 +767,14 @@ ioFormFieldSelect.prototype.ClearOptions = function(){
 var ioFormFieldDefault = function( element ){
     ioFormField.call( this, element );
 };
-extend( ioFormFieldDefault, ioFormField );
+extend( ioFormFieldDefault, ioFormField );;
+/***
+ * Textarea
+ */
+var ioFormFieldTextarea = function( element ){
+    ioFormField.call( this, element );
+};
+extend( ioFormFieldTextarea, ioFormField );
+ioFormFieldTextarea.prototype.SetValue = function( value ){
+    this.element.value = value;
+}
