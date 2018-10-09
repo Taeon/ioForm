@@ -480,7 +480,7 @@ ioFormField.prototype = {
 	 * @return		mixed
 	 */
     SetValue:function( value ){
-        this.element.setAttribute( 'value', value );
+        this.element.value = value;
         this.trigger( 'ioform:setvalue' );
     },
 	/**
