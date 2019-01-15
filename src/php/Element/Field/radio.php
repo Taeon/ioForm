@@ -44,6 +44,10 @@ class radio extends \ioForm\Element\Field{
 				$definition->tabindex = $option[ 'tabindex' ];
 			}
 			$definition->SetTemplates( $element_definition->GetTemplates() );
+			// Use a custom template for the buttons
+			if( isset( $element_definition->element_container_template ) ){
+				$definition->container_template = $element_definition->element_container_template;
+			}
 			$definition->SetParent( $element_definition );
 			$option = \ioForm\ioForm::CreateElement( $definition );
 			$this->options[] = $option;
