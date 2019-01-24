@@ -48,6 +48,9 @@ class radio extends \ioForm\Element\Field{
 			if( isset( $element_definition->element_container_template ) ){
 				$definition->container_template = $element_definition->element_container_template;
 			}
+			if( isset( $option[ 'data' ] ) ){
+				$definition->data = $option[ 'data' ];
+			}
 			$definition->SetParent( $element_definition );
 			$option = \ioForm\ioForm::CreateElement( $definition );
 			$this->options[] = $option;
