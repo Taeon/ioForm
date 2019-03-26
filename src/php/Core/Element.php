@@ -19,6 +19,8 @@ abstract class Element{
 	public $container_template = false;
 	// Pass a string directly to be used as a container template. Overrides $container_template
 	public $container = false;
+	// Whether or not to add 'for' attribute in labels
+	public $show_label_for = false;
 
 	protected $element_classes = array();
 	protected $element_content = array();
