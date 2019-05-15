@@ -44,7 +44,15 @@ class select extends \ioForm\Element\Field{
 	public function Render(){
 		$options_html = '';
 		foreach( $this->options as $option ){
-			$options_html .= '<option value="' . htmlentities( $option[ 'value' ] ) . '"' . ((isset($option['selected'])&&$option['selected'])?' selected':'') . '>' . htmlentities( $option[ 'text' ] ) . '</option>';
+			$data = '';
+			if( isset( $option[ 'data' ] ) ){
+				$data = array();
+				foreach( $option[ 'data' ] as $key => $value ){
+					$data[] = ' data-' . $key . '="' . htmlentities( $value ) . '"';
+				}
+				$data = implode( ' ', $data );
+			}
+			$options_html .= '<option value="' . htmlentities( $option[ 'value' ] ) . '"' . ((isset($option['selected'])&&$option['selected'])?' selected':'') . '' . $data . '>' . htmlentities( $option[ 'text' ] ) . '</option>';
 		}
 		$this->content = $options_html;
 
