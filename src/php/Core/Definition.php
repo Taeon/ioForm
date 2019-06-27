@@ -42,7 +42,7 @@ class Definition{
 		return $this->templates[ $template_name ];
 	}
 	public function AddElement( \ioForm\Core\Definition $definition ){
-		$definition->parent = $this;
+		$definition->SetParent( $this );
 		$this->elements[] = $definition;
 		$this->ElementAdded( $definition );
 	}
@@ -158,7 +158,7 @@ class Definition{
 					// Convert child elements to definitions
 					foreach( $value as $child_definition ){
 						$child = new Definition();
-						$child->parent = $this;
+						$child->SetParent( $this );
 						$this->ArrayToDefinition( $child_definition, $child );
 						$definition->AddElement( $child );
 					}
