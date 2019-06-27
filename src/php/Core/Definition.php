@@ -93,6 +93,16 @@ class Definition{
 		return $this->parent;
 	}
 	public function SetParent( $parent ){
+		// We're switching parents
+		if( $this->parent && $this->parent != $parent ){
+			$elements = array();
+			foreach( $this->parent->elements as $element ){
+				if( $element !== $this ){
+					$elements[] = $element;
+				}
+			}
+			$this->parent->elements = $elements;
+		}
 		$this->parent = $parent;
 	}
 	public function GetElements(){
