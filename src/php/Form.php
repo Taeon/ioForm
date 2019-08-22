@@ -277,6 +277,9 @@ class Form extends \ioForm\Core\Definition{
 				if( isset( $button[ 'alias' ] ) ){
 					$definition->alias = $button[ 'alias' ];
 				}
+				if( isset( $button[ 'id' ] ) ){
+					$definition->id = $button[ 'id' ];
+				}
 
 				$definition->parent = $container;
 				$container->elements[] = $definition;
