@@ -23,17 +23,19 @@ class select extends \ioForm\Element\Field{
 			$value = (string)$value;
 		}
 		foreach( $this->options as $index => $element ){
+			$element = (object)$element;
+			$this->options[ $index ] = $element;
 			if( is_array( $value ) ){
-				if( in_array( (string)$element[ 'value' ], $value ) ){
-					$this->options[ $index ][ 'selected' ] = true;
+				if( in_array( (string)$element->value, $value ) ){
+					$element->selected = true;
 				} else {
-					$this->options[ $index ][ 'selected' ] = false;
+					$element->selected = false;
 				}
 			} else {
-				if( $value !== null && (string)$element[ 'value' ] === $value ){
-					$this->options[ $index ][ 'selected' ] = true;
+				if( $value !== null && (string)$element->value === $value ){
+					$element->selected = true;
 				} else {
-					$this->options[ $index ][ 'selected' ] = false;
+					$element->selected = false;
 				}
 			}
 		}
@@ -44,15 +46,16 @@ class select extends \ioForm\Element\Field{
 	public function Render(){
 		$options_html = '';
 		foreach( $this->options as $option ){
+			$option = (object)$option;
 			$data = '';
-			if( isset( $option[ 'data' ] ) ){
+			if( isset( $option->data ) ){
 				$data = array();
-				foreach( $option[ 'data' ] as $key => $value ){
+				foreach( $option->data as $key => $value ){
 					$data[] = ' data-' . $key . '="' . htmlentities( $value ) . '"';
 				}
 				$data = implode( ' ', $data );
 			}
-			$options_html .= '<option value="' . htmlentities( $option[ 'value' ] ) . '"' . ((isset($option['selected'])&&$option['selected'])?' selected':'') . '' . $data . '>' . htmlentities( $option[ 'text' ] ) . '</option>';
+			$options_html .= '<option value="' . htmlentities( $option->value ) . '"' . ((isset($option->selected)&&$option->selected)?' selected':'') . '' . $data . '>' . htmlentities( $option->text ) . '</option>';
 		}
 		$this->content = $options_html;
 
