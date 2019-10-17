@@ -119,7 +119,7 @@ class Form extends \ioForm\Core\Definition{
 					$index++;
 				} else {
 					foreach( $field->options as $option_index => $option ){
-						$option = (object)$option;
+						$field->options[ $option_index ] = (object)$option;
 						$field->options[ $option_index ]->tabindex = $index;
 						$index++;
 					}
