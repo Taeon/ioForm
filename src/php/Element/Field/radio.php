@@ -55,6 +55,11 @@ class radio extends \ioForm\Element\Field{
 			$definition->SetParent( $element_definition );
 			$option = \ioForm\ioForm::CreateElement( $definition );
 			$this->options[] = $option;
+
+			// Validators -- only add them to the first element
+			if( $index == 0 ){
+				$option->validators = $element_definition->validators;
+			}
 			$this->AddElement( $option );
 		}
 		$this->SetAttribute( 'id', null );

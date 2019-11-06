@@ -38,7 +38,12 @@ ioFormField.prototype = {
 	 * @return		string
 	 */
     GetName:function(){
-        return this.element.getAttribute( 'name' );
+        // Because radio fields are arrays
+        var element = this.element;
+        if( Array.isArray( element ) ){
+            element = this.element[ 0 ];
+        }
+        return element.getAttribute( 'name' );
     },
 	/**
 	 * Get the field's original name.
@@ -49,10 +54,16 @@ ioFormField.prototype = {
 	 * @return		string
 	 */
 	GetFieldName:function(){
-		if( this.element.hasAttribute( 'data-ioform-field-name' ) ){
-			return this.element.getAttribute( 'data-ioform-field-name' );
+        // Because radio fields are arrays
+        var element = this.element;
+        if( Array.isArray( element ) ){
+            element = this.element[ 0 ];
+        }
+
+        if( element.hasAttribute( 'data-ioform-field-name' ) ){
+			return element.getAttribute( 'data-ioform-field-name' );
 		}
-        return this.element.getAttribute( 'name' );
+        return element.getAttribute( 'name' );
     },
 	/**
 	 * Get the field's value
