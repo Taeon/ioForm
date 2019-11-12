@@ -6,6 +6,9 @@ var ioFormFieldRadio = function( element ){
 };
 extend( ioFormFieldRadio, ioFormField );
 ioFormFieldRadio.prototype.SetValue = function( value ){
+    if( value === null ){
+        return;
+    }
     value = value.toString();
     for( var i = 0; i < this.element.length; i++ ){
         if ( this.element[ i ].value == value ) {
