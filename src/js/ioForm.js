@@ -100,10 +100,12 @@
                                 break;
                             }
                             case 'select':{
+                                var type = 'select';
                                 this.fields[ field_name ] = new ioFormFieldSelect( field_element );
                                 break;
                             }
                             case 'textarea':{
+                                var type = 'textarea';
                                 this.fields[ field_name ] = new ioFormFieldDefault( field_element );
                                 break;
                             }
