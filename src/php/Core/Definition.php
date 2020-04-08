@@ -166,15 +166,7 @@ class Definition{
 				}
 				case 'validators':{
 					foreach( $value as $validator_definition ){
-						if( !( $validator_definition instanceOf \ioValidate\Validator ) ){
-							$validator_definition = (object)$validator_definition;
-							$validator_type = '\\ioValidate\\Validator\\' . $validator_definition->type;
-							$validator = new $validator_type( (object)$validator_definition );
-							$validator->value_type = $definition->type;
-							$definition->validators[] = $validator;
-						} else {
-							$definition->validators[] = $validator_definition;
-						}
+						$definition->AddValidator( $validator_definition );
 					}
 					break;
 				}
@@ -379,6 +371,23 @@ class Definition{
 	public function HasData( $name )
 	{
 		return isset( $this->data[ $name ] );
-	}
+    }
+    
+    /**
+     * Add a validator definition
+     * 
+     * @param   mixed       Either a validator defintion object or an array
+     */
+    public function AddValidator( $validator_definition ){
+        if( !( $validator_definition instanceOf \ioValidate\Validator ) ){
+            $validator_definition = (object)$validator_definition;
+            $validator_type = '\\ioValidate\\Validator\\' . $validator_definition->type;
+            $validator = new $validator_type( (object)$validator_definition );
+            $validator->value_type = $this->type;
+            $this->validators[] = $validator;
+        } else {
+            $this->validators[] = $validator_definition;
+        }
+    }
 
 }
