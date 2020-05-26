@@ -131,7 +131,7 @@ abstract class Element{
 					default:{
 						if( property_exists( $this, $name ) ){
 							$this->$name = $value;
-						} elseif( array_key_exists( $name, $this->attributes ) ){
+						} elseif( property_exists( $this->attributes, $name ) ){
 							$this->attributes->$name = $value;
 						} else {
 
