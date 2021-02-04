@@ -273,7 +273,7 @@ abstract class Element{
 		}
 
 		if( $this instanceof \ioForm\Element\Field ){
-			if( isset( $this->help ) ){
+			if( isset( $this->help ) && $this->container_element ){
 				if( $this->container_element && $help = $this->container_element->GetByAlias( 'help' ) ){
 					$help->content = $this->help;
 				} else {
