@@ -31,7 +31,7 @@ class radio extends \ioForm\Element\Field{
 			$definition = new \ioform\Core\Definition();
 			$definition->type = 'radio_button';
 			$definition->name = $this->GetAttribute( 'name' );
-			$definition->id = $id . $option->value;
+			$definition->id = $id . '-' . (string)$index;//$option->value;
 			$definition->value = $option->value;
 			$definition->label = $option->text;
 			if( isset( $option->disabled ) && $option->disabled ){
