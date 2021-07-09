@@ -26,6 +26,7 @@ class Form extends \ioForm\Core\Definition{
 	protected $buttons = array(
 		array( 'type' => 'submit', 'value' => 'Submit' )
 	);
+	protected $button_elements = array();
 
 	protected $auto_tabindex = false;
 	protected $tabindex_start = 1;
@@ -45,6 +46,8 @@ class Form extends \ioForm\Core\Definition{
 		// It's a field, so store it in the fields lookup
 		if( $definition->IsField() ){
 			$this->fields[ $definition->name ] = $definition;
+        }else if( $definition->IsButton() ){
+            $this->button_elements[] = $definition;
 		} else {
 			// We need to recurse into child elements
 			foreach( $definition->elements as $child ){
@@ -119,7 +122,8 @@ class Form extends \ioForm\Core\Definition{
 					$index++;
 				} else {
 					foreach( $field->options as $option_index => $option ){
-						$field->options[ $option_index ][ 'tabindex' ] = $index;
+						$field->options[ $option_index ] = (object)$option;
+						$field->options[ $option_index ]->tabindex = $index;
 						$index++;
 					}
 				}

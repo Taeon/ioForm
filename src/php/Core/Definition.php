@@ -51,6 +51,10 @@ class Definition{
 		$type = explode( ':', $this->type );
 		return ( !( count( $type ) > 1 && $type[0] != 'Field' ) && isset( $this->name ) && $this->name );
 	}
+	public function IsButton(){
+		$type = explode( ':', $this->type );
+		return ( ( count( $type ) > 1 && $type[1] == 'button' ) || $type[ 0 ] == 'button' );
+	}
 
 	/**
 	 * Called whenever an element (i.e. a definition) is added to the form
@@ -371,13 +375,7 @@ class Definition{
 	public function HasData( $name )
 	{
 		return isset( $this->data[ $name ] );
-    }
-    
-    /**
-     * Add a validator definition
-     * 
-     * @param   mixed       Either a validator defintion object or an array
-     */
+	}
     public function AddValidator( $validator_definition ){
         if( !( $validator_definition instanceOf \ioValidate\Validator ) ){
             $validator_definition = (object)$validator_definition;
