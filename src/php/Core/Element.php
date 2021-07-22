@@ -344,6 +344,9 @@ abstract class Element{
 			$attributes_strings = array();
 			if( count( $attributes ) > 0 ){
 				foreach( $attributes as $attribute => $value ){
+                    if( !is_scalar( $value ) ){
+                        throw new \Exception( 'Field ' . $this->attributes->name . ': value could not be converted to a string' );
+                    }
 					$attributes_strings[] = $attribute . ((is_bool($value))?'':'="' . htmlentities( $value ) . '"');
 				}
 			}
