@@ -185,13 +185,22 @@ class Definition{
 
 	}
 
+    /**
+	 * Check if an alias element exists
+	 *
+	 * @param		string      $alias
+	 */
+	public function HasElementForAlias( $alias ){
+		return property_exists( $this->alias_lookup, $alias );
+	}
+
 	/**
 	 * Get an element by its alias
 	 *
 	 * @param		\ioForm\Core\Element		$element
 	 */
 	public function GetElementByAlias( $alias ){
-		if( !property_exists( $this->alias_lookup, $alias ) ){
+		if( !$this->HasElementForAlias( $alias ) ){
 			throw new \Exception( 'Element with alias ' . $alias . ' not found.' );
 		}
 		return $this->alias_lookup->$alias;
